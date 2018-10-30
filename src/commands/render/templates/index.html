@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>{{docTitle}}</title>
+  <link rel="stylesheet" href="{{srcCss}}/bootstrap.min.css">
+  <link rel="stylesheet" href="{{srcCss}}/plyr.css">
+  <link rel="stylesheet" href="{{srcCss}}/mathquill.css">
+  <link rel="stylesheet" href="{{srcCss}}/jquery.mCustomScrollbar.min.css">
+  <link rel="stylesheet" href="{{srcCss}}/styles.css">
+</head>
+
+<body>
+  <div class="{{#if sidebar}}wrapper{{/if}}">
+    {{#if sidebar}}
+    {{{sidebar}}}
+    {{/if}}
+
+    <div id="{{#if sidebar}}content{{/if}}">
+      <header class="container-fluild header">
+        <div class="container">
+          <div class="row">
+            <div class="col-12">
+              <div class="align-items-middle">
+                {{#if sidebar}}
+                <button type="button" id="sidebarCollapse" class="btn btn-toggle-sidebar">
+                  <div></div>
+                  <div></div>
+                  <div></div>
+                </button>
+                {{/if}}
+
+                <h1 style="{{#if sidebar}}display: inline-block{{/if}}">{{{title}}}</h1>
+              </div>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <main class="container">
+        <div class="row">
+          <div class="col-12">
+            {{{contentMain}}}
+          </div>
+        </div>
+      </main>
+
+      <footer class="footer">
+        <div class="container">
+          <div class="row">
+            <div class="col-12">
+
+            </div>
+          </div>
+        </div>
+      </footer>
+    </div>
+  </div>
+
+
+  <script src="{{srcJs}}/jquery-3.3.1.min.js"></script>
+  <script src="{{srcJs}}/plyr.polyfilled.min.js"></script>
+  <script src="{{srcJs}}/bootstrap.min.js"></script>
+  <script src="{{srcJs}}/jquery.mCustomScrollbar.concat.min.js"></script>
+  <script src="{{srcJs}}/mathquill.min.js"></script>
+  <script>
+    // Initialize Plyr video players
+    const players = Array.from(document.querySelectorAll('video')).map(p => new Plyr(p));
+
+    // Initialize MathQuill and display all math equations
+    const MQ = MathQuill.getInterface(2);
+    let mathquillSpans = document.getElementsByClassName('mathquill');
+
+    for (let i = 0, len = mathquillSpans.length; i < len; i++) {
+      const mathquillSpan = mathquillSpans[i];
+      MQ.StaticMath(mathquillSpan);
+    }
+
+    // this hack will make sure Bootstrap tabs work when using Handlebars
+    $("a.nav-link").on('click', function () {
+      $(".tab-pane").hide();
+      $($(this).attr("href")).show();
+    });
+
+    // side bar events
+    $(document).ready(function () {
+      $("#sidebar").mCustomScrollbar({
+        theme: "minimal"
+      });
+
+      $('#sidebarCollapse').on('click', function () {
+        $('#sidebar, #content').toggleClass('active');
+        $('.collapse.in').toggleClass('in');
+        $('a[aria-expanded=true]').attr('aria-expanded', 'false');
+      });
+    });
+  </script>
+</body>
+
+</html>

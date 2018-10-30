@@ -1,0 +1,14 @@
+<div>
+  <form>
+    <fieldset>
+      <legend>{{{prompt}}}</legend>
+    </fieldset>
+
+    {{#each answers}}
+      <div>
+        <input type="radio" value="{{this.id}}" name="{{this.name}}" id="{{this.id}}">
+        <label for="{{this.id}}">{{{this.text}}}</label>
+      </div>
+    {{/each}}
+  </form>
+</div>

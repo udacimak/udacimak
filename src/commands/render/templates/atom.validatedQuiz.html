@@ -1,0 +1,18 @@
+<div>
+  <div>
+    <p><strong>QUESTION:</strong> {{{prompt}}}</p>
+    <div class="" form-group">
+      <label for="answer"><strong>ANSWER:</strong></label>
+      <textarea class="form-control" id="answer"></textarea>
+    </div>
+  </div>
+
+  <details>
+    <summary><strong>SOLUTION:</strong></summary>
+    <p><i>NOTE: The solutions are expressed in RegEx pattern. Udacity uses these patterns to check the given answer</i></p>
+
+    {{#each matchers}}
+      <li><code>{{{this}}}</code></li>
+    {{/each}}
+  </details>
+</div>

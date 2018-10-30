@@ -1,0 +1,39 @@
+<div>
+  {{#if hasInstruction}}
+    <div>
+      <h4>Question:</h4>
+
+      {{#if filenameYoutubeQuestion}}
+        <video controls>
+            <source src="{{filenameYoutubeQuestion}}" type="video/mp4">
+        </video>
+      {{/if}}
+
+      {{#if instruction}}
+      <p>{{{instruction}}}</p>
+      {{/if}}
+    </div>
+  {{/if}}
+
+  <h4>Start Quiz:</h4>
+  {{{htmlQuiz}}}
+
+  {{#if hasSolution}}
+  <div>
+    <details>
+      <summary><h4>Solution:</h4></summary>
+      <div>
+        {{#if filenameYoutubeAnswer}}
+          <video controls>
+              <source src="{{filenameYoutubeAnswer}}" type="video/mp4">
+          </video>
+        {{/if}}
+
+        {{#if answerText}}
+        <p>{{{answerText}}}</p>
+        {{/if}}
+      </div>
+    </details>
+  </div>
+  {{/if}}
+</div>

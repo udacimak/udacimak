@@ -1,0 +1,29 @@
+<nav id="sidebar">
+  <div class="sidebar-header">
+    <h3>{{title}}</h3>
+  </div>
+
+  <ul class="sidebar-list list-unstyled CTAs">
+    {{#each bottomLinks}}
+    <li>
+      <a href="{{this.link}}" class="article">{{this.title}}</a>
+    </li>
+    {{/each}}
+  </ul>
+
+  <ul class="sidebar-list list-unstyled components">
+    {{#each list}}
+    <li class="{{#if this.active}}active{{/if}}">
+      <a href="{{this.link}}">{{this.title}}</a>
+    </li>
+    {{/each}}
+  </ul>
+
+  <ul class="sidebar-list list-unstyled CTAs">
+    {{#each bottomLinks}}
+    <li>
+      <a href="{{this.link}}" class="article">{{this.title}}</a>
+    </li>
+    {{/each}}
+  </ul>
+</nav>

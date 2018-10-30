@@ -1,0 +1,29 @@
+<div class="nav nav-tabs nav-fill" role="tablist">
+  <a href="#introduction" class="nav-item nav-link active" id="tab-introduction" data-toggle="tab" role="tab">Introduction</a>
+  <a href="#instructions" class="nav-item nav-link" id="tab-instructions" data-toggle="tab" role="tab">Instructions</a>
+  <a href="#workspace" class="nav-item nav-link" id="tab-workspace" data-toggle="tab" role="tab">Workspace</a>
+  {{#if reviewVideo}}
+  <a href="#reviewvideo" class="nav-item nav-link" id="tab-reviewvideo" data-toggle="tab" role="tab">Review Video</a>
+  {{/if}}
+  <a href="#reflection" class="nav-item nav-link" id="tab-reflection" data-toggle="tab" role="tab">Reflection</a>
+</div>
+
+<div class="tab-content" style="padding: 20px 0;">
+  <div class="tab-pane active" id="introduction" role="tabpanel" aria-labelledby="tab-introduction">
+    {{{introduction}}}
+  </div>
+  <div class="tab-pane" id="instructions" role="tabpanel" aria-labelledby="tab-instructions">
+    {{{instructions}}}
+  </div>
+  <div class="tab-pane" id="workspace" role="tabpanel" aria-labelledby="tab-workspace">
+    {{{workspace}}}
+  </div>
+  {{#if reviewVideo}}
+  <div class="tab-pane" id="reviewvideo" role="tabpanel" aria-labelledby="tab-reviewvideo">
+    {{{reviewVideo}}}
+  </div>
+  {{/if}}
+  <div class="tab-pane" id="reflection" role="tabpanel" aria-labelledby="tab-reflection">
+    {{{reflection}}}
+  </div>
+</div>

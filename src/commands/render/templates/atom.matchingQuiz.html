@@ -1,0 +1,27 @@
+<div>
+  <p><strong>QUIZ QUESTION:</strong>: {{{prompt}}}</p>
+  <p><strong>ANSWER CHOICES:</strong></p>
+  {{#each concepts}}
+  <button class="btn btn-primary">{{{this.text}}}</button>
+  {{/each}}
+
+  <br><br>
+
+  <table class="table">
+    <tr class="thead-dark table-hover">
+      <th>
+        {{{conceptsLabel}}}
+      </th>
+      <th>
+        {{{answersLabel}}}
+      </th>
+    <tr>
+
+    {{#each answers}}
+    <tr>
+      <td>{{{this.text}}}</td>
+      <td></td>
+    </tr>
+    {{/each}}
+  </table>
+</div>

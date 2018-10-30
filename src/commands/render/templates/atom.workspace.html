@@ -1,0 +1,38 @@
+<div class="jumbotron">
+  <h3>Workspace</h3>
+
+  <p class="lead">This section contains either a workspace (it can be a <a href="http://jupyter.org/" target="_blank">Jupyter
+      Notebook</a> workspace or an online code editor work space, etc.) and it cannot be automatically downloaded to be
+    generated here. Please access the classroom with your account and manually download the workspace to your local
+    machine. Note that for some courses, Udacity upload the workspace files onto <a href="https://github.com/udacity"
+      target="_blank">https://github.com/udacity</a>, so you may be able to download them there.</p>
+
+  <h4>Workspace Information:</h4>
+
+  <ul>
+    <li><strong>Default file path:</strong> {{{defaultPath}}}</li>
+    <li><strong>Workspace type:</strong> {{{kind}}}</li>
+    <li>
+      <strong>Opened files (when workspace is loaded):</strong>
+      {{#if openFiles}}
+      <ul>
+        {{#each openFiles}}
+        <li>{{this}}</li>
+        {{/each}}
+      </ul>
+      {{else}}
+      n/a
+      {{/if}}
+    </li>
+
+    {{#if userCode}}
+    <li>
+      <strong>userCode:</strong>
+      <br>
+      <code>
+        {{{userCode}}}
+      </code>
+    </li>
+    {{/if}}
+  </ul>
+</div>

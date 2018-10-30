@@ -1,0 +1,16 @@
+<div>
+  <div class="nav nav-tabs nav-fill" role="tablist">
+    {{#each files}}
+    <a href="#{{this.id}}" class="nav-item nav-link {{this.active}}" id="tab-{{this.id}}" data-toggle="tab" role="tab"
+      aria-controls="{{this.id}}" aria-selected="{{this.isSelected}}">{{this.name}}</a>
+    {{/each}}
+  </div>
+
+  <div class="tab-content" style="padding: 20px 0;">
+    {{#each files}}
+    <div class="tab-pane {{this.active}}" id="{{this.id}}" aria-labelledby="tab-{{this.id}}" role="tabpanel">
+      <pre><code></code>{{this.text}}</code></pre>
+    </div>
+    {{/each}}
+  </div>
+</div>

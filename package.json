@@ -1,0 +1,65 @@
+{
+  "name": "udacimak",
+  "version": "0.9.0",
+  "description": "Udacity Nanodegree/course downloader and renderer",
+  "main": "index.js",
+  "scripts": {
+    "build": "rimraf lib && babel src --out-dir lib --copy-files",
+    "watch": "nodemon --watch src --exec \"rimraf lib && babel src --out-dir lib --copy-files\"",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/udacimak/udacimak.git"
+  },
+  "keywords": [
+    "udacity",
+    "downloader",
+    "nanodegree",
+    "udacity nanodegree",
+    "udacity downloader",
+    "udacity nanodegree downloader",
+    "udacity course downloader"
+  ],
+  "author": "udacimak",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/udacimak/udacimak/issues"
+  },
+  "homepage": "https://github.com/udacimak/udacimak#readme",
+  "preferGlobal": true,
+  "bin": {
+    "udacimak": "./lib/index.js"
+  },
+  "engines": {
+    "node": ">=7.8.0"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.1.2",
+    "@babel/core": "^7.1.2",
+    "@babel/plugin-transform-async-to-generator": "^7.1.0",
+    "@babel/preset-env": "^7.1.0",
+    "nodemon": "^1.18.4",
+    "rimraf": "^2.6.2"
+  },
+  "dependencies": {
+    "async": "^2.6.1",
+    "cheerio": "^1.0.0-rc.2",
+    "cli-progress": "^2.1.0",
+    "commander": "^2.18.0",
+    "copy-dir": "^0.4.0",
+    "directory-tree": "^2.1.0",
+    "filenamify": "^2.1.0",
+    "handlebars": "^4.0.12",
+    "inquirer": "^6.2.0",
+    "npm": "^6.4.1",
+    "pkginfo": "^0.4.1",
+    "progress-stream": "^2.0.0",
+    "request": "^2.88.0",
+    "request-progress": "^3.0.0",
+    "showdown": "^1.8.6",
+    "user-settings": "^0.2.0",
+    "winston": "^3.1.0",
+    "youtube-dl": "^1.12.2"
+  }
+}

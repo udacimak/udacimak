@@ -1,0 +1,37 @@
+<div>
+  <div>
+    {{#if description}}
+    <h4>Task Description:</h4>
+    {{{description}}}
+    {{/if}}
+  </div>
+
+  <form>
+    <fieldset>
+      <legend>Task List:</legend>
+
+      {{#each tasks}}
+      <div>
+        <input type="checkbox" id="{{this.id}}">
+        <label for="{{this.id}}">{{{this.task}}}</label>
+      </div>
+      {{/each}}
+    </fieldset>
+  </form>
+
+  {{#if hasFeedback}}
+  <div>
+    <h4>Task Feedback:</h4>
+    {{#if filenameYoutube}}
+    <video controls>
+      <source src="{{filenameYoutube}}" type="video/mp4">
+    </video>
+    {{/if}}
+
+
+    {{#if positive_feedback}}
+    {{{positive_feedback}}}
+    {{/if}}
+  </div>
+  {{/if}}
+</div>

@@ -1,0 +1,14 @@
+<div>
+  <p><strong>QUESTION: {{{questionTitle}}}</strong></p>
+  {{{questionText}}}
+
+  <details>
+    <summary><strong>ANSWER:</strong></summary>
+    {{#if filenameYoutube}}
+    <video controls>
+      <source src="{{filenameYoutube}}" type="video/mp4">
+    </video>
+    {{/if}}
+    <p>{{{answer}}}</p>
+  </details>
+</div>

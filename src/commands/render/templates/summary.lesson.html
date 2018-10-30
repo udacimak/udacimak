@@ -1,0 +1,16 @@
+<ul>
+  {{#each concepts}}
+  <li><a href="{{this.link}}">{{this.title}}</a></li>
+  {{/each}}
+
+  {{#if project}}
+  <li><a href="{{project.link}}">{{project.title}}</a></li>
+  {{/if}}
+  {{#if rubric}}
+  <li><a href="{{rubric.link}}">{{rubric.title}}</a></li>
+  {{/if}}
+
+  {{#if lab}}
+  <li><a href="{{lab.link}}">{{lab.title}}</a></li>
+  {{/if}}
+</ul>
