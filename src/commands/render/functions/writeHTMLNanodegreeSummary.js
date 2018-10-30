@@ -194,7 +194,7 @@ export default function writeHTMLNanodegreeSummary(jsonPath, targetDir, nanodegr
       let [filename, html] = res;
       let { key, version, summary, title } = data;
       summary = markdownToHtml(summary);
-      const srcHeroImg = filename ? `assets/img/${filename}` : null;
+      const srcHeroImg = filename ? `img/${filename}` : null;
       const heroImgAlt = title;
 
       const dataTemplate = {
