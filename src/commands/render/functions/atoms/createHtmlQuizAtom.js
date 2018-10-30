@@ -40,8 +40,8 @@ export default function createHtmlQuizAtom(atom, targetDir, prefix) {
   const promiseLoadTemplate = loadTemplate('atom.quiz');
 
   return Promise.all([
-    promiseDownloadYoutubeAnswer,
     promiseDownloadYoutubeQuestion,
+    promiseDownloadYoutubeAnswer,
     promiseLoadTemplate,
     promiseQuizQuestion
   ]).then(res => {
@@ -55,6 +55,8 @@ export default function createHtmlQuizAtom(atom, targetDir, prefix) {
     const dataTemplate = {
       answerText,
       instruction,
+      filenameYoutubeQuestion,
+      filenameYoutubeAnswer,
       hasSolution,
       hasInstruction,
       htmlQuiz
