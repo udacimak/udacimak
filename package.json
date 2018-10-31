@@ -6,7 +6,9 @@
   "scripts": {
     "build": "rimraf lib && babel src --out-dir lib --copy-files",
     "watch": "nodemon --watch src --exec \"rimraf lib && babel src --out-dir lib --copy-files\"",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "release": "np",
+    "version": "npm run build"
   },
   "repository": {
     "type": "git",
@@ -40,6 +42,7 @@
     "@babel/plugin-transform-async-to-generator": "^7.1.0",
     "@babel/preset-env": "^7.1.0",
     "nodemon": "^1.18.4",
+    "np": "^3.0.4",
     "rimraf": "^2.6.2"
   },
   "dependencies": {
