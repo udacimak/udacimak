@@ -1,6 +1,6 @@
 {
   "name": "udacimak",
-  "version": "0.9.4",
+  "version": "0.9.5",
   "description": "Udacity Nanodegree/course downloader and renderer",
   "main": "index.js",
   "scripts": {
