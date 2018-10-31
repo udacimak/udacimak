@@ -6,7 +6,6 @@
   "scripts": {
     "build": "rimraf lib && babel src --out-dir lib --copy-files",
     "watch": "nodemon --watch src --exec \"rimraf lib && babel src --out-dir lib --copy-files\"",
-    "test": "echo \"Error: no test specified\" && exit 1",
     "release": "np",
     "version": "npm run build"
   },
