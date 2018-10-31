@@ -8,6 +8,7 @@
 - [Breaking Changes from Udacity API](#breaking-changes-from-udacity-api)
 - [Installation](#installation)
 - [How to use](#how-to-use)
+- [Note to Windows OS Users](#note-to-windows-os-users)
 - [Reporting Issues](#reporting-issues)
 - [User Privacy](user-privacy)
 
@@ -32,7 +33,7 @@ __Resources__
 
 ## Disclaimer
 
-This CIL is provided to help you download Udacity Nanodegrees and
+This CLI is provided to help you download Udacity Nanodegrees and
 courses for personal use only.
 Sharing the content of your subscribed Nanodegrees and courses is
 strictly prohibited under Udacity's Terms of Use.
@@ -95,6 +96,11 @@ version of the `youtube-dl.exe` file and put it in this path:
 Note that the path `%USERPROFILE%\AppData\Roaming\npm\node_modules` is an
 example of where `node` will install global `npm` packages on Windows 7, 8 and
 10.
+
+Note that `youtube-dl.exe` requires
+__Microsoft Visual C++ 2010 Redistributable Package (x86)__ to be installed.
+(See link to download on
+[youtube-dl Homepage](https://rg3.github.io/youtube-dl/))
 
 ## How to use
 
@@ -269,6 +275,19 @@ what `render` is not capable of:
 can't download the workspace files for you. So the lesson pages that contain
 workspaces will not display any workspace for you.
 
+#### Re-rendering a course
+If you cancel the command or the CLI is cut off for some reason (eg. the CLI
+stops because internet is disconnected),
+you can re-run the render process later.
+Just use the same command, the CLI will:
+- NOT re-download video/image files that are already downloaded
+- Re-create all HTML files
+
+This ability allows you to:
+- Pause a render to do it later
+- Re-render a course quickly in case the CLI is updated with new features
+(eg. for rendering a better looking HTML format) or when a bug is fixed.
+
 ### `renderdir`: Iteratively render multiple JSON course contents
 
 This is a convenient method to render all the courses that you have downloaded.
@@ -279,8 +298,9 @@ you can use `renderdir` to render all of them:
 udacimak renderdir PATH_TO_DIRECTORY
 ```
 
-### Note to Windows OS users:
-The CLI is prone to some known issues when using on Windows:
+## Note to Windows OS users:
+Besides to a small setup hickup as noted [above](#windows-users-and-youtube-dl),
+the CLI is prone to some known issues when using on Windows:
 - 260-character file path limit: When facing this issue, you may have trouble
 viewing video file, moving files, etc.
 Windows will never fix this file path limitation, so...
