@@ -1,4 +1,4 @@
-# Udacimak
+# Udacimak - The Ultimate Udacity Nanodegree and Course Downloader
 
 ## Table of Contents
 
@@ -55,7 +55,7 @@ Udacity is different.
 Udacity content relies on various number of resources and format, including
 video, text content, some types of quizzes, workspace, etc.
 We can't build a downloader for a few of those content types.
-These include different types of workspaces, finding quiz solutions.
+These include different types of workspaces, programming quiz solutions.
 
 This means that it is NOT possible to build a downloader that can get 100% all
 the Udacity resources onto your computer. We have to live with this.
@@ -264,13 +264,9 @@ course content and find all lessons
 It is also :heavy_exclamation_mark: important to know
 what `render` is not capable of:
 - __Quiz__: for all quizzes:
-  - :x: The solution that you have provided online when doing the classes are in
-  the downloaded JSON data, but `render` will not put them into the rendered
-  HTML documents.
-  - :x: It is also not possible to "submit" the quizzes to check for result from
+  - :x: It is not possible to "submit" the quizzes to check for result from
   Udacity API. We simply can't have access to Udacity API to check the quizzes.
-  - :x: Some quizzes don't have associated text or video solution with them,
-  so keep this in mind when exploring the offline content.
+  - :x: For a few quiz types, (_Programming Quiz_ and _Image Format Quiz_) there are no solutions provided.
 - :x: __Workspaces__: As noted [above](#note-regarding-workspaces), `udacimak`
 can't download the workspace files for you. So the lesson pages that contain
 workspaces will not display any workspace for you.
