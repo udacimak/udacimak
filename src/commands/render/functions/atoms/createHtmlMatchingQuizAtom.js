@@ -13,6 +13,7 @@ export default function createHtmlMatchingQuizAtom(atom) {
     const prompt = markdownToHtml(question.complex_prompt.text);
     let concepts = [];
     let answers = [];
+    let solutions = [];
     let conceptsLabel = markdownToHtml(question.concepts_label);
     let answersLabel = markdownToHtml(question.answers_label);
     for (const concept of question.concepts) {
@@ -24,6 +25,17 @@ export default function createHtmlMatchingQuizAtom(atom) {
       answers.push({
         text: markdownToHtml(answer.text)
       });
+
+      // create solution
+      for (const concept of question.concepts) {
+        const { correct_answer } = concept;
+        if (correct_answer && correct_answer.text && correct_answer.text.toLowerCase().trim() === answer.text.toLowerCase().trim()) {
+          solutions.push({
+            answerText: markdownToHtml(answer.text),
+            matchingConcept: markdownToHtml(concept.text)
+          });
+        }
+      }
     }
 
     return loadTemplate('atom.matchingQuiz')
@@ -33,6 +45,7 @@ export default function createHtmlMatchingQuizAtom(atom) {
           answersLabel,
           concepts,
           conceptsLabel,
+          solutions,
           prompt
         };
         const template = Handlebars.compile(html);

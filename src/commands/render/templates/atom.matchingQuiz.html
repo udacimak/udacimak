@@ -15,7 +15,7 @@
       <th>
         {{{answersLabel}}}
       </th>
-    <tr>
+    </tr>
 
     {{#each answers}}
     <tr>
@@ -24,4 +24,34 @@
     </tr>
     {{/each}}
   </table>
+
+  {{#if solutions}}
+  {{#if solutions.length}}
+  <details>
+    <summary><strong>SOLUTION:</strong></summary>
+
+    <table class="table">
+      <tr class="thead-dark table-hover">
+        <th>
+          {{{conceptsLabel}}}
+        </th>
+        <th>
+          {{{answersLabel}}}
+        </th>
+      </tr>
+
+      {{#each solutions}}
+      <tr>
+        <td>
+          {{{this.answerText}}}
+        </td>
+        <td>
+            <button class="btn btn-primary">{{{this.matchingConcept}}}</button>
+        </td>
+      </tr>
+      {{/each}}
+    </table>
+  </details>
+  {{/if}}
+  {{/if}}
 </div>
