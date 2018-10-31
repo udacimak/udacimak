@@ -19,7 +19,7 @@ import {
  * @param {string} outputPath target directory
  */
 export default function writeHtmlRubric(rubric, projectJSON, htmlSidebar, outputPath) {
-  let { sections, stand_out, project } = rubric;
+  let { sections, stand_out } = rubric;
   // need to use the project title from projectJSON instead of from the rubric
   // This allow the Nanodegree and lesson summary pages to be able to link
   // to the correct file because they only have access to projectJSON object.
@@ -46,11 +46,11 @@ export default function writeHtmlRubric(rubric, projectJSON, htmlSidebar, output
   // write html file
   const templateDataIndex = {
     contentMain: htmlRubric,
-    docTitle: project.name || 'Project Rubric',
+    docTitle: title,
     sidebar: htmlSidebar,
     srcCss,
     srcJs,
-    title: project.name
+    title
   };
   let file = filenamify(`Project Rubric - ${title}.html`);
   file = `${outputPath}/${file}`;
