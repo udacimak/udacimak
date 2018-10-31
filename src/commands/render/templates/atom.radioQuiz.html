@@ -11,4 +11,11 @@
       </div>
     {{/each}}
   </form>
+
+  {{#if solution}}
+  <details>
+    <summary><strong>SOLUTION:</strong></summary>
+    {{{solution.text}}}
+  </details>
+  {{/if}}
 </div>

@@ -12,8 +12,15 @@ export default function createHtmlCheckboxQuizAtom(atom) {
   const prompt = markdownToHtml(atom.question.prompt);
 
   let answers = [];
+  let solution = [];
   for (const answer of atom.question.answers) {
-    const { id, text } = answer;
+    const { id, text, is_correct } = answer;
+
+    // if this is the correct answer, add to solution
+    if ('is_correct' in answer && is_correct !== null && is_correct === true) {
+      solution.push(answer);
+    }
+
     answers.push({
       id,
       name: atom.id,
@@ -25,6 +32,7 @@ export default function createHtmlCheckboxQuizAtom(atom) {
     .then(html => {
       const dataTemplate = {
         answers,
+        solution,
         prompt
       };
       const template = Handlebars.compile(html);

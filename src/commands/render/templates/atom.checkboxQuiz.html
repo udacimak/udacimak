@@ -5,10 +5,21 @@
     </fieldset>
 
     {{#each answers}}
-      <div>
-        <input type="checkbox" value="{{this.id}}" name="{{this.name}}" id="{{this.id}}">
-        <label for="{{this.id}}">{{{this.text}}}</label>
-      </div>
+    <div>
+      <input type="checkbox" value="{{this.id}}" name="{{this.name}}" id="{{this.id}}">
+      <label for="{{this.id}}">{{{this.text}}}</label>
+    </div>
     {{/each}}
   </form>
+
+  {{#if solution}}
+  <details>
+    <summary><strong>SOLUTION:</strong></summary>
+    <ul>
+    {{#each solution}}
+      <li>{{{this.text}}}</li>
+    {{/each}}
+  </ul>
+  </details>
+  {{/if}}
 </div>
