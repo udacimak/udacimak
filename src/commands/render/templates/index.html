@@ -8,9 +8,10 @@
   <title>{{docTitle}}</title>
   <link rel="stylesheet" href="{{srcCss}}/bootstrap.min.css">
   <link rel="stylesheet" href="{{srcCss}}/plyr.css">
-  <link rel="stylesheet" href="{{srcCss}}/mathquill.css">
+  <link rel="stylesheet" href="{{srcCss}}/katex.min.css">
   <link rel="stylesheet" href="{{srcCss}}/jquery.mCustomScrollbar.min.css">
   <link rel="stylesheet" href="{{srcCss}}/styles.css">
+
 </head>
 
 <body>
@@ -65,18 +66,19 @@
   <script src="{{srcJs}}/plyr.polyfilled.min.js"></script>
   <script src="{{srcJs}}/bootstrap.min.js"></script>
   <script src="{{srcJs}}/jquery.mCustomScrollbar.concat.min.js"></script>
-  <script src="{{srcJs}}/mathquill.min.js"></script>
+  <script src="{{srcJs}}/katex.min.js"></script>
   <script>
     // Initialize Plyr video players
     const players = Array.from(document.querySelectorAll('video')).map(p => new Plyr(p));
 
-    // Initialize MathQuill and display all math equations
-    const MQ = MathQuill.getInterface(2);
-    let mathquillSpans = document.getElementsByClassName('mathquill');
+    // render math equations
+    let elMath = document.getElementsByClassName('mathquill');
+    for (let i = 0, len = elMath.length; i < len; i++) {
+      const el = elMath[i];
 
-    for (let i = 0, len = mathquillSpans.length; i < len; i++) {
-      const mathquillSpan = mathquillSpans[i];
-      MQ.StaticMath(mathquillSpan);
+      katex.render(el.textContent, el, {
+        throwOnError: false
+      });
     }
 
     // this hack will make sure Bootstrap tabs work when using Handlebars

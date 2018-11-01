@@ -22,7 +22,7 @@ export default function markdownToHtml(markdown) {
       {
         type: 'lang',
         regex: /<span class=('mathquill'|\"mathquill\")>(.*?)<\/span>/gmi,
-        replace: `<span class='mathquill'>$2</span>`
+        replace: `<span class='mathquill ud-math'>$2</span>`
       }
     ];
   });
