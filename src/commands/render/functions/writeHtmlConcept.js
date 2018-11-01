@@ -42,7 +42,7 @@ export default function writeHtmlConcepts(concept, htmlSidebar, targetDir, i, do
 
     let promiseAtom;
     const { instructor_notes, semantic_type } = atom;
-    const instructorNote = instructor_notes;
+    const instructorNote = markdownToHtml(instructor_notes);
 
     if (semantic_type === 'ImageAtom') {
       promiseAtom = createHtmlImageAtom(atom, targetDir);
