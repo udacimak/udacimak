@@ -162,7 +162,9 @@ export default function writeHTMLNanodegreeSummary(jsonPath, targetDir, nanodegr
   for (let i = 0, len = data.parts.length; i < len; i++) {
     const part = data.parts[i];
     const numbering = (i + 1 < 10) ? `0${i + 1}` : i + 1;
-    const prefixPart = `Part ${numbering}`;
+    const { part_type } = part;
+    const partType = (part_type === 'Core') ? '' : `<em>(${part_type})</em>`;
+    const prefixPart = `Part ${numbering} ${partType}`;
     const partSummary = markdownToHtml(part.summary);
 
     // create html for this part's modules
