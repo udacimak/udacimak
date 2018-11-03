@@ -23,7 +23,7 @@ export default function createHtmlQuizAtom(atom, targetDir, prefix) {
   let promiseQuizQuestion;
 
   // process different semantic types of QuizAtom
-  if (semantic_type === 'ProgrammingQuestion') {
+  if (semantic_type === 'ProgrammingQuestion' || semantic_type === 'IFrameQuestion') {
     promiseQuizQuestion = createHtmlQuizProgrammingQuestion(atom);
   } else if (semantic_type === 'ImageFormQuestion') {
     promiseQuizQuestion = createHtmlQuizImageFormQuestion(atom, targetDir, prefix);
