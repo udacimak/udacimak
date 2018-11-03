@@ -1,4 +1,4 @@
-# Udacimak - The Ultimate Udacity Nanodegree and Course Downloader
+# Udacimak - the Ultimate Udacity Nanodegree and Course Downloader
 
 ## Table of Contents
 
@@ -74,6 +74,14 @@ to help us keep the CLI stable and usable.
 Please open an issue in __Issues__ tab to help us keep the CLI
 up-to-date if you face any issues using the CLI.
 
+### CLI Update Note
+
+When Udacimak is updated to a newer version, it may contain new rendering
+features. In this case, you would want to run the render process again.
+It should take a few seconds per Nanodegree/course because the CLI doesn't
+re-download online media files when re-render a course.
+Also see [note below](#re-rendering-a-course)
+
 ## Installation
 
 1. Make sure you have `node` and `npm` installed.
@@ -119,6 +127,7 @@ _Please read further instruction below for detailed usage._
 - [`listnd`: List your Nanodegree keys](#listnd-list-your-nanodegree-keys)
 - [`download`: Download course content as JSON data from Udacity API](#download-download-course-content-as-JSON-data-from-udacity-api)
 - [`render`: Render downloaded JSON course contents](#render-render-downloaded-json-course-contents)
+- [Log Files](#log-files)
 - [Note to Windows OS users](#note-to-windows-os-users)
 
 ### `settoken`: Set Udacity Authentication Token
@@ -130,6 +139,8 @@ cli can download course contents from Udacity API:
 ```shell
 udacimak settoken YOUR_UDACITY_AUTH_TOKEN
 ```
+
+![settoken Example][example-settoken]
 
 Udacity authentication token can be found in Udacity website browser _cookies_.
 To get your Udacity authentication, follow these steps:
@@ -192,6 +203,8 @@ enrolled in as such:
 udacimak listnd
 ```
 
+![listnd Example][example-listnd]
+
 ### Additional Information
 Note that you for each Nanodegree you will have an associated version
 and language (`locale`) that you can download. Udacity occasionally updates
@@ -219,6 +232,8 @@ udacimak download nd001
 # or download multiple Nanodegree and courses:
 udacimak download nd001 nd002 st101
 ```
+
+![download Example GIF][example-download]
 
 You can have a peek at these files to see what they contain.
 The JSON data files are not "readable". But note that they're the core contents
@@ -253,6 +268,8 @@ provided to do this:
 udacimak render PATH_TO_DOWNLOADED_COURSE_JSON_DIRECTORY --targetdir OPTIONAL_TARGET_DIRECTORY
 ```
 
+![Render Example GIF][example-render]
+
 `render` command will:
 - :white_check_mark: Create summary page for Nanodegree and all lessons to easily navigate the
 course content and find all lessons
@@ -271,18 +288,29 @@ what `render` is not capable of:
 can't download the workspace files for you. So the lesson pages that contain
 workspaces will not display any workspace for you.
 
+The process can take a few hours due to large amount of videos to download.
+Once it is done, you can enjoy the lessons on your computer:
+
+![HTML Lesson Example 01][example-html-lesson-01]
+
+![HTML Lesson Example 02][example-html-lesson-02]
+
 #### Re-rendering a course
 If you cancel the command or the CLI is cut off for some reason (eg. the CLI
-stops because internet is disconnected),
+stops because internet is disconnected), or even the CLI is updated with new
+rendering features (better formatting, fixing missing content, etc.)
 you can re-run the render process later.
 Just use the same command, the CLI will:
 - NOT re-download video/image files that are already downloaded
 - Re-create all HTML files
 
-This ability allows you to:
-- Pause a render to do it later
-- Re-render a course quickly in case the CLI is updated with new features
-(eg. for rendering a better looking HTML format) or when a bug is fixed.
+![rerender Example GIF][example-rerender]
+
+As long as Udacimak sees that the folder name in the `--targetdir` dir (or the
+current terminal working directory if `--targetdir` is not provided) is the
+same as the source folder that contains course JSON data, it will
+think that this is a re-render, and will avoid re-downloading any online
+media files that already exist in the course folder.
 
 ### `renderdir`: Iteratively render multiple JSON course contents
 
@@ -293,6 +321,12 @@ you can use `renderdir` to render all of them:
 ```shell
 udacimak renderdir PATH_TO_DIRECTORY
 ```
+
+### Log Files
+Please note that the CLI will produce log files in the working directory of
+your terminal. The log files will include all CLI output of the commands.
+If you face any issue, you may want to share the section of the log file content
+that contains error log to the developer when reporting the issue.
 
 ## Note to Windows OS users:
 Besides to a small setup hickup as noted [above](#windows-users-and-youtube-dl),
@@ -355,3 +389,11 @@ The token is saved in the CLI config, located at:
 However, these details are only used internally in the app to serve its
 functionalities. None of your personal details, as well as the secret
 authentication token, will be sent to anybody else.
+
+[example-settoken]: https://github.com/udacimak/udacimak/raw/master/img/example-settoken.jpg
+[example-listnd]: https://github.com/udacimak/udacimak/raw/master/img/example-listnd.jpg
+[example-download]: https://github.com/udacimak/udacimak/raw/master/img/example-download.gif
+[example-render]: https://github.com/udacimak/udacimak/raw/master/img/example-render.gif
+[example-rerender]: https://github.com/udacimak/udacimak/raw/master/img/example-rerender.gif
+[example-html-lesson-01]: https://github.com/udacimak/udacimak/raw/master/img/example-html-lesson-01.jpg
+[example-html-lesson-02]: https://github.com/udacimak/udacimak/raw/master/img/example-html-lesson-02.jpg
