@@ -269,7 +269,7 @@ udacimak render PATH_TO_DOWNLOADED_COURSE_JSON_DIRECTORY --targetdir OPTIONAL_TA
 ```
 
 __Optional parameter:__
-- `-v`, `--verbose`: Log additional debug information for Youtube download (logs will be produces by
+- `-v`, `--verbose`: Log additional debug information for Youtube download (logs will be produced by
 [`youtube-dl`](https://rg3.github.io/youtube-dl/))
 
 
@@ -328,7 +328,7 @@ udacimak renderdir PATH_TO_DIRECTORY
 ```
 
 __Optional parameter:__
-- `-v`, `--verbose`: Log additional debug information for Youtube download (logs will be produces by
+- `-v`, `--verbose`: Log additional debug information for Youtube download (logs will be produced by
 [`youtube-dl`](https://rg3.github.io/youtube-dl/))
 
 ### Log Files
