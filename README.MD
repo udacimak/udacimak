@@ -268,6 +268,11 @@ provided to do this:
 udacimak render PATH_TO_DOWNLOADED_COURSE_JSON_DIRECTORY --targetdir OPTIONAL_TARGET_DIRECTORY
 ```
 
+__Optional parameter:__
+- `-v`, `--verbose`: Log additional debug information for Youtube download (logs will be produces by
+[`youtube-dl`](https://rg3.github.io/youtube-dl/))
+
+
 ![Render Example GIF][example-render]
 
 `render` command will:
@@ -321,6 +326,10 @@ you can use `renderdir` to render all of them:
 ```shell
 udacimak renderdir PATH_TO_DIRECTORY
 ```
+
+__Optional parameter:__
+- `-v`, `--verbose`: Log additional debug information for Youtube download (logs will be produces by
+[`youtube-dl`](https://rg3.github.io/youtube-dl/))
 
 ### Log Files
 Please note that the CLI will produce log files in the working directory of
