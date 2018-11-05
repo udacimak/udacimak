@@ -1,8 +1,9 @@
-const _cliProgress = require('cli-progress');
-const async = require('async');
-const fs = require('fs');
-const progress = require('progress-stream');
-const youtubedl = require('youtube-dl');
+import _cliProgress from 'cli-progress';
+import async from 'async';
+import fs from 'fs';
+import process from 'process';
+import progress from 'progress-stream';
+import youtubedl from 'youtube-dl';
 import {
   filenamify,
   getFileExt,
@@ -22,13 +23,13 @@ export default function downloadYoutube(videoId, outputPath, prefix, title, form
   // return new Promise((resolve, reject) => {
   //   resolve('');
   // });
-
+  
   return new Promise((resolve, reject) => {
     if (!videoId) {
       resolve('');
       return;
     }
-
+    
     const filenameBase = `${prefix}. ${filenamify(title || '')}-${videoId}`;
     const filenameYoutube = `${filenameBase}.mp4`;
     const urlYoutube = `https://www.youtube.com/watch?v=${videoId}`;
@@ -41,9 +42,11 @@ export default function downloadYoutube(videoId, outputPath, prefix, title, form
       resolve(filenameYoutube);
       return;
     }
-
+    
     // start youtube download
-    const video = youtubedl(urlYoutube, [`--format=${format}`]);
+    let argsYoutube = [`--format=${format}`];    
+    global.ytVerbose && argsYoutube.push('--verbose');
+    const video = youtubedl(urlYoutube, argsYoutube);
     video.on('info', info => {
       // get video name
       const fileSize = info.size;

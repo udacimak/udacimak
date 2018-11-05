@@ -2,8 +2,8 @@
 /**
  * Entry point for commander
  */
-const process = require('process');
-const program = require('commander');
+import process from 'process';
+import program from 'commander';
 import pkg from '../package.json';
 import {
   download,
@@ -18,7 +18,6 @@ program
   .version(pkg.version, '-v, --version')
   .usage('<command> <args> [options]');
 
-
 program
   .command('download')
   .description('Fetch course/Nanodegree data from Udacity and save them locally as JSON files.')
@@ -26,7 +25,7 @@ program
   .option('-t, --targetdir <targetdir>', 'Target directory to save downloaded course JSON data')
   .action((courseids, options) => {
     const targetdir = options.targetdir || process.cwd();
-    download(courseids, targetdir)
+    download(courseids, targetdir);
   }).on('--help', () => {
     console.log('');
     console.log('Examples:');
@@ -51,8 +50,10 @@ program
   .description('Render downloaded json course content into HTML by downloading all videos, creating text content, etc.')
   .arguments('<path>')
   .option('-t, --targetdir <targetdir>', 'Target directory to save rendered course contents')
+  .option('-v, --verbose', 'For youtube-dl to print various debugging information')
   .action((path, options) => {
     const targetdir = options.targetdir || process.cwd();
+    global.ytVerbose = options.verbose;
     render(path, targetdir);
   }).on('--help', () => {
     console.log('');
@@ -69,8 +70,10 @@ program
   .description('Render a whole directory of downloaded json course contents')
   .arguments('<path>')
   .option('-t, --targetdir <targetdir>', 'Target directory to save rendered course contents')
+  .option('-v, --verbose', 'For youtube-dl to print various debugging information')
   .action((path, options) => {
     const targetdir = options.targetdir || process.cwd();
+    global.ytVerbose = options.verbose;
     renderdir(path, targetdir);
   });
 
