@@ -70,6 +70,6 @@
     "showdown": "^1.8.6",
     "user-settings": "^0.2.0",
     "winston": "^3.1.0",
-    "youtube-dl": "^1.12.2"
+    "youtube-dl": "przemyslawpluta/node-youtube-dl#3349cbb6e067b6c9e7605acfa4f9d1ccc895fb0c"
   }
 }
