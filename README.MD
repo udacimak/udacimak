@@ -3,14 +3,14 @@
 ## Table of Contents
 
 - [Description](#description)
-- [Disclaimer](#disclaimer)
-- [Development Experience](#development-experience)
-- [Breaking Changes from Udacity API](#breaking-changes-from-udacity-api)
 - [Installation](#installation)
 - [How to use](#how-to-use)
 - [Note to Windows OS Users](#note-to-windows-os-users)
+- [Development Experience](#development-experience)
+- [Breaking Changes from Udacity API](#breaking-changes-from-udacity-api)
 - [Reporting Issues](#reporting-issues)
 - [User Privacy](user-privacy)
+- [Disclaimer](#disclaimer)
 
 ## Description
 `udacimak` is a command-line interface written to download
@@ -31,63 +31,12 @@ We hope you enjoy this CLI. __Stay Udacious__!
 __Resources__
 - [How long will I have access to Nanodegree program content after I graduate? (Udacity Support)](https://udacity.zendesk.com/hc/en-us/articles/360015665011-How-long-will-I-have-access-to-Nanodegree-program-content-after-I-graduate-)
 
-## Disclaimer
-
-This CLI is provided to help you download Udacity Nanodegrees and
-courses for personal use only.
-Sharing the content of your subscribed Nanodegrees and courses is
-strictly prohibited under Udacity's Terms of Use.
-
-By using this CLI, the developers of this CLI are not responsible for any
-law infringement caused by the users of this CLI.
-
-__Resources:__
-- [Udacity Terms of Use](https://www.udacity.com/legal/terms-of-use)
-
-## Development Experience
-
-Unlike other course downloaders (Udemy/edX/etc downloaders), building a
-downloader for Udacity courses is not as straightforward.
-Downloading Udemy, edX, etc. only requires downloading videos and a few
-accompanying text contents.
-
-Udacity is different.
-Udacity content relies on various number of resources and format, including
-video, text content, some types of quizzes, workspace, etc.
-We can't build a downloader for a few of those content types.
-These include different types of workspaces, programming quiz solutions.
-
-This means that it is NOT possible to build a downloader that can get 100% all
-the Udacity resources onto your computer. We have to live with this.
-
-But we believe that what we have done is still of great value to fellow
-students.
-
-## Breaking Changes from Udacity API
-Because of the complexity of the course structure, the CLI is error prone to
-changes being made in Udacity API.
-Beware that changes in Udacity API can potentially only be obviously seen in a
-newly released Nanodegree and the developers of this CLI can't update it unless
-they have access to the new Nanodegree. In this case, please contact directly
-to help us keep the CLI stable and usable.
-
-Please open an issue in __Issues__ tab to help us keep the CLI
-up-to-date if you face any issues using the CLI.
-
-### CLI Update Note
-
-When Udacimak is updated to a newer version, it may contain new rendering
-features. In this case, you would want to run the render process again.
-It should take a few seconds per Nanodegree/course because the CLI doesn't
-re-download online media files when re-render a course.
-Also see [note below](#re-rendering-a-course)
-
 ## Installation
 
-1. Make sure you have `node` and `npm` installed.
+1. Make sure you have `node` and `npm` installed. Install via `nvm` is highly recommended.
 1. Run:
 
-  ```
+  ```shell
   npm install -g udacimak
   ```
 
@@ -109,6 +58,33 @@ Note that `youtube-dl.exe` requires
 __Microsoft Visual C++ 2010 Redistributable Package (x86)__ to be installed.
 (See link to download on
 [youtube-dl Homepage](https://rg3.github.io/youtube-dl/))
+
+If this is too much hassle, try to use Udacimak via [Docker](https://www.docker.com/) instead.
+
+### Use Udacimak via [Docker](https://www.docker.com/) container
+There is a [Udacimak image](https://hub.docker.com/r/udacimak/udacimak/) that you can use.
+Download the image by running:
+
+```shell
+docker pull udacimak/udacimak
+```
+
+`udacimak` is the `entrypoint` of the image so you can directly use it. Examples:
+
+```shell
+# show help
+docker container run -it -v "$(pwd)/:/downloads" udacimak/udacimak --help
+```
+
+Remember to use [volumes](https://docs.docker.com/storage/volumes/) (`-v`)
+so that downloaded files are saved onto host machine.
+
+You can also ssh into the container to directly work in their instead by
+changing `entrypoint` to `/bin/bash`:
+
+```shell
+docker container run --rm -it -v "$(pwd)/:/downloads" --entrypoint /bin/bash udacimak/udacimak
+```
 
 ## How to use
 
@@ -358,6 +334,44 @@ Though you can find softwares that can get around this issue for you.
 according to video files (so that video players such as [VLC](https://www.videolan.org/index.html)
 can automatically detect them)
 
+## Development Experience
+
+Unlike other course downloaders (Udemy/edX/etc downloaders), building a
+downloader for Udacity courses is not as straightforward.
+Downloading Udemy, edX, etc. only requires downloading videos and a few
+accompanying text contents.
+
+Udacity is different.
+Udacity content relies on various number of resources and format, including
+video, text content, some types of quizzes, workspace, etc.
+We can't build a downloader for a few of those content types.
+These include different types of workspaces, programming quiz solutions.
+
+This means that it is NOT possible to build a downloader that can get 100% all
+the Udacity resources onto your computer. We have to live with this.
+
+But we believe that what we have done is still of great value to fellow
+students.
+
+## Breaking Changes from Udacity API
+Because of the complexity of the course structure, the CLI is error prone to
+changes being made in Udacity API.
+Beware that changes in Udacity API can potentially only be obviously seen in a
+newly released Nanodegree and the developers of this CLI can't update it unless
+they have access to the new Nanodegree. In this case, please contact directly
+to help us keep the CLI stable and usable.
+
+Please open an issue in __Issues__ tab to help us keep the CLI
+up-to-date if you face any issues using the CLI.
+
+### CLI Update Note
+
+When Udacimak is updated to a newer version, it may contain new rendering
+features. In this case, you would want to run the render process again.
+It should take a few seconds per Nanodegree/course because the CLI doesn't
+re-download online media files when re-render a course.
+Also see [note above](#re-rendering-a-course)
+
 ## Reporting Issues
 
 Before reporting any issues, please make sure you're using the latest version
@@ -406,3 +420,16 @@ authentication token, will be sent to anybody else.
 [example-rerender]: https://github.com/udacimak/udacimak/raw/master/img/example-rerender.gif
 [example-html-lesson-01]: https://github.com/udacimak/udacimak/raw/master/img/example-html-lesson-01.jpg
 [example-html-lesson-02]: https://github.com/udacimak/udacimak/raw/master/img/example-html-lesson-02.jpg
+
+## Disclaimer
+
+This CLI is provided to help you download Udacity Nanodegrees and
+courses for personal use only.
+Sharing the content of your subscribed Nanodegrees and courses is
+strictly prohibited under Udacity's Terms of Use.
+
+By using this CLI, the developers of this CLI are not responsible for any
+law infringement caused by the users of this CLI.
+
+__Resources:__
+- [Udacity Terms of Use](https://www.udacity.com/legal/terms-of-use)
