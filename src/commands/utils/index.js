@@ -4,6 +4,7 @@ export { default as deleteFilesInFolder } from './deleteFilesInFolder';
 export { default as downloadImage } from './downloadImage';
 export { default as downloadYoutube } from './downloadYoutube';
 export { default as filenamify } from './filenamify';
+export { default as getFullErrorMessage } from './getFullErrorMessage';
 export { default as getFileExt } from './getFileExt';
 export { default as logger } from './logger';
 export { default as makeDir } from './makeDir';

@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 import async from 'async';
+import process from 'process';
 import {
   retrieveUdacityAuthToken
 } from '../functions';
@@ -7,6 +8,9 @@ import {
   downloadCourse,
   downloadNanodegree
 } from './functions';
+import {
+  getFullErrorMessage, logger
+} from '../utils';
 
 
 /**
@@ -36,7 +40,9 @@ export default function download(courseIds, targetDir) {
             doneCourseIds();
           })
           .catch(error => {
-            throw error;
+            error = getFullErrorMessage(error);
+            logger.error(error);
+            process.exit(1);
           });
       }, error => {
         if (error) throw error;

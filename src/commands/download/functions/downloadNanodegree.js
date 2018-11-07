@@ -34,8 +34,8 @@ export default function downloadNanodegree(ndKey, targetDir, udacityAuthToken) {
       .then(nanodegree => {
         if (!nanodegree) {
           spinner.fail();
-          reject(`Fail to find Nanodegree key ${ndKey} in your profile.
-The key ${ndKey} either doesn't exist or you don't have access to it.`);
+          const _error = new Error(`Fail to find Nanodegree key ${ndKey} in your profile. The key ${ndKey} either doesn't exist or you don't have access to it.`);
+          reject(_error);
           return;
         }
 

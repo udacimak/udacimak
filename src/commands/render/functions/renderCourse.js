@@ -24,27 +24,31 @@ import {
 export default function pathTemplateHtmlrenderCourse(path, targetDir) {
   return new Promise((resolve, reject) => {
     if (path === targetDir) {
-      reject(`Target directory must not be the same with source directory. Please change the target directory.`);
+      const _error = new Error(`Target directory must not be the same with source directory. Please change the target directory.`);
+      reject(_error);
       return;
     }
 
     fs.access(targetDir, fs.constants.F_OK, err => {
       if (err) {
-        reject(`Target directory doesn't exist. Please create the directory "${targetDir}"`);
+        const _error = new Error(`Target directory doesn't exist. Please create the directory "${targetDir}"`);
+        reject(_error);
         return;
       }
 
       let courseType;
       const sourceDirTree = dirTree(path);
       if (!sourceDirTree) {
-        reject(`Path to downloaded Udacity course/Nanodegree doesn't exist.`);
+        const _error = new Error(`Path to downloaded Udacity course/Nanodegree doesn't exist.`);
+        reject(_error);
         return;
       }
 
       const nanodegreeName = sourceDirTree.name;
 
       if (filenamify(path) === filenamify(`${targetDir}/${nanodegreeName}`)) {
-        reject(`Please choose another target directory to avoid rendering contents into the same folder that contains downloaded JSON data from Udacity.`);
+        const _error = new Error(`Please choose another target directory to avoid rendering contents into the same folder that contains downloaded JSON data from Udacity.`);
+        reject(_error);
         return;
       }
 

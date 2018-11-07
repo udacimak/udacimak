@@ -13,7 +13,8 @@ import {
  */
 export default function renderdir(sourceDir, targetDir) {
   if (sourceDir === targetDir) {
-    reject(`Target directory must not be the same with source directory. Please change the target directory.`);
+    const _error = new Error(`Target directory must not be the same with source directory. Please change the target directory.`);
+    reject(_error);
     return;
   }
 

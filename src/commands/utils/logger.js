@@ -38,11 +38,7 @@ const logger = createLogger({
     }),
   ],
   exceptionHandlers: [
-    new transports.Console(),
-    new transports.File({
-      filename: 'udacimak.exceptions.log',
-      maxsize: MAX_SIZE
-    })
+    new transports.Console()
   ]
 });
 

@@ -12,6 +12,10 @@ import {
   renderdir,
   setToken
 } from './commands/';
+import { 
+  logger,
+  getFullErrorMessage
+} from './commands/utils/';
 
 
 program
@@ -90,3 +94,14 @@ program
 
 program
   .parse(process.argv);
+
+
+// handle uncaught exceptions and uncaught promise rejections
+process.on('uncaughtException', (err) => {
+  logger.error(getFullErrorMessage(err));
+  process.exit(1);
+});
+process.on('unhandledRejection', (err) => {
+  logger.error(getFullErrorMessage(err));
+  process.exit(1);
+});
