@@ -3,6 +3,7 @@
   "ignore": [
     ".git",
     "lib",
+    "img/",
     "node_modules/"
   ],
   "verbose": true,
