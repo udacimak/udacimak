@@ -17,7 +17,7 @@ import {
  * @param {string} token Udacity authentication token
  */
 export default function validateSaveUdacityAuthToken(token) {
-  const spinner = ora('Validate Udacity authentication token via Udacity API');
+  const spinner = ora('Validate Udacity authentication token via Udacity API').start();
   return fetchUdacityUserInfo(token)
     .then(res => {
       if (!res.data || !res.data.user) {

@@ -1,5 +1,6 @@
 import async from 'async';
 import fs from 'fs';
+import ora from 'ora';
 import {
   fetchNanodegree
 } from '../../../api';
