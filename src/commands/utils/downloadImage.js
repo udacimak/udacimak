@@ -19,6 +19,11 @@ export default function downloadImage(uri, outputDir, filename = undefined) {
   //   resolve('');
   // });
 
+  const errorCheck = `Please double-check the url from the JSON data to see if the link is really broken.
+If it is, it could be a broken link that Udacity hasn't fixed and you can ignore this error message.
+If the link was temporary broken and is up again when you check, please re-run the render to make sure the media file will be downloaded.
+`;
+
   return new Promise((resolve, reject) => {
     if (!uri) {
       resolve('');
@@ -57,7 +62,7 @@ export default function downloadImage(uri, outputDir, filename = undefined) {
     progress(request(requestOptions))
       .on('progress', state => {
         if (!fileSize) {
-          logger.info(`\nDownloading image ${filename}:`);
+          logger.info(`\nDownloading media file ${filename}:`);
           fileSize = state.size.total;
           progressBar.start(fileSize, 0);
         } else {
@@ -66,11 +71,21 @@ export default function downloadImage(uri, outputDir, filename = undefined) {
       })
       .on('response', response => {
         if (response.statusCode == 500) {
-          reject(error);
+          logger.error(`Error Status 500: Request for media file fails!
+The url ${uri} returns Internal Server Error.
+${errorCheck}`);
+          resolve('');
         }
       })
       .on('error', error => {
-        reject(error);
+        if (error.code && error.code === 'ENOTFOUND') {
+          logger.error(`${error.code}: Request for media file fails!
+The url ${uri} doesn't seem to exist.
+${errorCheck}`);
+          resolve('');
+        } else {
+          reject(error);
+        }
       })
       .on('end', () => {
         progressBar.update(fileSize);
