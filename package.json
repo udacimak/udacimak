@@ -62,6 +62,7 @@
     "handlebars": "^4.0.12",
     "inquirer": "^6.2.0",
     "npm": "^6.4.1",
+    "ora": "^3.0.0",
     "pkginfo": "^0.4.1",
     "progress-stream": "^2.0.0",
     "request": "^2.88.0",

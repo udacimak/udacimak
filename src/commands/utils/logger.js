@@ -6,7 +6,7 @@ const { colorize, combine, timestamp, label, printf } = format;
  * Customer winston logger format
  */
 const myFormat = printf(info => {
-  const { error, level, message, timestamp } = info;
+  const { level, message, timestamp } = info;
 
   return `${timestamp} [${level}]: ${message}`;
 });
@@ -15,6 +15,7 @@ const myFormat = printf(info => {
  * Customer logger
  */
 const logger = createLogger({
+  level: 'verbose',
   format: combine(
     colorize(),
     label({ label: '' }),

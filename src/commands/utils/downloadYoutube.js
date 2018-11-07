@@ -1,7 +1,7 @@
 import _cliProgress from 'cli-progress';
 import async from 'async';
 import fs from 'fs';
-import process from 'process';
+import ora from 'ora';
 import progress from 'progress-stream';
 import youtubedl from 'youtube-dl';
 import {
@@ -35,7 +35,7 @@ export default function downloadYoutube(videoId, outputPath, prefix, title, form
     const urlYoutube = `https://www.youtube.com/watch?v=${videoId}`;
     const savePath = `${outputPath}/${filenameYoutube}`;
     const tempPath = `${outputPath}/.${filenameYoutube}`;
-
+    
     // avoid re-downloading videos if it already exists
     if (fs.existsSync(savePath)) {
       logger.info(`Video already exists. Skip downloading ${savePath}`);
@@ -46,8 +46,13 @@ export default function downloadYoutube(videoId, outputPath, prefix, title, form
     // start youtube download
     let argsYoutube = [`--format=${format}`];    
     global.ytVerbose && argsYoutube.push('--verbose');
+
+    const spinnerInfo = ora(`Getting Youtube video id ${videoId} information`).start();
     const video = youtubedl(urlYoutube, argsYoutube);
+    
     video.on('info', info => {
+      spinnerInfo.succeed();
+
       // get video name
       const fileSize = info.size;
 
@@ -59,9 +64,11 @@ export default function downloadYoutube(videoId, outputPath, prefix, title, form
         progressBar.update(progress.transferred);
       });
 
-      logger.info(`\nDownloading video ${filenameYoutube}:`);
+      let spinnerDl;
       // create a new progress bar instance
-      const progressBar = new _cliProgress.Bar({}, _cliProgress.Presets.shades_classic);
+      const progressBar = new _cliProgress.Bar({
+        stopOnComplete: true
+      }, _cliProgress.Presets.shades_classic);
       progressBar.start(fileSize, 0);
 
       // Write video to temporary file first. If download finishes, rename it
@@ -80,10 +87,9 @@ export default function downloadYoutube(videoId, outputPath, prefix, title, form
             return;
           }
 
-          progressBar.update(fileSize);
-          progressBar.stop();
+          logger.info(`Downloaded video ${filenameYoutube}`);
 
-          logger.info(`Downloading subtitles for ${filenameYoutube}`);
+          spinnerDl = ora(`Download subtitles for ${filenameYoutube}`).start();
           var options = {
             // Write automatic subtitle file (youtube only)
             auto: false,
@@ -96,6 +102,7 @@ export default function downloadYoutube(videoId, outputPath, prefix, title, form
           };
           youtubedl.getSubs(urlYoutube, options, function(error, files) {
             if (error) {
+              spinnerDl.fail();
               logger.warn(`Failed to download subtitles for ${filenameYoutube} with error:\n${error}\n`);
             }
 
@@ -122,6 +129,7 @@ export default function downloadYoutube(videoId, outputPath, prefix, title, form
 
               fs.rename(`${outputPath}/${file}`, filenameSubtitle, function(error) {
                 if (error) {
+                  spinnerDl.warn();
                   logger.warn(`Failed to rename subtitles for ${file} with error:\n${error}\n`);
                 }
 
@@ -129,10 +137,11 @@ export default function downloadYoutube(videoId, outputPath, prefix, title, form
               });
             }, function(error) {
               if (error) {
-                logger.warn(`Failed to rename subtitles for ${file} with error:\n${error}\n`);
+                spinnerDl.warn();
+                logger.warn(`Error occur while renaming subtitle files for ${file} with error:\n${error}\n`);
               }
 
-              logger.info(`Downloaded subtitles for ${filenameYoutube}`);
+              spinnerDl.succeed(`Downloaded subtitles for ${filenameYoutube}`);
               resolve(filenameYoutube);
             });
           }); //.getSubs
@@ -140,5 +149,33 @@ export default function downloadYoutube(videoId, outputPath, prefix, title, form
 
       }); //.video.on end
     }); //.video.on info
+
+    video.on('error', error => {
+      spinnerInfo.fail();      
+      const { message } = error;      
+      
+      if (!message) {
+        reject(error);
+        return;
+      }
+
+      // handle video unavailable error. See node-youtube-dl source code for 
+      // error message strings to check
+      if (message.includes('video is unavailable')) {
+        logger.error(`Youtube video with id ${videoId} is unavailable. It may have been deleted. The CLI will ignore this error and skip this download.`);
+        resolve('');
+      } else if (message.includes('video has been removed by the user')) {
+        logger.error(`Youtube video with id ${videoId} has been removed by the user. The CLI will ignore this error and skip this download.`);
+        resolve('');
+      } else if (message.includes('sign in to view this video')) {
+        logger.error(`Youtube video with id ${videoId} is private and require user to sign in to access it. The CLI will ignore this error and skip this download.`);
+        resolve('');
+      } else if (message.includes('video is no longer available')) {
+        logger.error(`Youtube video with id ${videoId} is no longer available. The CLI will ignore this error and skip this download.`);
+        resolve('');
+      } else {
+        reject(error);
+      }
+    });
   }); //.return Promise
 }
