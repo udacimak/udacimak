@@ -1,4 +1,4 @@
-
+import ora from 'ora';
 import {
   config,
   logger
@@ -17,15 +17,18 @@ import {
  * @param {string} token Udacity authentication token
  */
 export default function validateSaveUdacityAuthToken(token) {
+  const spinner = ora('Validate Udacity authentication token via Udacity API');
   return fetchUdacityUserInfo(token)
     .then(res => {
       if (!res.data || !res.data.user) {
+        spinner.fail();
         logger.error(`Could not validate your Udacity token. Please try again. Here's the error message:
         ${res.body}`);
         return;
       }
       // save token
       config.set(CLI_CONFIG_UDACITY_AUTH_TOKEN, token);
+      spinner.succeed();
 
       const { user } = res.data;
       const { first_name, nickname } = user;
@@ -40,6 +43,7 @@ export default function validateSaveUdacityAuthToken(token) {
       return token;
     })
     .catch(error => {
+      spinner.fail();
       logger.error(`Failed to validate your Udacity token. Please try again. Here's the error message:
       ${JSON.stringify(error, null, 4)}`);
     });
