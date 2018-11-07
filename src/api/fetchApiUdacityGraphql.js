@@ -22,14 +22,17 @@ export default function fetchApiUdacityGraphql(url, queryGraphql, udacityAuthTok
     'Content-Type': 'application/json; charset=UTF-8',
     Host: 'classroom-content.udacity.com',
     Origin: 'https://classroom.udacity.com',
-    Referer: 'https://classroom.udacity.com/me'
+    Referer: 'https://classroom.udacity.com/me',
+    // https://github.com/request/request/issues/2047#issuecomment-272473278
+    Connection: 'keep-alive'      
   };
   const method = 'POST';
   const requestOptions = {
     url,
     body: queryGraphql,
     method,
-    headers
+    headers,
+    forever: true
   };
 
   return new Promise((resolve, reject) => {

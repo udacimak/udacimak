@@ -53,11 +53,14 @@ If the link was temporary broken and is up again when you check, please re-run t
     // start the progress bar with a total value of 200 and start value of 0
     const headers = {
       Origin: 'https://classroom.udacity.com',
-      Referer: 'https://classroom.udacity.com/me'
+      Referer: 'https://classroom.udacity.com/me',
+      // https://github.com/request/request/issues/2047#issuecomment-272473278
+      Connection: 'keep-alive'      
     };
     const requestOptions = {
       uri,
-      headers
+      headers,
+      forever: true
     };
     progress(request(requestOptions))
       .on('progress', state => {
