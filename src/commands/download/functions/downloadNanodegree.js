@@ -32,6 +32,13 @@ export default function downloadNanodegree(ndKey, targetDir, udacityAuthToken) {
     // and check which version to download
     return retrieveUserNanodegreeInfo(ndKey, udacityAuthToken)
       .then(nanodegree => {
+        if (!nanodegree) {
+          spinner.fail();
+          reject(`Fail to find Nanodegree key ${ndKey} in your profile.
+The key ${ndKey} either doesn't exist or you don't have access to it.`);
+          return;
+        }
+
         const { key, locale, version } = nanodegree;
         spinner.succeed();
         logger.info(`You're authorized to download version ${version}, locale ${locale} of Nanodegree ${key}`);
