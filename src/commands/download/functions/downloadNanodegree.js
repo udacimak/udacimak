@@ -26,15 +26,21 @@ export default function downloadNanodegree(ndKey, targetDir, udacityAuthToken) {
   return new Promise((resolve, reject) => {
     logger.info(`Start downloading Nanodegree ${ndKey} from Udacity API`);
     let dirNd, dirNdName, nanodegree, ndJSON, titleNd;
+    const spinner = ora(`Get Nanodegree ${ndKey} information`).start();
 
     // validate if user is authorized to download this Nanodegree
     // and check which version to download
     return retrieveUserNanodegreeInfo(ndKey, udacityAuthToken)
       .then(nanodegree => {
         const { key, locale, version } = nanodegree;
+        spinner.succeed();
         logger.info(`You're authorized to download version ${version}, locale ${locale} of Nanodegree ${key}`);
 
         return { key, locale, version };
+      })
+      .catch(error => {
+        spinner.fail();
+        reject(error);
       })
       .then(ndInfo => fetchNanodegree(ndInfo, udacityAuthToken))
       .then(res => {
