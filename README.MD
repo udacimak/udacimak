@@ -1,5 +1,18 @@
 # Udacimak - the Ultimate Udacity Nanodegree and Course Downloader
 
+
+[![npm version](https://img.shields.io/npm/v/udacimak.svg)](https://www.npmjs.com/package/udacimak)
+[![Downloads](https://img.shields.io/npm/dm/udacimak.svg)](https://www.npmjs.com/package/udacimak)
+[![License](https://img.shields.io/npm/l/udacimak.svg)](https://github.com/udacimak/udacimak/blob/master/LICENSE)
+[![Commits to be deployed](https://img.shields.io/github/commits-since/udacimak/udacimak/v0.10.6.svg)](https://github.com/udacimak/udacimak/commits/master)
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://github.com/udacimak/udacimak/blob/master/CONTRIBUTING.MD)
+
+[![Opened issues](https://img.shields.io/github/issues-raw/udacimak/udacimak.svg)](https://github.com/udacimak/udacimak/issues)
+[![Closed issues](https://img.shields.io/github/issues-closed-raw/udacimak/udacimak.svg)](https://github.com/udacimak/udacimak/issues?q=is%3Aissue+is%3Aclosed)
+[![Opened pull requests](https://img.shields.io/github/issues-pr-raw/udacimak/udacimak.svg)](https://github.com/udacimak/udacimak/pulls)
+[![Closed pull requests](https://img.shields.io/github/issues-pr-closed-raw/udacimak/udacimak.svg)](https://github.com/udacimak/udacimak/pulls?q=is%3Apr+is%3Aclosed)
+[![Github last commit](https://img.shields.io/github/last-commit/udacimak/udacimak.svg)](https://github.com/udacimak/udacimak/commits/master)
+
 ## Table of Contents
 
 - [Description](#description)
