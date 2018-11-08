@@ -34,7 +34,7 @@ export default function listNanodegrees() {
       if (graduatedNanodegrees && graduatedNanodegrees.length) {
         logger.info('Here\'s a list of your graduated Nanodegrees (list by Nanodegree key only. The API doesn\'t return Nanodegree name so it can\'t be listed here):');
         for (let i = 0, len = graduatedNanodegrees.length; i < len; i += 1) {
-          const nd = nanodegrees[i];
+          const nd = graduatedNanodegrees[i];
           logger.info(` - ${nd.key} version ${nd.version} (locale: ${nd.locale})`);
         }
         logger.info('');
