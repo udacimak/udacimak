@@ -13,9 +13,9 @@ import {
  * @param {object} details instruction JSON data
  * @param {string} targetDir target directory
  */
-export default function createHtmlLabInstructions(details, targetDir) {
+export default function createHtmlLabInstructions(details) {
   if (!details) {
-    return;
+    return '(No Lab Instructions data available)';
   }
 
   let { text } = details;

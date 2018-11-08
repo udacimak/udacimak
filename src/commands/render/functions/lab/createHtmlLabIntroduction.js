@@ -15,7 +15,7 @@ import {
  */
 export default function createHtmlLabIntroduction(overview, labTitle, targetDir) {
   if (!overview) {
-    return new Promise((resolve) => resolve());
+    return '(No Lab Introduction data available)';
   }
 
   let { title, summary, key_takeaways, video } = overview;
@@ -52,6 +52,11 @@ export default function createHtmlLabIntroduction(overview, labTitle, targetDir)
     })
     .then(() => loadTemplate('lab.introduction'))
     .then(html => {
+      console.log(title, summary, key_takeaways, htmlVideo)
+      if (!title && !summary && (!key_takeaways || !key_takeaways.length) && !htmlVideo) {
+        return '(No Lab Introduction data available)';
+      }
+
       const dataTemplate = {
         title,
         summary,

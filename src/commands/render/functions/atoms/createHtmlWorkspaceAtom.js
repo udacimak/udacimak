@@ -12,7 +12,7 @@ import { markdownToHtml } from '../../../utils';
  */
 export default function createHtmlWorkspaceAtom(atom) {
   if (!atom) {
-    return new Promise(resolve => resolve(''));
+    return '(No Workspace data available)';
   }
 
   const { configuration } = atom;
