@@ -23,18 +23,18 @@ const fs = require('fs');
  * @param {string} targetDir target directory to save the contents
  */
 export default function pathTemplateHtmlrenderCourse(path, targetDir) {
-  return new Promise((resolve, reject) => {
+  return new Promise((resolve, reject) => { // eslint-disable-line
     if (path === targetDir) {
       const _error = new Error('Target directory must not be the same with source directory. Please change the target directory.');
       reject(_error);
-      return;
+      return null;
     }
 
     fs.access(targetDir, fs.constants.F_OK, (err) => {
       if (err) {
         const _error = new Error(`Target directory doesn't exist. Please create the directory "${targetDir}"`);
         reject(_error);
-        return;
+        return null;
       }
 
       let courseType;
@@ -42,7 +42,7 @@ export default function pathTemplateHtmlrenderCourse(path, targetDir) {
       if (!sourceDirTree) {
         const _error = new Error('Path to downloaded Udacity course/Nanodegree doesn\'t exist.');
         reject(_error);
-        return;
+        return null;
       }
 
       const nanodegreeName = sourceDirTree.name;
@@ -50,12 +50,13 @@ export default function pathTemplateHtmlrenderCourse(path, targetDir) {
       if (filenamify(path) === filenamify(`${targetDir}/${nanodegreeName}`)) {
         const _error = new Error('Please choose another target directory to avoid rendering contents into the same folder that contains downloaded JSON data from Udacity.');
         reject(_error);
-        return;
+        return null;
       }
 
       // flag to determine if this folder contains downloaded course JSON from Udacity
       let isCourseFolder = false;
-      for (const child of sourceDirTree.children) {
+      for (let i = 0, len = sourceDirTree.children.length; i < len; i += 1) {
+        const child = sourceDirTree.children[i];
         if (child.name === 'data.json') {
           // check if this is a nanodegree, free course or what
           courseType = getCourseType(path);
@@ -67,7 +68,7 @@ export default function pathTemplateHtmlrenderCourse(path, targetDir) {
       if (!isCourseFolder) {
         logger.info(`${path} doesn't contain 'data.json' to start rendering the contents. Are you sure this folder contains downloaded course JSON from Udacity?`);
         resolve();
-        return;
+        return null;
       }
       // create the root folder for the course
       const dirNanodegree = makeRootDir(targetDir, nanodegreeName);
@@ -76,7 +77,7 @@ export default function pathTemplateHtmlrenderCourse(path, targetDir) {
       if (courseType === 'NANODEGREE') {
         promiseNanodegreeSummary = writeHTMLNanodegreeSummary(path, dirNanodegree, nanodegreeName);
       } else {
-        promiseNanodegreeSummary = new Promise(resolve => resolve());
+        promiseNanodegreeSummary = new Promise(resolveNdSummary => resolveNdSummary());
       }
 
       return promiseNanodegreeSummary
@@ -91,7 +92,7 @@ export default function pathTemplateHtmlrenderCourse(path, targetDir) {
               } else {
                 doneSourceDir();
               } //.if
-            } else {
+            } else if (courseType === 'NANODEGREE') {
               // this is a nanodegree
 
               // loop through "Part" folders

@@ -28,32 +28,31 @@ import {
  */
 export default function writeHtmlLab(lab, htmlSidebar, targetDir) {
   if (!lab) {
-    return;
+    return null;
   }
 
   const {
     details,
     title,
     overview,
-    review_video,
     workspace,
   } = lab;
   const file = path.join(targetDir, filenamify(`Lab - ${title}.html`));
 
   let reviewVideo;
-  if (review_video && review_video.youtube_id) {
-    reviewVideo = downloadYoutube(review_video.youtube_id, targetDir, 'Lab - ', title);
+  if (lab.review_video && lab.review_video.youtube_id) {
+    reviewVideo = downloadYoutube(lab.review_video.youtube_id, targetDir, 'Lab - ', title);
   }
 
-  const instructions = createHtmlLabInstructions(details, targetDir);
-  const introduction = createHtmlLabIntroduction(overview, title, targetDir);
-  const htmlWorkspace = createHtmlWorkspaceAtom(workspace);
+  const promiseInstructions = createHtmlLabInstructions(details, targetDir);
+  const promiseIntroduction = createHtmlLabIntroduction(overview, title, targetDir);
+  const promiseHtmlWorkspace = createHtmlWorkspaceAtom(workspace);
   const templateLab = loadTemplate('lab');
 
   return Promise.all([
-    instructions,
-    introduction,
-    htmlWorkspace,
+    promiseInstructions,
+    promiseIntroduction,
+    promiseHtmlWorkspace,
     reviewVideo,
     templateLab,
   ]).then((data) => {

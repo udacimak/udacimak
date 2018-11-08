@@ -1,4 +1,4 @@
-import Handlebars, { template } from 'handlebars';
+import Handlebars from 'handlebars';
 import { loadTemplate } from '../templates';
 import { filenamify } from '../../../utils';
 
@@ -14,36 +14,34 @@ export default function createHtmlSidebarLesson(lesson) {
   } = lesson;
 
   // generate list items for concepts
-  for (let i = 0, len = concepts.length; i < len; i++) {
+  for (let i = 0, len = concepts.length; i < len; i += 1) {
     const concept = concepts[i];
     const prefix = i + 1 < 10 ? `0${i + 1}` : i + 1;
     const link = `${prefix}. ${filenamify(concept.title)}.html`;
-    const title = `${prefix}. ${concept.title}`;
+    const titleConcept = `${prefix}. ${concept.title}`;
     list.push({
       link,
-      title,
+      title: titleConcept,
     });
   }
 
   // generate list item for project description
   if (project) {
-    const { title } = project;
     const prefix = 'Project Description';
-    const link = filenamify(`${prefix} - ${title}.html`);
+    const link = filenamify(`${prefix} - ${project.title}.html`);
     list.push({
       link,
-      title: `${prefix} - ${title}`,
+      title: `${prefix} - ${project.title}`,
     });
   } //.if project
 
   // generate list item for lab
   if (lab) {
-    const { title } = lab;
     const prefix = 'Lab';
-    const link = filenamify(`${prefix} - ${title}.html`);
+    const link = filenamify(`${prefix} - ${lab.title}.html`);
     list.push({
       link,
-      title: `${prefix} - ${title}`,
+      title: `${prefix} - ${lab.title}`,
     });
   } //.if lab
 

@@ -13,7 +13,7 @@ export default function getCourseType(jsonPath, filename = 'data.json') {
   let courseType;
   let data = fs.readFileSync(pathData, 'utf-8');
   data = JSON.parse(data);
-  data = data.data;
+  ({ data } = data);
 
   if (data.nanodegree) courseType = 'NANODEGREE';
   else if (data.course) courseType = 'COURSE';

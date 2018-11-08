@@ -26,7 +26,7 @@ function createHtmlSectionSummary(parentJSON, key, keyLabel, linkLesson) {
   if (!parentJSON[key] || !key) return html;
 
   // loop through each section to create table of content
-  for (let i = 0, len = parentJSON[key].length; i < len; i++) {
+  for (let i = 0, len = parentJSON[key].length; i < len; i += 1) {
     const section = parentJSON[key][i];
     const numbering = (i + 1 < 10) ? `0${i + 1}` : i + 1;
     const prefixSection = `${keyLabel.charAt(0).toUpperCase()}${keyLabel.substr(1)} ${numbering}`;
@@ -54,7 +54,7 @@ function createHtmlLessonSummary(module, prefixModule) {
   if (!module.lessons) return html;
 
   // loop through lessons to create table of content
-  for (let i = 0, len = module.lessons.length; i < len; i++) {
+  for (let i = 0, len = module.lessons.length; i < len; i += 1) {
     const lesson = module.lessons[i];
     const numbering = (i + 1 < 10) ? `0${i + 1}` : i + 1;
     const prefixLesson = `Lesson ${numbering}`;
@@ -121,7 +121,7 @@ function createHtmlModuleSummary(part, prefixPart) {
   if (!part.modules) return html;
 
   // loop through modules to create table of content
-  for (let i = 0, len = part.modules.length; i < len; i++) {
+  for (let i = 0, len = part.modules.length; i < len; i += 1) {
     const module = part.modules[i];
     const numbering = (i + 1 < 10) ? `0${i + 1}` : i + 1;
     const prefixModule = `Module ${numbering}`;
@@ -159,11 +159,10 @@ export default function writeHTMLNanodegreeSummary(jsonPath, targetDir, nanodegr
 
   // loop through parts to create the table of course content
   let htmlParts = '';
-  for (let i = 0, len = data.parts.length; i < len; i++) {
+  for (let i = 0, len = data.parts.length; i < len; i += 1) {
     const part = data.parts[i];
     const numbering = (i + 1 < 10) ? `0${i + 1}` : i + 1;
-    const { part_type } = part;
-    const partType = (part_type === 'Core') ? '' : `<em>(${part_type})</em>`;
+    const partType = (part.part_type === 'Core') ? '' : `<em>(${part.part_type})</em>`;
     const prefixPart = `Part ${numbering}`;
     const partSummary = markdownToHtml(part.summary);
 
@@ -193,12 +192,12 @@ export default function writeHTMLNanodegreeSummary(jsonPath, targetDir, nanodegr
     loadTemplate('summary.nanodegree'),
   ])
     .then((res) => {
-      const [filename, html] = res;
-      let {
-        key, version, summary, title,
+      const [filenameImg, html] = res;
+      const {
+        key, version, title,
       } = data;
-      summary = markdownToHtml(summary);
-      const srcHeroImg = filename ? `img/${filename}` : null;
+      const summary = markdownToHtml(data.summary);
+      const srcHeroImg = filenameImg ? `img/${filenameImg}` : null;
       const heroImgAlt = title;
 
       const dataTemplate = {

@@ -14,9 +14,7 @@ import {
  * @param {string} token Udacity authentication token
  */
 export default function downloadProjectRubric(project, targetDir, token) {
-  const { rubric_id } = project;
-
-  return fetchProjectRubric(rubric_id, token)
+  return fetchProjectRubric(project.rubric_id, token)
     .then((res) => {
       const jsonStr = JSON.stringify(res, null, 2);
       const file = `${targetDir}/rubric.json`;

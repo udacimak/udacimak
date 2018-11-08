@@ -52,24 +52,24 @@ export default function downloadYoutube(videoId, outputPath, prefix, title, form
 
     video.on('info', (info) => {
       spinnerInfo.succeed();
-
+      let spinnerDl;
       // get video name
       const fileSize = info.size;
-
-      const progressStream = progress({
-        length: fileSize,
-        time: 20,
-      });
-      progressStream.on('progress', (progress) => {
-        progressBar.update(progress.transferred);
-      });
-
-      let spinnerDl;
       // create a new progress bar instance
       const progressBar = new _cliProgress.Bar({
         stopOnComplete: true,
       }, _cliProgress.Presets.shades_classic);
       progressBar.start(fileSize, 0);
+
+
+      const progressStream = progress({
+        length: fileSize,
+        time: 20,
+      });
+      progressStream.on('progress', (progressData) => {
+        progressBar.update(progressData.transferred);
+      });
+
 
       // Write video to temporary file first. If download finishes, rename it
       // to proper file name later. This is to avoid the issue when the terminal
@@ -100,10 +100,10 @@ export default function downloadYoutube(videoId, outputPath, prefix, title, form
             // The directory to save the downloaded files in.
             cwd: outputPath,
           };
-          youtubedl.getSubs(urlYoutube, options, (error, files) => {
-            if (error) {
+          youtubedl.getSubs(urlYoutube, options, (errorGetSubs, files) => {
+            if (errorGetSubs) {
               spinnerDl.fail();
-              logger.warn(`Failed to download subtitles for ${filenameYoutube} with error:\n${error}\n`);
+              logger.warn(`Failed to download subtitles for ${filenameYoutube} with error:\n${errorGetSubs}\n`);
             }
 
             // loop and add prefix to each subtitle file name
@@ -127,18 +127,18 @@ export default function downloadYoutube(videoId, outputPath, prefix, title, form
                 return;
               }
 
-              fs.rename(`${outputPath}/${file}`, filenameSubtitle, (error) => {
-                if (error) {
+              fs.rename(`${outputPath}/${file}`, filenameSubtitle, (errorRename) => {
+                if (errorRename) {
                   spinnerDl.warn();
-                  logger.warn(`Failed to rename subtitles for ${file} with error:\n${error}\n`);
+                  logger.warn(`Failed to rename subtitles for ${file} with error:\n${errorRename}\n`);
                 }
 
                 done();
               });
-            }, (error) => {
-              if (error) {
+            }, (errorAsyncRename) => {
+              if (errorAsyncRename) {
                 spinnerDl.warn();
-                logger.warn(`Error occur while renaming subtitle files for ${file} with error:\n${error}\n`);
+                logger.warn(`Failed to rename renaming subtitle files for video ${filenameYoutube} with error:\n${errorAsyncRename}\n`);
               }
 
               spinnerDl.succeed(`Downloaded subtitles for ${filenameYoutube}`);

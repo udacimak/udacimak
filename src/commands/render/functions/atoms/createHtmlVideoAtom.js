@@ -15,16 +15,17 @@ export default function createHtmlVideoAtom(atom, outputPath, prefix) {
     // create directory for video assets
     const pathVideo = outputPath;
 
-    downloadYoutube(atom.video.youtube_id, pathVideo, prefix, atom.title).then((filenameYoutube) => {
-      const html = `
-        <video controls>
-          <source src="${filenameYoutube}" type="video/mp4">
-        </video>
-      `;
+    downloadYoutube(atom.video.youtube_id, pathVideo, prefix, atom.title)
+      .then((filenameYoutube) => {
+        const html = `
+          <video controls>
+            <source src="${filenameYoutube}" type="video/mp4">
+          </video>
+        `;
 
-      resolve(html);
-    }).catch((error) => {
-      reject(error);
-    });
+        resolve(html);
+      }).catch((error) => {
+        reject(error);
+      });
   });
 }

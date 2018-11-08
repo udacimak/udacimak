@@ -4,8 +4,10 @@ import ora from 'ora';
 import path from 'path';
 import progress from 'request-progress';
 import request from 'request';
-import { addHttp } from './index';
-import { logger } from '.';
+import {
+  addHttp,
+  logger,
+} from '.';
 
 
 /**
@@ -74,7 +76,7 @@ If the link was temporary broken and is up again when you check, please re-run t
         }
       })
       .on('response', (response) => {
-        if (response.statusCode == 500) {
+        if (response.statusCode === 500) {
           spinner.fail();
           logger.error(`Error Status 500: Request for media file fails!
 The url ${uri} returns Internal Server Error.

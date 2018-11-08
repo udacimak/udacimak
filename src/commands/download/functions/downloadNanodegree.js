@@ -25,8 +25,10 @@ import {
 export default function downloadNanodegree(ndKey, targetDir, udacityAuthToken) {
   return new Promise((resolve, reject) => {
     logger.info(`Start downloading Nanodegree ${ndKey} from Udacity API`);
-    let dirNd; let dirNdName; let nanodegree; let ndJSON; let
-      titleNd;
+    let dirNd;
+    let dirNdName;
+    let ndJSON;
+    let titleNd;
     const spinner = ora(`Get Nanodegree ${ndKey} information`).start();
 
     // validate if user is authorized to download this Nanodegree
@@ -37,7 +39,7 @@ export default function downloadNanodegree(ndKey, targetDir, udacityAuthToken) {
           spinner.fail();
           const _error = new Error(`Fail to find Nanodegree key ${ndKey} in your profile. The key ${ndKey} either doesn't exist or you don't have access to it.`);
           reject(_error);
-          return;
+          return null;
         }
 
         const { key, locale, version } = nanodegree;
@@ -53,15 +55,18 @@ export default function downloadNanodegree(ndKey, targetDir, udacityAuthToken) {
       .then(ndInfo => fetchNanodegree(ndInfo, udacityAuthToken))
       .then((res) => {
         ndJSON = res;
-        nanodegree = res.data.nanodegree;
+        const { nanodegree } = res.data;
         titleNd = nanodegree.title;
         // create folder for Nanoderee
         dirNdName = filenamify(`${nanodegree.title} v${nanodegree.version}`);
         // check if folder already exist and warn the user
-        return checkOverwriteDir(targetDir, dirNdName);
+        return {
+          shouldProceed: checkOverwriteDir(targetDir, dirNdName),
+          nanodegree,
+        };
       })
-      .then((shouldProceed) => {
-        if (!shouldProceed) return;
+      .then(({ shouldProceed, nanodegree }) => {
+        if (!shouldProceed) return null;
 
         dirNd = makeDir(targetDir, dirNdName);
         // save Nanodegree JSON to file
@@ -71,39 +76,42 @@ export default function downloadNanodegree(ndKey, targetDir, udacityAuthToken) {
 
         return nanodegree;
       })
-      .then((nanodegree) => {
-        if (!nanodegree) return;
+      .then((nanodegreeData) => {
+        if (!nanodegreeData) return;
 
         // loop through parts, modules, lessons to create folder
         // and download lessons
-        const { parts } = nanodegree;
+        const { parts } = nanodegreeData;
 
         let i = 0;
         async.forEachSeries(parts, (part, doneParts) => {
-          const numbering = (i + 1 < 10) ? `0${i + 1}` : i + 1;
-          const dirPartName = filenamify(`Part ${numbering}_${part.title}`);
+          const numberingPart = (i + 1 < 10) ? `0${i + 1}` : i + 1;
+          const dirPartName = filenamify(`Part ${numberingPart}_${part.title}`);
           const dirPart = makeDir(dirNd, dirPartName);
 
           // create module folders
           const { modules } = part;
           let j = 0;
           async.forEachSeries(modules, (module, doneModules) => {
-            const numbering = (j + 1 < 10) ? `0${j + 1}` : j + 1;
-            const dirModuleName = filenamify(`Module ${numbering}_${module.title}`);
+            const numberingModule = (j + 1 < 10) ? `0${j + 1}` : j + 1;
+            const dirModuleName = filenamify(`Module ${numberingModule}_${module.title}`);
             const dirModule = makeDir(dirPart, dirModuleName);
 
             const { lessons } = module;
             let k = 0;
             async.forEachSeries(lessons, (lesson, doneLessons) => {
-              const numbering = (k + 1 < 10) ? `0${k + 1}` : k + 1;
-              const dirLessonName = filenamify(`Lesson ${numbering}_${lesson.title}`);
+              const numberingLesson = (k + 1 < 10) ? `0${k + 1}` : k + 1;
+              const dirLessonName = filenamify(`Lesson ${numberingLesson}_${lesson.title}`);
               const dirLesson = makeDir(dirModule, dirLessonName);
 
               downloadLesson(lesson, ndKey, dirLesson, udacityAuthToken)
                 .then(() => {
                   doneLessons();
+                })
+                .catch((errorDownloadLesson) => {
+                  throw errorDownloadLesson;
                 });
-              k++;
+              k += 1;
             }, (error) => {
               if (error) {
                 reject(error);
@@ -111,7 +119,7 @@ export default function downloadNanodegree(ndKey, targetDir, udacityAuthToken) {
               }
               doneModules();
             }); //.async.forEachSeries lessons
-            j++;
+            j += 1;
           }, (error) => {
             if (error) {
               reject(error);
@@ -119,7 +127,7 @@ export default function downloadNanodegree(ndKey, targetDir, udacityAuthToken) {
             }
             doneParts();
           }); //.async.forEachSeries modules
-          i++;
+          i += 1;
         }, (error) => {
           if (error) {
             reject(error);

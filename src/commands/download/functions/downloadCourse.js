@@ -28,7 +28,7 @@ export default function downloadCourse(courseId, targetDir, udacityAuthToken) {
     return fetchCourse({ key: courseId }, udacityAuthToken)
       .then((res) => {
         courseJSON = res;
-        course = res.data.course;
+        ({ course } = res.data);
         titleCourse = course.title;
         // create folder for course
         dirCourseName = filenamify(`${course.title} v${course.version}`);
@@ -36,7 +36,7 @@ export default function downloadCourse(courseId, targetDir, udacityAuthToken) {
         return checkOverwriteDir(targetDir, dirCourseName);
       })
       .then((shouldProceed) => {
-        if (!shouldProceed) return;
+        if (!shouldProceed) return null;
 
         dirCourse = makeDir(targetDir, dirCourseName);
         // save course JSON to file
@@ -46,10 +46,10 @@ export default function downloadCourse(courseId, targetDir, udacityAuthToken) {
 
         return course;
       })
-      .then((course) => {
-        if (!course) return;
+      .then((courseData) => {
+        if (!courseData) return;
 
-        const { lessons } = course;
+        const { lessons } = courseData;
 
         // loop through lessons to create folder and download lessons
         let i = 0;
@@ -62,7 +62,7 @@ export default function downloadCourse(courseId, targetDir, udacityAuthToken) {
             .then(() => {
               doneLessons();
             });
-          i++;
+          i += 1;
         }, (error) => {
           if (error) {
             reject(error);

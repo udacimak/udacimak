@@ -19,17 +19,19 @@ export default function createHtmlLabIntroduction(overview, labTitle, targetDir)
   }
 
   let {
-    title, summary, key_takeaways, video,
+    title, summary,
   } = overview;
+  const { video } = overview;
+  let keyTakeaways = overview.key_takeaways;
   let htmlVideo = '';
 
   // process all markdown to HTML
   title = markdownToHtml(title);
   summary = markdownToHtml(summary);
-  key_takeaways = key_takeaways || [];
+  keyTakeaways = keyTakeaways || [];
 
-  for (let takeaway of key_takeaways) {
-    takeaway = markdownToHtml(takeaway);
+  for (let i = 0, len = keyTakeaways.length; i < len; i += 1) {
+    keyTakeaways[i] = markdownToHtml(keyTakeaways[i]);
   }
 
   let promiseVideo;
@@ -54,15 +56,15 @@ export default function createHtmlLabIntroduction(overview, labTitle, targetDir)
     })
     .then(() => loadTemplate('lab.introduction'))
     .then((html) => {
-      console.log(title, summary, key_takeaways, htmlVideo);
-      if (!title && !summary && (!key_takeaways || !key_takeaways.length) && !htmlVideo) {
+      console.log(title, summary, keyTakeaways, htmlVideo);
+      if (!title && !summary && (!keyTakeaways || !keyTakeaways.length) && !htmlVideo) {
         return '(No Lab Introduction data available)';
       }
 
       const dataTemplate = {
         title,
         summary,
-        key_takeaways,
+        keyTakeaways,
         video: htmlVideo,
       };
 

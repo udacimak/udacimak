@@ -1,5 +1,4 @@
 import Handlebars from 'handlebars';
-import cheerio from 'cheerio';
 import {
   loadTemplate,
 } from '../templates';

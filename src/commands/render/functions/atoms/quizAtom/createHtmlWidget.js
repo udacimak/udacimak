@@ -1,7 +1,3 @@
-import Handlebars from 'handlebars';
-import { loadTemplate } from '../../templates';
-
-
 /**
  * Create HTML for Widget in an ImageFormQuestion
  * @param {object} widget json data

@@ -73,7 +73,7 @@
 
     // render math equations
     let elMath = document.getElementsByClassName('mathquill');
-    for (let i = 0, len = elMath.length; i < len; i++) {
+    for (let i = 0, len = elMath.length; i < len; i += 1) {
       const el = elMath[i];
 
       katex.render(el.textContent, el, {

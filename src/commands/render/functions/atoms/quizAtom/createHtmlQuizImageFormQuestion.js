@@ -18,8 +18,8 @@ export default function createHtmlQuizImageFormQuestion(atom, outputPath) {
   const { question } = atom;
 
   // download quiz background image
-  const filenameImg = `${atom.question.evaluation_id}.gif`;
-  const promiseDownloadImage = downloadImage(question.background_image, pathImg, filenameImg);
+  const filename = `${atom.question.evaluation_id}.gif`;
+  const promiseDownloadImage = downloadImage(question.background_image, pathImg, filename);
   const promiseLoadTemplate = loadTemplate('atom.quiz.imageFormQuestion');
 
   return Promise.all([
@@ -28,7 +28,8 @@ export default function createHtmlQuizImageFormQuestion(atom, outputPath) {
   ]).then((res) => {
     const [filenameImg, html] = res;
     let htmlWidgets = '';
-    for (const widget of question.widgets) {
+    for (let i = 0, len = question.widgets.length; i < len; i += 1) {
+      const widget = question.widgets[i];
       htmlWidgets += createHtmlWidget(widget);
     }
 

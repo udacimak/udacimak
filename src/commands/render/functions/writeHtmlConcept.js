@@ -41,30 +41,30 @@ export default function writeHtmlConcepts(concept, htmlSidebar, targetDir, i, do
     const atomTitle = markdownToHtml(atom.title);
 
     let promiseAtom;
-    const { instructor_notes, semantic_type } = atom;
-    const instructorNote = markdownToHtml(instructor_notes);
+    const semanticType = atom.semantic_type;
+    const instructorNote = markdownToHtml(atom.instructor_notes);
 
-    if (semantic_type === 'ImageAtom') {
+    if (semanticType === 'ImageAtom') {
       promiseAtom = createHtmlImageAtom(atom, targetDir);
-    } else if (semantic_type === 'TaskListAtom') {
+    } else if (semanticType === 'TaskListAtom') {
       promiseAtom = createHtmlTaskListAtom(atom, targetDir, prefix);
-    } else if (semantic_type === 'TextAtom') {
+    } else if (semanticType === 'TextAtom') {
       promiseAtom = createHtmlTextAtom(atom, targetDir);
-    } else if (semantic_type === 'VideoAtom') {
+    } else if (semanticType === 'VideoAtom') {
       promiseAtom = createHtmlVideoAtom(atom, targetDir, prefix);
-    } else if (semantic_type === 'CheckboxQuizAtom') {
+    } else if (semanticType === 'CheckboxQuizAtom') {
       promiseAtom = createHtmlCheckboxQuizAtom(atom);
-    } else if (semantic_type === 'MatchingQuizAtom') {
+    } else if (semanticType === 'MatchingQuizAtom') {
       promiseAtom = createHtmlMatchingQuizAtom(atom);
-    } else if (semantic_type === 'RadioQuizAtom') {
+    } else if (semanticType === 'RadioQuizAtom') {
       promiseAtom = createHtmlRadioQuizAtom(atom);
-    } else if (semantic_type === 'ReflectAtom') {
+    } else if (semanticType === 'ReflectAtom') {
       promiseAtom = createHtmlReflectAtom(atom, targetDir, prefix);
-    } else if (semantic_type === 'QuizAtom') {
+    } else if (semanticType === 'QuizAtom') {
       promiseAtom = createHtmlQuizAtom(atom, targetDir, prefix);
-    } else if (semantic_type === 'ValidatedQuizAtom') {
+    } else if (semanticType === 'ValidatedQuizAtom') {
       promiseAtom = createHtmlValidatedQuizAtom(atom);
-    } else if (semantic_type === 'WorkspaceAtom') {
+    } else if (semanticType === 'WorkspaceAtom') {
       promiseAtom = createHtmlWorkspaceAtom(atom);
     } else {
       const msg = 'Unknown lesson atom type. Please contact the developer to make it compatible with this atom type!';
@@ -118,8 +118,8 @@ export default function writeHtmlConcepts(concept, htmlSidebar, targetDir, i, do
 
         doneLesson();
       })
-      .catch((error) => {
-        throw error;
+      .catch((errorWriteFile) => {
+        throw errorWriteFile;
       });
   });
 }

@@ -1,5 +1,3 @@
-import logger from './logger';
-
 /**
  * Add htpps protocol to url if missing
  * @param {string} url

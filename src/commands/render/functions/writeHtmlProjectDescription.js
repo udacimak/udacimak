@@ -16,10 +16,11 @@ import {
  */
 export default function writeHtmlProjectDescription(project, htmlSidebar, outputPath) {
   if (!project) {
-    return;
+    return null;
   }
 
-  let { description, summary, title } = project;
+  let { description, summary } = project;
+  const { title } = project;
 
   description = markdownToHtml(description);
   summary = markdownToHtml(summary);

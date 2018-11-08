@@ -13,12 +13,14 @@ export default function createHtmlRadioQuizAtom(atom) {
 
   const answers = [];
   let solution;
-  for (const answer of atom.question.answers) {
-    let { id, text, is_correct } = answer;
-    text = markdownToHtml(text);
+  for (let i = 0, len = atom.question.answers.length; i < len; i += 1) {
+    const answer = atom.question.answers[i];
+    const { id } = answer;
+    const isCorrect = answer.is_correct;
+    const text = markdownToHtml(answer.text);
 
     // if this is the correct answer, add to solution
-    if ('is_correct' in answer && is_correct !== null && is_correct === true) {
+    if ('is_correct' in answer && isCorrect !== null && isCorrect === true) {
       solution = answer;
     }
 

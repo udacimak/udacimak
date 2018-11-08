@@ -11,20 +11,23 @@ import {
 export default function retrieveUserNanodegreeInfo(ndKey, token) {
   return fetchUdacityUserInfo(token)
     .then((res) => {
-      const { graduated_nanodegrees, nanodegrees } = res.data.user;
+      const { nanodegrees } = res.data.user;
+      const graduatedNanodegrees = res.data.user.graduated_nanodegrees;
       let nanodegree = null;
-      for (const _nanodegree of graduated_nanodegrees) {
-        if (ndKey === _nanodegree.key) {
-          nanodegree = _nanodegree;
+      for (let i = 0, len = graduatedNanodegrees.length; i < len; i += 1) {
+        const nd = graduatedNanodegrees[i];
+        if (ndKey === nd.key) {
+          nanodegree = nd;
           break;
         }
       }
 
       // check enrolled nanodegrees if not found nkKey in graduated nanodegrees
       if (!nanodegree) {
-        for (const _nanodegree of nanodegrees) {
-          if (ndKey === _nanodegree.key) {
-            nanodegree = _nanodegree;
+        for (let i = 0, len = nanodegrees.length; i < len; i += 1) {
+          const nd = nanodegrees[i];
+          if (ndKey === nd.key) {
+            nanodegree = nd;
             break;
           }
         }

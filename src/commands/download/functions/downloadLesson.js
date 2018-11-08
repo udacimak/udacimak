@@ -34,7 +34,7 @@ export default function downloadLesson(lesson, rootKey, targetDir, token) {
       logger.info(`Downloaded lesson JSON for ${targetDir}`);
     })
     .then(() => {
-      if (!shouldDownloadRubric) return;
+      if (!shouldDownloadRubric) return null;
 
       // download Project rubric
       return downloadProjectRubric(project, targetDir, token);

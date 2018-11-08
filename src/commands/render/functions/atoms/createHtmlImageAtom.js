@@ -36,7 +36,7 @@ export default function createHtmlImageAtom(atom, outputPath) {
       caption = markdownToHtml(caption);
       const dataTemplate = {
         file: `img/${filenameImg}`,
-        alt: caption,
+        alt,
         caption,
       };
       const template = Handlebars.compile(html);

@@ -11,17 +11,18 @@ export default function createHtmlRubricItems(rubricItems) {
   let html = '';
   let htmlItems = '';
 
-  for (const rubric of rubricItems) {
-    let { criteria, passed_description } = rubric;
+  for (let i = 0, len = rubricItems.length; i < len; i += 1) {
+    const rubric = rubricItems[i];
+    let { criteria } = rubric;
     criteria = markdownToHtml(criteria);
-    passed_description = markdownToHtml(passed_description);
+    const passedDescription = markdownToHtml(rubric.passed_description);
     htmlItems += `
       <tr scope="row">
         <td>
           ${criteria}
         </td>
         <td>
-          ${passed_description}
+          ${passedDescription}
         </td>
       </tr>
     `;

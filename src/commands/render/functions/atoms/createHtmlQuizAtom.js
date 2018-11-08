@@ -19,13 +19,13 @@ import {
  */
 export default function createHtmlQuizAtom(atom, targetDir, prefix) {
   const { question } = atom;
-  const { semantic_type } = question;
+  const semanticType = question.semantic_type;
   let promiseQuizQuestion;
 
   // process different semantic types of QuizAtom
-  if (semantic_type === 'ProgrammingQuestion' || semantic_type === 'IFrameQuestion') {
+  if (semanticType === 'ProgrammingQuestion' || semanticType === 'IFrameQuestion') {
     promiseQuizQuestion = createHtmlQuizProgrammingQuestion(atom);
-  } else if (semantic_type === 'ImageFormQuestion') {
+  } else if (semanticType === 'ImageFormQuestion') {
     promiseQuizQuestion = createHtmlQuizImageFormQuestion(atom, targetDir, prefix);
   } else {
     const msg = 'Unknown quiz type. Please contact the developer to make it compatible with this atom type!';
@@ -33,10 +33,14 @@ export default function createHtmlQuizAtom(atom, targetDir, prefix) {
   }
 
   // download instruction video if available
-  const youtubeIdQuestion = (atom.instruction && atom.instruction.video) ? atom.instruction.video.youtube_id : '';
-  const youtubeIdAnswer = (atom.answer && atom.answer.video) ? atom.answer.video.youtube_id : '';
-  const promiseDownloadYoutubeQuestion = downloadYoutube(youtubeIdQuestion, targetDir, prefix, atom.title);
-  const promiseDownloadYoutubeAnswer = downloadYoutube(youtubeIdAnswer, targetDir, prefix, atom.title);
+  const youtubeIdQuestion = (atom.instruction && atom.instruction.video)
+    ? atom.instruction.video.youtube_id : '';
+  const youtubeIdAnswer = (atom.answer && atom.answer.video)
+    ? atom.answer.video.youtube_id : '';
+  const promiseDownloadYoutubeQuestion = downloadYoutube(youtubeIdQuestion,
+    targetDir, prefix, atom.title);
+  const promiseDownloadYoutubeAnswer = downloadYoutube(youtubeIdAnswer,
+    targetDir, prefix, atom.title);
   const promiseLoadTemplate = loadTemplate('atom.quiz');
 
   return Promise.all([

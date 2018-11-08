@@ -13,11 +13,13 @@ export default function createHtmlCheckboxQuizAtom(atom) {
 
   const answers = [];
   const solution = [];
-  for (const answer of atom.question.answers) {
-    const { id, text, is_correct } = answer;
+  for (let i = 0, len = atom.question.answers.length; i < len; i += 1) {
+    const answer = atom.question.answers[i];
+    const { id, text } = answer;
+    const isCorrect = answer.is_correct;
 
     // if this is the correct answer, add to solution
-    if ('is_correct' in answer && is_correct !== null && is_correct === true) {
+    if ('is_correct' in answer && isCorrect !== null && isCorrect === true) {
       solution.push(answer);
     }
 

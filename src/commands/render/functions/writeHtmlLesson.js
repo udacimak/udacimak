@@ -23,7 +23,6 @@ export default function writeHtmlLesson(jsonPath, targetDir, doneModule) {
   const filename = 'data.json';
   const pathData = `${jsonPath}/${filename}`;
   const pathRubric = `${jsonPath}/rubric.json`;
-  let promiseRubric;
 
   // Delete all existing html files in the lesson folder if any
   // This is to make sure when the cli is updated and the new file
@@ -38,15 +37,15 @@ export default function writeHtmlLesson(jsonPath, targetDir, doneModule) {
   const { concepts, lab, project } = data;
 
   // try to get rubric data first if available
-  promiseRubric = new Promise((resolve, reject) => {
+  const promiseRubric = new Promise((resolve) => {
     fs.access(pathRubric, fs.constants.F_OK, (error) => {
       if (error) {
         // there are no rubric.json to parse
         resolve();
         return;
       }
-      fs.readFile(pathRubric, 'utf-8', (error, rubric) => {
-        if (error) {
+      fs.readFile(pathRubric, 'utf-8', (errorReadFile, rubric) => {
+        if (errorReadFile) {
           throw error;
         }
         rubric = JSON.parse(rubric);
@@ -67,21 +66,21 @@ export default function writeHtmlLesson(jsonPath, targetDir, doneModule) {
       let i = 1;
       async.eachSeries(concepts, (concept, doneLesson) => {
         writeHtmlConcept(concept, htmlSidebar, targetDir, i, doneLesson);
-        i++;
+        i += 1;
       }, (error) => {
         if (error) throw error;
-        let promiseRubric;
+        let promiseWriteHtmlRubric;
         if (data.rubric) {
-          promiseRubric = writeHtmlRubric(data.rubric, project, htmlSidebar, targetDir);
+          promiseWriteHtmlRubric = writeHtmlRubric(data.rubric, project, htmlSidebar, targetDir);
         }
         Promise.all([
-          promiseRubric,
+          promiseWriteHtmlRubric,
           writeHtmlProjectDescription(project, htmlSidebar, targetDir),
           writeHtmlLab(lab, htmlSidebar, targetDir),
         ]).then(() => {
           doneModule();
-        }).catch((error) => {
-          throw error;
+        }).catch((errorPromiseAll) => {
+          throw errorPromiseAll;
         });
       }); //.async.eachSeries concepts
     })

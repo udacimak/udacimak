@@ -16,17 +16,17 @@ import {
  * If it hasn't been provided, prompt for one
  */
 export default function retrieveUdacityAuthToken() {
-  return new Promise((resolve, reject) => {
-    const token = config.get(CLI_CONFIG_UDACITY_AUTH_TOKEN);
+  return new Promise((resolve) => {
+    const savedToken = config.get(CLI_CONFIG_UDACITY_AUTH_TOKEN);
 
-    if (token) {
-      resolve(token);
+    if (savedToken) {
+      resolve(savedToken);
       return;
     }
 
     logger.warn('Udacity authentication token hasn\'t been set.');
     promptInputUdacityAuthToken()
       .then(token => validateSaveUdacityAuthToken(token))
-      .then(token => resolve(token));
+      .then(tokenValidated => resolve(tokenValidated));
   });
 }

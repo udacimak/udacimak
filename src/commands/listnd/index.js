@@ -19,20 +19,22 @@ export default function listNanodegrees() {
     .then(token => retrieveUserInfo(token))
     .then((user) => {
       const {
-        first_name, nickname, nanodegrees, graduated_nanodegrees,
+        nickname, nanodegrees,
       } = user;
-      logger.info(`Hi ${nickname || first_name || 'there'}!`);
+      const graduatedNanodegrees = user.graduated_nanodegrees;
+      logger.info(`Hi ${nickname || user.first_name || 'there'}!`);
       logger.info('');
 
-      if (!nanodegrees && !graduated_nanodegrees) {
+      if (!nanodegrees && !graduatedNanodegrees) {
         logger.info('Your user profile have no Nanodegree lists');
         return;
       }
 
       // show user all Nanodegrees
-      if (graduated_nanodegrees && graduated_nanodegrees.length) {
+      if (graduatedNanodegrees && graduatedNanodegrees.length) {
         logger.info('Here\'s a list of your graduated Nanodegrees (list by Nanodegree key only. The API doesn\'t return Nanodegree name so it can\'t be listed here):');
-        for (const nd of graduated_nanodegrees) {
+        for (let i = 0, len = graduatedNanodegrees.length; i < len; i += 1) {
+          const nd = nanodegrees[i];
           logger.info(` - ${nd.key} version ${nd.version} (locale: ${nd.locale})`);
         }
         logger.info('');
@@ -40,7 +42,8 @@ export default function listNanodegrees() {
 
       if (nanodegrees && nanodegrees.length) {
         logger.info('Here\'s a list of your enrolled Nanodegrees:');
-        for (const nd of nanodegrees) {
+        for (let i = 0, len = nanodegrees.length; i < len; i += 1) {
+          const nd = nanodegrees[i];
           logger.info(` - ${nd.key} version ${nd.version} (locale: ${nd.locale}): ${nd.title || 'Unnamed Nanodegree'}`);
         }
       }

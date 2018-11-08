@@ -37,7 +37,7 @@ export default function fetchApiUdacity(url, udacityAuthToken = '') {
   return new Promise((resolve, reject) => {
     request(requestOptions, (error, res) => {
       if (error) {
-        reject({ error, requestOptions, res });
+        reject(new Error(error));
       } else {
         const jsonRes = JSON.parse(res.body);
         if (jsonRes.errors) {

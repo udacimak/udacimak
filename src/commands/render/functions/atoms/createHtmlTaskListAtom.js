@@ -14,12 +14,13 @@ import {
  * @returns {string} HTML content
  */
 export default function createHtmlTaskListAtom(atom, targetDir, prefix) {
-  let { description, positive_feedback, video_feedback } = atom;
+  let { description } = atom;
+  let positiveFeedback = atom.positive_feedback;
   description = markdownToHtml(description);
-  positive_feedback = markdownToHtml(positive_feedback);
+  positiveFeedback = markdownToHtml(positiveFeedback);
 
   const tasks = [];
-  for (let i = 0, len = atom.tasks.length; i < len; i++) {
+  for (let i = 0, len = atom.tasks.length; i < len; i += 1) {
     const task = markdownToHtml(atom.tasks[i]);
     const id = `${atom.key}--${i}`;
     tasks.push({
@@ -29,21 +30,21 @@ export default function createHtmlTaskListAtom(atom, targetDir, prefix) {
   }
 
   // download feedback video if available
-  const youtubeId = video_feedback ? video_feedback.youtube_id : '';
+  const youtubeId = atom.video_feedback ? atom.video_feedback.youtube_id : '';
   const promiseDownloadYoutube = downloadYoutube(youtubeId, targetDir, prefix, atom.title);
   const promiseLoadTemplate = loadTemplate('atom.taskList');
 
   return Promise.all([promiseDownloadYoutube, promiseLoadTemplate])
     .then((res) => {
       const [filenameYoutube, html] = res;
-      const hasFeedback = (filenameYoutube || positive_feedback);
+      const hasFeedback = (filenameYoutube || positiveFeedback);
 
       const dataTemplate = {
         description,
         hasFeedback,
         tasks,
         filenameYoutube,
-        positive_feedback,
+        positiveFeedback,
       };
       const template = Handlebars.compile(html);
       return template(dataTemplate);

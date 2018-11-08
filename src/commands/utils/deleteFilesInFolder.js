@@ -9,12 +9,13 @@ import fs from 'fs';
  * @param {string} ext file extension to delete
  */
 export default function deleteFilesInFolder(dir, ext = null) {
-  const _dirTree = dirTree(dir);
+  const dt = dirTree(dir);
 
-  for (const child of _dirTree.children) {
+  for (let i = 0, len = dt.children.length; i < len; i += 1) {
+    const child = dt.children[i];
     if (child.type === 'file') {
       if (ext) {
-        (child.extension == `.${ext}`) && fs.unlinkSync(child.path);
+        (child.extension === `.${ext}`) && fs.unlinkSync(child.path);
       } else {
         fs.unlinkSync(child.path);
       }

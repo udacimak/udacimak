@@ -12,7 +12,8 @@ export default function createHtmlValidatedQuizAtom(atom) {
   const prompt = markdownToHtml(atom.question.prompt);
   const matchers = [];
 
-  for (const matcher of atom.question.matchers) {
+  for (let i = 0, len = atom.question.matchers; i < len; i += 1) {
+    const matcher = matchers[i];
     matchers.push(matcher.expression);
   }
 

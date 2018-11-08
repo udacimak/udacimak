@@ -11,7 +11,8 @@ export default function createHtmlRubricSections(sections) {
   let html = '';
 
   // loop and create html for each section
-  for (const section of sections) {
+  for (let i = 0, len = sections.length; i < len; i += 1) {
+    const section = sections[i];
     const { name } = section;
 
     // create html for rubric items

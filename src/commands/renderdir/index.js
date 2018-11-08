@@ -8,13 +8,13 @@ import {
 
 /**
  * Iterate through all directories in a source directory and render all courses
- * @param {string} sourceDir directory that contains sub-directories of downloaded course JSON data from Udacity API
+ * @param {string} sourceDir directory that contains sub-directories of
+ * downloaded course JSON data from Udacity API
  * @param {string} targetDir target directory to save rendered courses
  */
 export default function renderdir(sourceDir, targetDir) {
   if (sourceDir === targetDir) {
-    const _error = new Error('Target directory must not be the same with source directory. Please change the target directory.');
-    reject(_error);
+    logger.error('Target directory must not be the same with source directory. Please change the target directory.');
     return;
   }
 

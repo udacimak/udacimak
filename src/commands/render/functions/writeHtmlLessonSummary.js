@@ -16,7 +16,7 @@ export default function writeHtmlLessonSummary(data, targetDir) {
   const concepts = [];
   let lab; let project; let
     rubric;
-  for (let i = 0, len = data.concepts.length; i < len; i++) {
+  for (let i = 0, len = data.concepts.length; i < len; i += 1) {
     const concept = data.concepts[i];
     const prefix = i + 1 < 10 ? `0${i + 1}` : i + 1;
     const link = `${prefix}. ${filenamify(concept.title)}.html`;

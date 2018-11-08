@@ -67,8 +67,8 @@ export default function createHtmlTextAtom(atom, outputPath) {
       }
 
       downloadImage(src, pathMedia, filename)
-        .then((filename) => {
-          text = text.replace(src, `media/${filename}`);
+        .then((filenameImg) => {
+          text = text.replace(src, `media/${filenameImg}`);
           done();
         })
         .catch((error) => {

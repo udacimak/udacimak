@@ -16,20 +16,24 @@ export default function createHtmlMatchingQuizAtom(atom) {
   const solutions = [];
   const conceptsLabel = markdownToHtml(question.concepts_label);
   const answersLabel = markdownToHtml(question.answers_label);
-  for (const concept of question.concepts) {
+  for (let i = 0, len = question.concepts.length; i < len; i += 1) {
+    const concept = question.concepts[i];
     concepts.push({
       text: markdownToHtml(concept.text),
     });
   }
-  for (const answer of question.answers) {
+  for (let j = 0, len = question.answers.length; j < len; j += 1) {
+    const answer = question.answers[j];
     answers.push({
       text: markdownToHtml(answer.text),
     });
 
     // create solution
-    for (const concept of question.concepts) {
-      const { correct_answer } = concept;
-      if (correct_answer && correct_answer.text && correct_answer.text.toLowerCase().trim() === answer.text.toLowerCase().trim()) {
+    for (let k = 0, lenConcepts = question.concepts.length; k < lenConcepts; k += 1) {
+      const concept = question.concepts[k];
+      const correctAnswer = concept.correct_answer;
+      if (correctAnswer && correctAnswer.text
+        && correctAnswer.text.toLowerCase().trim() === answer.text.toLowerCase().trim()) {
         solutions.push({
           answerText: markdownToHtml(answer.text),
           matchingConcept: markdownToHtml(concept.text),

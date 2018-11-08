@@ -19,7 +19,7 @@ import {
  * @param {string} outputPath target directory
  */
 export default function writeHtmlRubric(rubric, projectJSON, htmlSidebar, outputPath) {
-  const { sections, stand_out } = rubric;
+  const { sections } = rubric;
   // need to use the project title from projectJSON instead of from the rubric
   // This allow the Nanodegree and lesson summary pages to be able to link
   // to the correct file because they only have access to projectJSON object.
@@ -29,8 +29,8 @@ export default function writeHtmlRubric(rubric, projectJSON, htmlSidebar, output
   let htmlRubric = createHtmlRubricSections(sections);
 
   // create html for standout tips if available
-  if (stand_out) {
-    const standout = markdownToHtml(stand_out);
+  if (rubric.stand_out) {
+    const standout = markdownToHtml(rubric.stand_out);
     htmlRubric += `
       <div class="jumbotron">
         <h3>Tips to make your project standout:</h3>

@@ -1,7 +1,6 @@
 import settings from 'user-settings';
-import { filenamify } from '.';
 
-const pkginfo = require('pkginfo')(module);
+const pkginfo = require('pkginfo')(module); // eslint-disable-line
 
 
 class Config {
