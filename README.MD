@@ -116,8 +116,6 @@ cli can download course contents from Udacity API:
 udacimak settoken YOUR_UDACITY_AUTH_TOKEN
 ```
 
-![settoken Example][example-settoken]
-
 Udacity authentication token can be found in Udacity website browser _cookies_.
 To get your Udacity authentication, follow these steps:
 1. Visit classroom.udacity.com and log in
@@ -178,8 +176,6 @@ enrolled in as such:
 ```shell
 udacimak listnd
 ```
-
-![listnd Example][example-listnd]
 
 ### Additional Information
 Note that you for each Nanodegree you will have an associated version
@@ -413,8 +409,6 @@ However, these details are only used internally in the app to serve its
 functionalities. None of your personal details, as well as the secret
 authentication token, will be sent to anybody else.
 
-[example-settoken]: https://github.com/udacimak/udacimak/raw/master/img/example-settoken.jpg
-[example-listnd]: https://github.com/udacimak/udacimak/raw/master/img/example-listnd.jpg
 [example-download]: https://github.com/udacimak/udacimak/raw/master/img/example-download.gif
 [example-render]: https://github.com/udacimak/udacimak/raw/master/img/example-render.gif
 [example-rerender]: https://github.com/udacimak/udacimak/raw/master/img/example-rerender.gif
