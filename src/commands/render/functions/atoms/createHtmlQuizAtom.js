@@ -2,11 +2,11 @@ import Handlebars from 'handlebars';
 import { loadTemplate } from '../templates';
 import {
   createHtmlQuizImageFormQuestion,
-  createHtmlQuizProgrammingQuestion
+  createHtmlQuizProgrammingQuestion,
 } from './quizAtom';
 import {
   downloadYoutube,
-  markdownToHtml
+  markdownToHtml,
 } from '../../../utils';
 
 
@@ -43,9 +43,9 @@ export default function createHtmlQuizAtom(atom, targetDir, prefix) {
     promiseDownloadYoutubeQuestion,
     promiseDownloadYoutubeAnswer,
     promiseLoadTemplate,
-    promiseQuizQuestion
-  ]).then(res => {
-    let [filenameYoutubeQuestion, filenameYoutubeAnswer, html, htmlQuiz] = res;
+    promiseQuizQuestion,
+  ]).then((res) => {
+    const [filenameYoutubeQuestion, filenameYoutubeAnswer, html, htmlQuiz] = res;
 
     const instruction = atom.instruction ? markdownToHtml(atom.instruction.text) : '';
     const answerText = atom.answer ? markdownToHtml(atom.answer.text) : '';
@@ -59,7 +59,7 @@ export default function createHtmlQuizAtom(atom, targetDir, prefix) {
       filenameYoutubeAnswer,
       hasSolution,
       hasInstruction,
-      htmlQuiz
+      htmlQuiz,
     };
     const template = Handlebars.compile(html);
     return template(dataTemplate);

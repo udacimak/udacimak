@@ -1,10 +1,10 @@
 import {
-  writeHtml
-} from './';
+  writeHtml,
+} from '.';
 import {
   filenamify,
   logger,
-  markdownToHtml
+  markdownToHtml,
 } from '../../utils';
 
 
@@ -24,7 +24,7 @@ export default function writeHtmlProjectDescription(project, htmlSidebar, output
   description = markdownToHtml(description);
   summary = markdownToHtml(summary);
   // create HTML body content
-  let htmlSummary = summary ? `
+  const htmlSummary = summary ? `
     <p class="text-center">${summary}</p>
 
     <hr>
@@ -45,7 +45,7 @@ export default function writeHtmlProjectDescription(project, htmlSidebar, output
     sidebar: htmlSidebar,
     srcCss,
     srcJs,
-    title
+    title,
   };
   let file = filenamify(`Project Description - ${title}.html`);
   file = `${outputPath}/${file}`;
@@ -54,7 +54,7 @@ export default function writeHtmlProjectDescription(project, htmlSidebar, output
       logger.info(`Completed rendering project description file ${file}`);
       logger.info('____________________\n');
     })
-    .catch(error => {
+    .catch((error) => {
       throw error;
     });
 }

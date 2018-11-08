@@ -1,9 +1,9 @@
 import Handlebars from 'handlebars';
-import { loadTemplate } from './templates';
 import filenamify from 'filenamify';
-import { writeHtml } from './';
+import { loadTemplate } from './templates';
+import { writeHtml } from '.';
 import {
-  logger
+  logger,
 } from '../../utils';
 
 
@@ -13,8 +13,9 @@ import {
  * @param {string} targetDir output directory
  */
 export default function writeHtmlLessonSummary(data, targetDir) {
-  let concepts = [];
-  let lab, project, rubric;
+  const concepts = [];
+  let lab; let project; let
+    rubric;
   for (let i = 0, len = data.concepts.length; i < len; i++) {
     const concept = data.concepts[i];
     const prefix = i + 1 < 10 ? `0${i + 1}` : i + 1;
@@ -22,37 +23,36 @@ export default function writeHtmlLessonSummary(data, targetDir) {
     const title = `${prefix}. ${concept.title}`;
     concepts.push({
       link,
-      title
+      title,
     });
   }
 
   if (data.project) {
     const { title } = data.project;
-    const prefix = `Project Description`;
+    const prefix = 'Project Description';
     const link = filenamify(`${prefix} - ${title}.html`);
     project = {
       link,
-      title: `${prefix} - ${title}`
+      title: `${prefix} - ${title}`,
     };
-
   } //.if project
 
   if (data.rubric) {
-    const prefix = `Project Rubric`;
+    const prefix = 'Project Rubric';
     const link = filenamify(`${prefix} - ${data.project.title}.html`);
     rubric = {
       link,
-      title: `${prefix} - ${data.project.title}`
+      title: `${prefix} - ${data.project.title}`,
     };
   } //.if rubric
 
   if (data.lab) {
     const { title } = data.lab;
-    const prefix = `Lab`;
+    const prefix = 'Lab';
     const link = filenamify(`${prefix} - ${title}.html`);
     lab = {
       link,
-      title: `${prefix} - ${title}`
+      title: `${prefix} - ${title}`,
     };
   } //.if lab
 
@@ -66,7 +66,7 @@ export default function writeHtmlLessonSummary(data, targetDir) {
   const srcJs = `${upDir}assets/js`;
   const file = `${targetDir}/index.html`;
   return loadTemplate('summary.lesson')
-    .then(html => {
+    .then((html) => {
       const template = Handlebars.compile(html);
       const dataTemplate = {
         concepts,
@@ -81,7 +81,7 @@ export default function writeHtmlLessonSummary(data, targetDir) {
         docTitle: pageTitle,
         srcCss,
         srcJs,
-        title: pageTitle
+        title: pageTitle,
       };
     })
     .then(templateDataIndex => writeHtml(templateDataIndex, file))
@@ -89,7 +89,7 @@ export default function writeHtmlLessonSummary(data, targetDir) {
       logger.info(`Completed rendering lesson summary file ${file}`);
       logger.info('____________________\n');
     })
-    .catch(error => {
+    .catch((error) => {
       throw error;
     });
 }

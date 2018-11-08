@@ -2,7 +2,7 @@ import async from 'async';
 import dirTree from 'directory-tree';
 import { renderCourse } from '../render/functions';
 import {
-  logger
+  logger,
 } from '../utils';
 
 
@@ -13,19 +13,19 @@ import {
  */
 export default function renderdir(sourceDir, targetDir) {
   if (sourceDir === targetDir) {
-    const _error = new Error(`Target directory must not be the same with source directory. Please change the target directory.`);
+    const _error = new Error('Target directory must not be the same with source directory. Please change the target directory.');
     reject(_error);
     return;
   }
 
   const dirTreeSource = dirTree(sourceDir);
   if (!dirTreeSource) {
-    logger.error(`Path to downloaded Udacity course/Nanodegree doesn't exist.`);
+    logger.error('Path to downloaded Udacity course/Nanodegree doesn\'t exist.');
     return;
   }
 
   // loop through each
-  async.forEachSeries(dirTreeSource.children, function(child, done) {
+  async.forEachSeries(dirTreeSource.children, (child, done) => {
     if (child.type !== 'directory') {
       done();
       return;
@@ -36,15 +36,15 @@ export default function renderdir(sourceDir, targetDir) {
       .then(() => {
         done();
       })
-      .catch(error =>{
+      .catch((error) => {
         logger.error(error);
       });
-  }, error => {
+  }, (error) => {
     if (error) {
       logger.error(error);
       return;
     }
 
-    logger.info(`Completed downloading all courses/Nanodegrees`);
+    logger.info('Completed downloading all courses/Nanodegrees');
   });
 }

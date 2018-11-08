@@ -9,7 +9,7 @@ const _filenamify = require('filenamify');
 export default function filenamify(filename, option) {
   if (!option) {
     option = {
-      replacement: ''
+      replacement: '',
     };
   }
 

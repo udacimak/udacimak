@@ -5,7 +5,7 @@ import path from 'path';
 import progress from 'request-progress';
 import request from 'request';
 import { addHttp } from './index';
-import { logger } from '../utils';
+import { logger } from '.';
 
 
 /**
@@ -34,8 +34,7 @@ If the link was temporary broken and is up again when you check, please re-run t
     // add https protocol to url if missing
     uri = addHttp(uri);
 
-    if (!filename)
-      filename = path.basename(uri);
+    if (!filename) filename = path.basename(uri);
     const savePath = `${outputDir}/${filename}`;
     const tempPath = `${outputDir}/.${filename}`;
 
@@ -57,16 +56,16 @@ If the link was temporary broken and is up again when you check, please re-run t
       Referer: 'https://classroom.udacity.com/me',
       // https://github.com/request/request/issues/2047#issuecomment-272473278
       // avoid socket hang up error
-      Connection: 'keep-alive'      
+      Connection: 'keep-alive',
     };
     const requestOptions = {
       uri,
       headers,
       // avoid socket hang up error
-      forever: true
+      forever: true,
     };
     progress(request(requestOptions))
-      .on('progress', state => {
+      .on('progress', (state) => {
         if (!fileSize) {
           fileSize = state.size.total;
           progressBar.start(fileSize, 0);
@@ -74,7 +73,7 @@ If the link was temporary broken and is up again when you check, please re-run t
           progressBar.update(state.size.transferred);
         }
       })
-      .on('response', response => {
+      .on('response', (response) => {
         if (response.statusCode == 500) {
           spinner.fail();
           logger.error(`Error Status 500: Request for media file fails!
@@ -83,10 +82,10 @@ ${errorCheck}`);
           resolve('');
         }
       })
-      .on('error', error => {
+      .on('error', (error) => {
         spinner.fail();
 
-        if (error.code && error.code === 'ENOTFOUND') {          
+        if (error.code && error.code === 'ENOTFOUND') {
           logger.error(`${error.code}: Request for media file fails!
 The url ${uri} doesn't seem to exist.
 ${errorCheck}`);
@@ -107,7 +106,7 @@ ${errorCheck}`);
       .pipe(fs.createWriteStream(tempPath))
       .on('close', () => {
         // rename temp file to proper file name when finish
-        fs.rename(tempPath, savePath, error => {
+        fs.rename(tempPath, savePath, (error) => {
           if (error) {
             reject(error);
           }

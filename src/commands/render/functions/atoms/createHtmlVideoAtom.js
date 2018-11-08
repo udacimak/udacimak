@@ -1,5 +1,5 @@
 import {
-  downloadYoutube
+  downloadYoutube,
 } from '../../../utils';
 
 
@@ -15,7 +15,7 @@ export default function createHtmlVideoAtom(atom, outputPath, prefix) {
     // create directory for video assets
     const pathVideo = outputPath;
 
-    downloadYoutube(atom.video.youtube_id, pathVideo, prefix, atom.title).then(filenameYoutube => {
+    downloadYoutube(atom.video.youtube_id, pathVideo, prefix, atom.title).then((filenameYoutube) => {
       const html = `
         <video controls>
           <source src="${filenameYoutube}" type="video/mp4">
@@ -23,7 +23,7 @@ export default function createHtmlVideoAtom(atom, outputPath, prefix) {
       `;
 
       resolve(html);
-    }).catch(error => {
+    }).catch((error) => {
       reject(error);
     });
   });

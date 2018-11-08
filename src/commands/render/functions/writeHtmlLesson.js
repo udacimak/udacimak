@@ -1,14 +1,15 @@
-const async = require('async');
-const fs = require('fs');
 import {
   writeHtmlConcept,
   writeHtmlLab,
   writeHtmlLessonSummary,
   writeHtmlProjectDescription,
-  writeHtmlRubric
-} from './';
+  writeHtmlRubric,
+} from '.';
 import { createHtmlSidebarLesson } from './sidebar';
 import { deleteFilesInFolder } from '../../utils';
+
+const async = require('async');
+const fs = require('fs');
 
 
 /**
@@ -38,7 +39,7 @@ export default function writeHtmlLesson(jsonPath, targetDir, doneModule) {
 
   // try to get rubric data first if available
   promiseRubric = new Promise((resolve, reject) => {
-    fs.access(pathRubric, fs.constants.F_OK, error => {
+    fs.access(pathRubric, fs.constants.F_OK, (error) => {
       if (error) {
         // there are no rubric.json to parse
         resolve();
@@ -57,17 +58,17 @@ export default function writeHtmlLesson(jsonPath, targetDir, doneModule) {
 
   promiseRubric
     .then(() => Promise.all([
-        createHtmlSidebarLesson(data),
-        writeHtmlLessonSummary(data, targetDir)
-      ]))
-    .then(res => {
+      createHtmlSidebarLesson(data),
+      writeHtmlLessonSummary(data, targetDir),
+    ]))
+    .then((res) => {
       const htmlSidebar = res[0];
 
       let i = 1;
-      async.eachSeries(concepts, function(concept, doneLesson) {
+      async.eachSeries(concepts, (concept, doneLesson) => {
         writeHtmlConcept(concept, htmlSidebar, targetDir, i, doneLesson);
         i++;
-      }, error => {
+      }, (error) => {
         if (error) throw error;
         let promiseRubric;
         if (data.rubric) {
@@ -76,15 +77,15 @@ export default function writeHtmlLesson(jsonPath, targetDir, doneModule) {
         Promise.all([
           promiseRubric,
           writeHtmlProjectDescription(project, htmlSidebar, targetDir),
-          writeHtmlLab(lab, htmlSidebar, targetDir)
+          writeHtmlLab(lab, htmlSidebar, targetDir),
         ]).then(() => {
           doneModule();
-        }).catch(error => {
+        }).catch((error) => {
           throw error;
         });
       }); //.async.eachSeries concepts
     })
-    .catch(error => {
+    .catch((error) => {
       throw error;
     }); //.promiseRubric
 }

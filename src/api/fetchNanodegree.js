@@ -1,5 +1,5 @@
 import {
-  API_ENDPOINTS_UDACITY_GRAPHQL
+  API_ENDPOINTS_UDACITY_GRAPHQL,
 } from '../config';
 import { fetchApiUdacityGraphql } from '.';
 

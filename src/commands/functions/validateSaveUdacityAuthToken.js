@@ -1,13 +1,13 @@
 import ora from 'ora';
 import {
   config,
-  logger
+  logger,
 } from '../utils';
 import {
-  fetchUdacityUserInfo
+  fetchUdacityUserInfo,
 } from '../../api';
 import {
-  CLI_CONFIG_UDACITY_AUTH_TOKEN
+  CLI_CONFIG_UDACITY_AUTH_TOKEN,
 } from '../../config';
 
 
@@ -19,7 +19,7 @@ import {
 export default function validateSaveUdacityAuthToken(token) {
   const spinner = ora('Validate Udacity authentication token via Udacity API').start();
   return fetchUdacityUserInfo(token)
-    .then(res => {
+    .then((res) => {
       if (!res.data || !res.data.user) {
         spinner.fail();
         logger.error(`Could not validate your Udacity token. Please try again. Here's the error message:
@@ -33,7 +33,7 @@ export default function validateSaveUdacityAuthToken(token) {
       const { user } = res.data;
       const { first_name, nickname } = user;
       const name = nickname || first_name;
-      const msgSuccess = `You have successfully saved authentication token locally!`;
+      const msgSuccess = 'You have successfully saved authentication token locally!';
       if (name) {
         logger.info(`Hi ${name}. ${msgSuccess}`);
       } else {
@@ -42,7 +42,7 @@ export default function validateSaveUdacityAuthToken(token) {
 
       return token;
     })
-    .catch(error => {
+    .catch((error) => {
       spinner.fail();
       logger.error(`Failed to validate your Udacity token. Please try again. Here's the error message:
       ${JSON.stringify(error, null, 4)}`);

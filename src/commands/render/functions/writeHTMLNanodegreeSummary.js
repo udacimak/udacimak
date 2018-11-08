@@ -2,14 +2,14 @@ import Handlebars from 'handlebars';
 import fs from 'fs';
 import { loadTemplate } from './templates';
 import {
-  writeHtml
-} from './';
+  writeHtml,
+} from '.';
 import {
   downloadImage,
   logger,
   filenamify,
   makeDir,
-  markdownToHtml
+  markdownToHtml,
 } from '../../utils';
 
 
@@ -67,14 +67,14 @@ function createHtmlLessonSummary(module, prefixModule) {
     if (lesson.project) {
       // create list item for project description
       const { title } = lesson.project;
-      const prefixProjectDescription = `Project Description`;
+      const prefixProjectDescription = 'Project Description';
       const linkProjectDescription = filenamify(`${prefixProjectDescription} - ${title}.html`);
       htmlProjectDescription = `
       <p><a href="${linkLesson}/${linkProjectDescription}">${prefixProjectDescription} - ${title}</a></p>
       `;
 
       // create list item for project rubric
-      const prefixRubric = `Project Rubric`;
+      const prefixRubric = 'Project Rubric';
       const linkRubric = filenamify(`${prefixRubric} - ${title}.html`);
       htmlProjectRubric += `<p><a href="${linkLesson}/${linkRubric}">${prefixRubric} - ${title}</a></p>`;
     }
@@ -82,7 +82,7 @@ function createHtmlLessonSummary(module, prefixModule) {
     if (lesson.lab) {
       // create list item for lab
       const { title } = lesson.lab;
-      const prefixLab = `Lab`;
+      const prefixLab = 'Lab';
       const linkLab = filenamify(`${prefixLab} - ${title}.html`);
       htmlLab += `<p><a href="${linkLesson}/${linkLab}">${prefixLab} - ${title}</a></p>`;
     }
@@ -125,7 +125,7 @@ function createHtmlModuleSummary(part, prefixPart) {
     const module = part.modules[i];
     const numbering = (i + 1 < 10) ? `0${i + 1}` : i + 1;
     const prefixModule = `Module ${numbering}`;
-    let htmlLessons = createHtmlLessonSummary(module, `${prefixPart}-${prefixModule}`);
+    const htmlLessons = createHtmlLessonSummary(module, `${prefixPart}-${prefixModule}`);
     html += `
       <li>
         <strong>${prefixModule}:</strong> ${module.title}
@@ -190,11 +190,13 @@ export default function writeHTMLNanodegreeSummary(jsonPath, targetDir, nanodegr
   // download image to save locally then create html file
   return Promise.all([
     downloadImage(heroImageUrl, pathImg),
-    loadTemplate('summary.nanodegree')
+    loadTemplate('summary.nanodegree'),
   ])
-    .then(res => {
-      let [filename, html] = res;
-      let { key, version, summary, title } = data;
+    .then((res) => {
+      const [filename, html] = res;
+      let {
+        key, version, summary, title,
+      } = data;
       summary = markdownToHtml(summary);
       const srcHeroImg = filename ? `img/${filename}` : null;
       const heroImgAlt = title;
@@ -205,27 +207,27 @@ export default function writeHTMLNanodegreeSummary(jsonPath, targetDir, nanodegr
         htmlParts,
         key,
         version,
-        summary
+        summary,
       };
       const template = Handlebars.compile(html);
       return template(dataTemplate);
     })
-    .then(contentMain => {
+    .then((contentMain) => {
       const templateDataIndex = {
         contentMain,
         docTitle: nanodegreeName,
         srcCss: 'assets/css',
         srcJs: 'assets/js',
-        title: data.title
+        title: data.title,
       };
-      const file = targetDir + '/index.html';
+      const file = `${targetDir}/index.html`;
       return writeHtml(templateDataIndex, file);
     })
     .then(() => {
       logger.info(`Completed rendering Nanodegree summary file ${targetDir}/index.html`);
       logger.info('____________________\n');
     })
-    .catch(error => {
+    .catch((error) => {
       throw error;
     });
 }

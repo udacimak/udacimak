@@ -10,12 +10,12 @@ import { loadTemplate } from './templates';
  */
 export default function writeHtml(data, file) {
   return loadTemplate('index')
-    .then(html => {
+    .then((html) => {
       const template = Handlebars.compile(html);
       const htmlResult = template(data);
 
       // write HTML file
-      fs.writeFile(file, htmlResult, error => {
+      fs.writeFile(file, htmlResult, (error) => {
         if (error) {
           throw error;
         }

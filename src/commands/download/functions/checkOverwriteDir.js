@@ -1,5 +1,5 @@
 import fs from 'fs';
-import { promptOverwriteDir } from './';
+import { promptOverwriteDir } from '.';
 
 
 /**
@@ -11,10 +11,9 @@ import { promptOverwriteDir } from './';
 export default function checkOverwriteDir(targetDir, dirName) {
   const path = `${targetDir}/${dirName}`;
 
-  if(fs.existsSync(path)) {
+  if (fs.existsSync(path)) {
     // prompt user if they want to overwrite this folder
     return promptOverwriteDir(dirName);
-  } else {
-    return new Promise((resolve) => resolve(true));
   }
+  return new Promise(resolve => resolve(true));
 }

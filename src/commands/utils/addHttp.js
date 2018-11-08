@@ -1,4 +1,4 @@
-import logger from "./logger";
+import logger from './logger';
 
 /**
  * Add htpps protocol to url if missing
@@ -10,7 +10,7 @@ export default function addHttp(url) {
   // this is a wrong protocol that exists in a JSON file in a Udacity Nanodegree...
   url = url.replace('https:///', '');
   if (!/^(?:f|ht)tps?\:\/\//.test(url)) {
-      url = "https:" + url;
+    url = `https:${url}`;
   }
   return url;
 }

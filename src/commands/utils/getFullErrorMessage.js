@@ -11,19 +11,17 @@ export default function getFullErrorMessage(error) {
   const _error = serializeError(error);
   let str = '';
 
-  let { name, code, message, stack } = _error;
+  const {
+    name, code, message, stack,
+  } = _error;
 
-  if (name)
-    str += `${name.toUpperCase()}: `;
-  
-  if (message)
-    str += message + '\n';
-  
-  if (code)
-    str += `CODE: ${code}\n`;
+  if (name) str += `${name.toUpperCase()}: `;
 
-  if (stack)
-    str += `STACK: ${stack}`;
+  if (message) str += `${message}\n`;
+
+  if (code) str += `CODE: ${code}\n`;
+
+  if (stack) str += `STACK: ${stack}`;
 
   return str || error;
 }

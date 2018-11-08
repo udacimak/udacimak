@@ -2,7 +2,7 @@ import Handlebars from 'handlebars';
 import { loadTemplate } from '../templates';
 import {
   downloadYoutube,
-  markdownToHtml
+  markdownToHtml,
 } from '../../../utils';
 
 
@@ -14,7 +14,7 @@ import {
  * @returns {string} HTML content
  */
 export default function createHtmlReflectAtom(atom, targetDir, prefix) {
-  let questionTitle = markdownToHtml(atom.question.title);
+  const questionTitle = markdownToHtml(atom.question.title);
   let questionText;
 
   if (atom.question.semantic_type === 'TextQuestion') {
@@ -24,12 +24,12 @@ export default function createHtmlReflectAtom(atom, targetDir, prefix) {
   }
 
   // download answer video if available
-  let youtubeId = atom.answer.video ? atom.answer.video.youtube_id : '';
+  const youtubeId = atom.answer.video ? atom.answer.video.youtube_id : '';
   const promiseDownloadYoutube = downloadYoutube(youtubeId, targetDir, prefix, atom.title);
   const promiseLoadTemplate = loadTemplate('atom.reflect');
   return Promise.all([promiseDownloadYoutube, promiseLoadTemplate])
-    .then(res => {
-      let [filenameYoutube, html] = res;
+    .then((res) => {
+      const [filenameYoutube, html] = res;
 
       const answer = markdownToHtml(atom.answer.text);
       const dataTemplate = {

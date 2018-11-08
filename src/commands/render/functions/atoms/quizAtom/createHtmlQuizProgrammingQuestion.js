@@ -7,8 +7,9 @@ import { loadTemplate } from '../../templates';
  * @param {object} atom atom JSON
  */
 export default function createHtmlQuizProgrammingQuestion(atom) {
-  let files = [];
-  let active, id, isSelected, file, name, text;
+  const files = [];
+  let active; let id; let isSelected; let file; let name; let
+    text;
   for (let i = 0, len = atom.question.initial_code_files.length; i < len; i++) {
     file = atom.question.initial_code_files[i];
     // add active class for first elements
@@ -22,15 +23,15 @@ export default function createHtmlQuizProgrammingQuestion(atom) {
       id,
       isSelected,
       name,
-      text
+      text,
     });
   } //.for
 
   return loadTemplate('atom.quiz.programmingQuestion')
-    .then(html => {
+    .then((html) => {
       const template = Handlebars.compile(html);
       const dataTemplate = {
-        files
+        files,
       };
 
       return template(dataTemplate);

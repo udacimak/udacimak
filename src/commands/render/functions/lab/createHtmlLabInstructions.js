@@ -1,10 +1,10 @@
 import Handlebars from 'handlebars';
 import cheerio from 'cheerio';
 import {
-  loadTemplate
-} from '../../functions/templates';
+  loadTemplate,
+} from '../templates';
 import {
-  markdownToHtml
+  markdownToHtml,
 } from '../../../utils';
 
 
@@ -23,9 +23,9 @@ export default function createHtmlLabInstructions(details) {
   // TODO: find all media links and download them
 
   return loadTemplate('lab.instructions')
-    .then(html => {
+    .then((html) => {
       const dataTemplate = {
-        text
+        text,
       };
 
       const template = Handlebars.compile(html);

@@ -1,7 +1,7 @@
 import request from 'request';
 import { config } from '../commands/utils';
 import {
-  CLI_CONFIG_UDACITY_AUTH_TOKEN
+  CLI_CONFIG_UDACITY_AUTH_TOKEN,
 } from '../config';
 
 
@@ -25,7 +25,7 @@ export default function fetchApiUdacityGraphql(url, queryGraphql, udacityAuthTok
     Referer: 'https://classroom.udacity.com/me',
     // https://github.com/request/request/issues/2047#issuecomment-272473278
     // avoid socket hang up error
-    Connection: 'keep-alive'      
+    Connection: 'keep-alive',
   };
   const method = 'POST';
   const requestOptions = {
@@ -34,13 +34,13 @@ export default function fetchApiUdacityGraphql(url, queryGraphql, udacityAuthTok
     method,
     headers,
     // avoid socket hang up error
-    forever: true
+    forever: true,
   };
 
   return new Promise((resolve, reject) => {
     request(requestOptions, (error, res) => {
       if (error) {
-        reject({error, requestOptions, res});
+        reject({ error, requestOptions, res });
       } else {
         const jsonRes = JSON.parse(res.body);
         if (jsonRes.errors) {

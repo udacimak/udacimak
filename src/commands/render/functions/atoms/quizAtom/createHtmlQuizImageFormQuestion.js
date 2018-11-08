@@ -3,7 +3,7 @@ import { loadTemplate } from '../../templates';
 import { createHtmlWidget } from './index';
 import {
   downloadImage,
-  makeDir
+  makeDir,
 } from '../../../../utils';
 
 
@@ -24,9 +24,9 @@ export default function createHtmlQuizImageFormQuestion(atom, outputPath) {
 
   return Promise.all([
     promiseDownloadImage,
-    promiseLoadTemplate
-  ]).then(res => {
-    let [filenameImg, html] = res;
+    promiseLoadTemplate,
+  ]).then((res) => {
+    const [filenameImg, html] = res;
     let htmlWidgets = '';
     for (const widget of question.widgets) {
       htmlWidgets += createHtmlWidget(widget);
@@ -35,7 +35,7 @@ export default function createHtmlQuizImageFormQuestion(atom, outputPath) {
     const template = Handlebars.compile(html);
     const dataTemplate = {
       htmlWidgets,
-      srcImg: `img/${filenameImg}`
+      srcImg: `img/${filenameImg}`,
     };
     return template(dataTemplate);
   });

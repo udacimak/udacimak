@@ -10,8 +10,8 @@ export default function promptOverwriteDir(dir) {
     {
       type: 'confirm',
       name: 'overwriteExistingFolder',
-      message: `The folder ${dir} already exists. Are you sure you want to write JSON data into this folder?`
-    }
+      message: `The folder ${dir} already exists. Are you sure you want to write JSON data into this folder?`,
+    },
   ];
 
   return inquirer

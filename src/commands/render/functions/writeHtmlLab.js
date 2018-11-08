@@ -1,22 +1,22 @@
 import Handlebars from 'handlebars';
 import path from 'path';
 import {
-  createHtmlWorkspaceAtom
+  createHtmlWorkspaceAtom,
 } from './atoms';
 import {
   createHtmlLabInstructions,
-  createHtmlLabIntroduction
+  createHtmlLabIntroduction,
 } from './lab';
 import {
-  writeHtml
-} from './';
+  writeHtml,
+} from '.';
 import {
-  loadTemplate
+  loadTemplate,
 } from './templates';
 import {
   downloadYoutube,
   filenamify,
-  logger
+  logger,
 } from '../../utils';
 
 
@@ -36,9 +36,9 @@ export default function writeHtmlLab(lab, htmlSidebar, targetDir) {
     title,
     overview,
     review_video,
-    workspace
+    workspace,
   } = lab;
-  let file = path.join(targetDir, filenamify(`Lab - ${title}.html`));
+  const file = path.join(targetDir, filenamify(`Lab - ${title}.html`));
 
   let reviewVideo;
   if (review_video && review_video.youtube_id) {
@@ -55,9 +55,9 @@ export default function writeHtmlLab(lab, htmlSidebar, targetDir) {
     introduction,
     htmlWorkspace,
     reviewVideo,
-    templateLab
-  ]).then(data => {
-    const [ instructions, introduction, htmlWorkspace, filenameYoutube, html ] = data;
+    templateLab,
+  ]).then((data) => {
+    const [instructions, introduction, htmlWorkspace, filenameYoutube, html] = data;
 
     const htmlReviewVideo = `
       <video controls>
@@ -85,7 +85,7 @@ export default function writeHtmlLab(lab, htmlSidebar, targetDir) {
       srcCss,
       srcJs,
       title: `Lab: ${title}`,
-      contentMain: htmlLab
+      contentMain: htmlLab,
     };
 
     return templateDataIndex;
@@ -94,7 +94,7 @@ export default function writeHtmlLab(lab, htmlSidebar, targetDir) {
       logger.info(`Completed rendering lab file ${file}`);
       logger.info('____________________\n');
     })
-    .catch(error => {
+    .catch((error) => {
       throw error;
     });
 }

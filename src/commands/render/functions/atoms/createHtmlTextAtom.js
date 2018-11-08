@@ -1,13 +1,14 @@
 import Handlebars from 'handlebars';
-const async = require('async');
-const cheerio = require('cheerio');
 import {
   downloadImage,
   getFileExt,
   makeDir,
-  markdownToHtml
+  markdownToHtml,
 } from '../../../utils';
 import { loadTemplate } from '../templates';
+
+const async = require('async');
+const cheerio = require('cheerio');
 
 
 /**
@@ -26,7 +27,7 @@ export default function createHtmlTextAtom(atom, outputPath) {
     const images = $('img');
 
     // save links to download video / images
-    let links = [];
+    const links = [];
     // create directory for video / image assets
     const pathMedia = makeDir(outputPath, 'media');
 
@@ -35,7 +36,7 @@ export default function createHtmlTextAtom(atom, outputPath) {
         links.push({
           i,
           type: 'video',
-          src: video.attribs.src
+          src: video.attribs.src,
         });
       });
     }
@@ -45,13 +46,13 @@ export default function createHtmlTextAtom(atom, outputPath) {
         links.push({
           i,
           type: 'img',
-          src: image.attribs.src
+          src: image.attribs.src,
         });
       });
     }
 
     // loop and download all media links
-    async.eachSeries(links, function(link, done) {
+    async.eachSeries(links, (link, done) => {
       const { i, type, src } = link;
 
       // since these src values may contain a link, but won't return a proper filename
@@ -66,21 +67,20 @@ export default function createHtmlTextAtom(atom, outputPath) {
       }
 
       downloadImage(src, pathMedia, filename)
-        .then(filename => {
+        .then((filename) => {
           text = text.replace(src, `media/${filename}`);
           done();
         })
-        .catch(error => {
+        .catch((error) => {
           reject(error);
         });
-    }, function(error) {
-      if (error)
-        reject(error);
+    }, (error) => {
+      if (error) reject(error);
 
       loadTemplate('atom.text')
-        .then(html => {
+        .then((html) => {
           const data = {
-            text
+            text,
           };
 
           const template = Handlebars.compile(html);

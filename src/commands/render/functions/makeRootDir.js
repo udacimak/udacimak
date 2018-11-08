@@ -1,7 +1,7 @@
 import copydir from 'copy-dir';
 import rimraf from 'rimraf';
 import {
-  makeDir
+  makeDir,
 } from '../../utils';
 
 

@@ -1,11 +1,11 @@
 export { default as createHtmlImageAtom } from './createHtmlImageAtom';
-export { default as createHtmlReflectAtom  } from './createHtmlReflectAtom';
+export { default as createHtmlReflectAtom } from './createHtmlReflectAtom';
 export { default as createHtmlTaskListAtom } from './createHtmlTaskListAtom';
 export { default as createHtmlTextAtom } from './createHtmlTextAtom';
 export { default as createHtmlVideoAtom } from './createHtmlVideoAtom';
 export { default as createHtmlCheckboxQuizAtom } from './createHtmlCheckboxQuizAtom';
 export { default as createHtmlMatchingQuizAtom } from './createHtmlMatchingQuizAtom';
-export { default as createHtmlRadioQuizAtom  } from './createHtmlRadioQuizAtom';
+export { default as createHtmlRadioQuizAtom } from './createHtmlRadioQuizAtom';
 export { default as createHtmlQuizAtom } from './createHtmlQuizAtom';
 export { default as createHtmlValidatedQuizAtom } from './createHtmlValidatedQuizAtom';
 export { default as createHtmlWorkspaceAtom } from './createHtmlWorkspaceAtom';

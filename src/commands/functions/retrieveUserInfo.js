@@ -7,7 +7,7 @@ import { fetchUdacityUserInfo } from '../../api';
  */
 export default function retrieveUserInfo(token) {
   return fetchUdacityUserInfo(token)
-    .then(res => {
+    .then((res) => {
       if (!res.data || !res.data.user) {
         logger.error(`Could not fetch user information with error:
         ${res.body}`);

@@ -1,16 +1,16 @@
 import async from 'async';
 import fs from 'fs';
 import {
-  fetchCourse
+  fetchCourse,
 } from '../../../api';
 import {
   checkOverwriteDir,
-  downloadLesson
-} from './';
+  downloadLesson,
+} from '.';
 import {
   filenamify,
   logger,
-  makeDir
+  makeDir,
 } from '../../utils';
 
 
@@ -22,10 +22,11 @@ import {
  */
 export default function downloadCourse(courseId, targetDir, udacityAuthToken) {
   return new Promise((resolve, reject) => {
-    let course, dirCourse, titleCourse, dirCourseName, courseJSON;
+    let course; let dirCourse; let titleCourse; let dirCourseName; let
+      courseJSON;
 
     return fetchCourse({ key: courseId }, udacityAuthToken)
-      .then(res => {
+      .then((res) => {
         courseJSON = res;
         course = res.data.course;
         titleCourse = course.title;
@@ -34,7 +35,7 @@ export default function downloadCourse(courseId, targetDir, udacityAuthToken) {
         // check if folder already exist and warn the user
         return checkOverwriteDir(targetDir, dirCourseName);
       })
-      .then(shouldProceed => {
+      .then((shouldProceed) => {
         if (!shouldProceed) return;
 
         dirCourse = makeDir(targetDir, dirCourseName);
@@ -45,14 +46,14 @@ export default function downloadCourse(courseId, targetDir, udacityAuthToken) {
 
         return course;
       })
-      .then(course => {
+      .then((course) => {
         if (!course) return;
 
         const { lessons } = course;
 
         // loop through lessons to create folder and download lessons
         let i = 0;
-        async.forEachSeries(lessons, function(lesson, doneLessons) {
+        async.forEachSeries(lessons, (lesson, doneLessons) => {
           const numbering = (i + 1 < 10) ? `0${i + 1}` : i + 1;
           const dirLessonName = filenamify(`Lesson ${numbering}_${lesson.title}`);
           const dirLesson = makeDir(dirCourse, dirLessonName);
@@ -62,7 +63,7 @@ export default function downloadCourse(courseId, targetDir, udacityAuthToken) {
               doneLessons();
             });
           i++;
-        }, error => {
+        }, (error) => {
           if (error) {
             reject(error);
             return;
@@ -73,5 +74,4 @@ export default function downloadCourse(courseId, targetDir, udacityAuthToken) {
         }); //.async.forEachSeries lessons
       });
   }); //.Promise
-
 }

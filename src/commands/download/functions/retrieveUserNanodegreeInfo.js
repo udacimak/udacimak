@@ -1,5 +1,5 @@
 import {
-  fetchUdacityUserInfo
+  fetchUdacityUserInfo,
 } from '../../../api';
 
 
@@ -10,7 +10,7 @@ import {
  */
 export default function retrieveUserNanodegreeInfo(ndKey, token) {
   return fetchUdacityUserInfo(token)
-    .then(res => {
+    .then((res) => {
       const { graduated_nanodegrees, nanodegrees } = res.data.user;
       let nanodegree = null;
       for (const _nanodegree of graduated_nanodegrees) {

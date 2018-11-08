@@ -11,7 +11,7 @@ import { markdownToHtml } from '../../../utils';
 export default function createHtmlRadioQuizAtom(atom) {
   const prompt = markdownToHtml(atom.question.prompt);
 
-  let answers = [];
+  const answers = [];
   let solution;
   for (const answer of atom.question.answers) {
     let { id, text, is_correct } = answer;
@@ -25,16 +25,16 @@ export default function createHtmlRadioQuizAtom(atom) {
     answers.push({
       id,
       name: atom.id,
-      text
+      text,
     });
   }
 
   return loadTemplate('atom.radioQuiz')
-    .then(html => {
+    .then((html) => {
       const dataTemplate = {
         answers,
         solution,
-        prompt
+        prompt,
       };
       const template = Handlebars.compile(html);
       return template(dataTemplate);

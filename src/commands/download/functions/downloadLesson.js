@@ -1,13 +1,13 @@
 import fs from 'fs';
 import {
-  fetchLesson
+  fetchLesson,
 } from '../../../api';
 import {
-  logger
+  logger,
 } from '../../utils';
 import {
-  downloadProjectRubric
-} from './';
+  downloadProjectRubric,
+} from '.';
 
 
 /**
@@ -26,7 +26,7 @@ export default function downloadLesson(lesson, rootKey, targetDir, token) {
   }
 
   return fetchLesson({ id, locale, rootKey }, token)
-    .then(res => {
+    .then((res) => {
       const jsonStr = JSON.stringify(res, null, 2);
       const file = `${targetDir}/data.json`;
       // save JSON file

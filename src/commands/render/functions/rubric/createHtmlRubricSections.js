@@ -1,4 +1,4 @@
-import { createHtmlRubricItems } from './';
+import { createHtmlRubricItems } from '.';
 import { markdownToHtml } from '../../../utils';
 
 

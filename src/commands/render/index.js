@@ -1,9 +1,9 @@
 #!/usr/bin/env node
 import {
-  renderCourse
+  renderCourse,
 } from './functions';
 import {
-  logger
+  logger,
 } from '../utils';
 
 
@@ -14,7 +14,7 @@ import {
  */
 export default function render(path, targetDir) {
   renderCourse(path, targetDir)
-    .catch(error => {
+    .catch((error) => {
       logger.error(error);
     });
 }

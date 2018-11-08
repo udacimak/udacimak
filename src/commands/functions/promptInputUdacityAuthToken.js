@@ -9,13 +9,11 @@ export default function promptInputUdacityAuthToken() {
     {
       type: 'input',
       name: 'udacityAuthToken',
-      message: "Enter Udacity authentication token (Log in to Udacity website and find _jwt key in your browser's cookies to get the token):"
+      message: "Enter Udacity authentication token (Log in to Udacity website and find _jwt key in your browser's cookies to get the token):",
     },
   ];
 
   return inquirer
     .prompt(questions)
-    .then(answers => {
-      return answers.udacityAuthToken;
-    });
+    .then(answers => answers.udacityAuthToken);
 }

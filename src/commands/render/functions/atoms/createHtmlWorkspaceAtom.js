@@ -1,7 +1,7 @@
 import Handlebars from 'handlebars';
 import {
-  loadTemplate
-} from '../../functions/templates';
+  loadTemplate,
+} from '../templates';
 import { markdownToHtml } from '../../../utils';
 
 
@@ -27,8 +27,7 @@ export default function createHtmlWorkspaceAtom(atom) {
     const { conf } = configuration.blueprint;
     if (conf) {
       // Jupyter workspace usually has defaultPath
-      if (conf.defaultPath)
-        defaultPath = conf.defaultPath;
+      if (conf.defaultPath) defaultPath = conf.defaultPath;
       // Coding workspace usually has openFiles
       if (conf.openFiles && conf.openFiles.length) {
         openFiles = conf.openFiles;
@@ -39,12 +38,12 @@ export default function createHtmlWorkspaceAtom(atom) {
   } //.if configuration
 
   return loadTemplate('atom.workspace')
-    .then(html => {
+    .then((html) => {
       const data = {
         defaultPath,
         kind,
         openFiles,
-        userCode
+        userCode,
       };
 
       const template = Handlebars.compile(html);

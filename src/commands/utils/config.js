@@ -1,5 +1,6 @@
-import { filenamify } from './';
 import settings from 'user-settings';
+import { filenamify } from '.';
+
 const pkginfo = require('pkginfo')(module);
 
 
@@ -25,4 +26,3 @@ class Config {
 }
 
 export default new Config();
-

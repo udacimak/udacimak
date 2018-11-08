@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 import {
-  validateSaveUdacityAuthToken
+  validateSaveUdacityAuthToken,
 } from '../functions';
 
 

@@ -10,18 +10,18 @@ import { loadTemplate } from '../templates';
  */
 export default function createHtmlValidatedQuizAtom(atom) {
   const prompt = markdownToHtml(atom.question.prompt);
-  let matchers = [];
+  const matchers = [];
 
   for (const matcher of atom.question.matchers) {
     matchers.push(matcher.expression);
   }
 
   return loadTemplate('atom.validatedQuiz')
-    .then(html => {
+    .then((html) => {
       const template = Handlebars.compile(html);
       const data = {
         prompt,
-        matchers
+        matchers,
       };
 
       return template(data);

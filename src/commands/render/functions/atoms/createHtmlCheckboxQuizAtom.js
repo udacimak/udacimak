@@ -11,8 +11,8 @@ import { markdownToHtml } from '../../../utils';
 export default function createHtmlCheckboxQuizAtom(atom) {
   const prompt = markdownToHtml(atom.question.prompt);
 
-  let answers = [];
-  let solution = [];
+  const answers = [];
+  const solution = [];
   for (const answer of atom.question.answers) {
     const { id, text, is_correct } = answer;
 
@@ -24,16 +24,16 @@ export default function createHtmlCheckboxQuizAtom(atom) {
     answers.push({
       id,
       name: atom.id,
-      text: markdownToHtml(text)
+      text: markdownToHtml(text),
     });
   }
 
   return loadTemplate('atom.checkboxQuiz')
-    .then(html => {
+    .then((html) => {
       const dataTemplate = {
         answers,
         solution,
-        prompt
+        prompt,
       };
       const template = Handlebars.compile(html);
       return template(dataTemplate);

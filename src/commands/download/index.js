@@ -2,14 +2,14 @@
 import async from 'async';
 import process from 'process';
 import {
-  retrieveUdacityAuthToken
+  retrieveUdacityAuthToken,
 } from '../functions';
 import {
   downloadCourse,
-  downloadNanodegree
+  downloadNanodegree,
 } from './functions';
 import {
-  getFullErrorMessage, logger
+  getFullErrorMessage, logger,
 } from '../utils';
 
 
@@ -20,8 +20,8 @@ import {
  */
 export default function download(courseIds, targetDir) {
   retrieveUdacityAuthToken()
-    .then(token => {
-      async.eachSeries(courseIds, function(courseId, doneCourseIds) {
+    .then((token) => {
+      async.eachSeries(courseIds, (courseId, doneCourseIds) => {
         let isNanodegree = false;
         // check if this is a course or Nanodegree
         if (courseId.startsWith('nd')) {
@@ -30,7 +30,7 @@ export default function download(courseIds, targetDir) {
 
         let promise;
         if (isNanodegree) {
-          promise = downloadNanodegree(courseId, targetDir, token)
+          promise = downloadNanodegree(courseId, targetDir, token);
         } else {
           promise = downloadCourse(courseId, targetDir, token);
         }
@@ -39,16 +39,16 @@ export default function download(courseIds, targetDir) {
           .then(() => {
             doneCourseIds();
           })
-          .catch(error => {
+          .catch((error) => {
             error = getFullErrorMessage(error);
             logger.error(error);
             process.exit(1);
           });
-      }, error => {
+      }, (error) => {
         if (error) throw error;
       });
     })
-    .catch(error => {
+    .catch((error) => {
       throw error;
-    })
+    });
 }

@@ -17,15 +17,13 @@ export default function markdownToHtml(markdown) {
 
   // extension to avoid parsing HTML blocks that represent
   // math equations with mathquill
-  showdown.extension('ignoreMath', function() {
-    return [
-      {
-        type: 'lang',
-        regex: /<span class=('mathquill'|\"mathquill\")>(.*?)<\/span>/gmi,
-        replace: `<span class='mathquill ud-math'>$2</span>`
-      }
-    ];
-  });
+  showdown.extension('ignoreMath', () => [
+    {
+      type: 'lang',
+      regex: /<span class=('mathquill'|\"mathquill\")>(.*?)<\/span>/gmi,
+      replace: '<span class=\'mathquill ud-math\'>$2</span>',
+    },
+  ]);
 
   const converter = new showdown.Converter({
     simplifiedAutoLink: true,
@@ -36,11 +34,11 @@ export default function markdownToHtml(markdown) {
     emoji: true,
     openLinksInNewWindow: true,
     extensions: [
-      'ignoreMath'
+      'ignoreMath',
     ],
   });
   converter.setFlavor('github');
-  let html = converter.makeHtml(markdown);
+  const html = converter.makeHtml(markdown);
 
   return html;
 }

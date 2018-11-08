@@ -18,4 +18,4 @@ export default function makeDir(path, dirname) {
   }
 
   return fullPath;
-};
+}

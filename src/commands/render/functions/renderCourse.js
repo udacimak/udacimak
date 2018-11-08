@@ -1,18 +1,19 @@
 #!/usr/bin/env node
-const async = require('async');
-const dirTree = require('directory-tree');
-const fs = require('fs');
 import {
   getCourseType,
   makeRootDir,
   writeHtmlLesson,
-  writeHTMLNanodegreeSummary
+  writeHTMLNanodegreeSummary,
 } from '.';
 import {
   logger,
   makeDir,
-  filenamify
+  filenamify,
 } from '../../utils';
+
+const async = require('async');
+const dirTree = require('directory-tree');
+const fs = require('fs');
 
 
 /**
@@ -24,12 +25,12 @@ import {
 export default function pathTemplateHtmlrenderCourse(path, targetDir) {
   return new Promise((resolve, reject) => {
     if (path === targetDir) {
-      const _error = new Error(`Target directory must not be the same with source directory. Please change the target directory.`);
+      const _error = new Error('Target directory must not be the same with source directory. Please change the target directory.');
       reject(_error);
       return;
     }
 
-    fs.access(targetDir, fs.constants.F_OK, err => {
+    fs.access(targetDir, fs.constants.F_OK, (err) => {
       if (err) {
         const _error = new Error(`Target directory doesn't exist. Please create the directory "${targetDir}"`);
         reject(_error);
@@ -39,7 +40,7 @@ export default function pathTemplateHtmlrenderCourse(path, targetDir) {
       let courseType;
       const sourceDirTree = dirTree(path);
       if (!sourceDirTree) {
-        const _error = new Error(`Path to downloaded Udacity course/Nanodegree doesn't exist.`);
+        const _error = new Error('Path to downloaded Udacity course/Nanodegree doesn\'t exist.');
         reject(_error);
         return;
       }
@@ -47,7 +48,7 @@ export default function pathTemplateHtmlrenderCourse(path, targetDir) {
       const nanodegreeName = sourceDirTree.name;
 
       if (filenamify(path) === filenamify(`${targetDir}/${nanodegreeName}`)) {
-        const _error = new Error(`Please choose another target directory to avoid rendering contents into the same folder that contains downloaded JSON data from Udacity.`);
+        const _error = new Error('Please choose another target directory to avoid rendering contents into the same folder that contains downloaded JSON data from Udacity.');
         reject(_error);
         return;
       }
@@ -80,7 +81,7 @@ export default function pathTemplateHtmlrenderCourse(path, targetDir) {
 
       return promiseNanodegreeSummary
         .then(() => {
-          async.eachSeries(sourceDirTree.children, function(treePart, doneSourceDir) {
+          async.eachSeries(sourceDirTree.children, (treePart, doneSourceDir) => {
             if (courseType === 'COURSE') {
               // this is a course, so create Lessons now
               if (treePart.type === 'directory') {
@@ -98,13 +99,13 @@ export default function pathTemplateHtmlrenderCourse(path, targetDir) {
                 // retrieve part number
                 const prefixPart = treePart.name.match(/Part [\d]+/i);
 
-                async.eachSeries(treePart.children, function(treeModule, donePart) {
+                async.eachSeries(treePart.children, (treeModule, donePart) => {
                   // loop through "Module" folders
                   if (treeModule.type === 'directory') {
                     // retrieve module number
                     const prefixModule = treeModule.name.match(/Module [\d]+/i);
 
-                    async.eachSeries(treeModule.children, function(treeLesson, doneModule) {
+                    async.eachSeries(treeModule.children, (treeLesson, doneModule) => {
                       // loop through "Lesson" folders
                       if (treeLesson.type === 'directory') {
                         const dirNameLesson = `${prefixPart}-${prefixModule}-${treeLesson.name}`;
@@ -115,15 +116,14 @@ export default function pathTemplateHtmlrenderCourse(path, targetDir) {
                       } else {
                         doneModule();
                       }
-                    }, error => {
+                    }, (error) => {
                       if (error) throw error;
                       donePart();
                     }); // .each Lesson
                   } else {
                     donePart();
                   } // .if
-
-                }, error => {
+                }, (error) => {
                   if (error) throw error;
                   doneSourceDir();
                 }); // .each Module
@@ -131,14 +131,14 @@ export default function pathTemplateHtmlrenderCourse(path, targetDir) {
                 doneSourceDir();
               } // .if
             } //.if courseType
-          }, error => {
+          }, (error) => {
             if (error) throw error;
 
             logger.info(`Completed parsing and creating local content for ${nanodegreeName}`);
             resolve();
           }); //.async.eachSeries Part
         })
-        .catch(error => {
+        .catch((error) => {
           throw error;
         }); //.promiseNanodegreeSummary
     });

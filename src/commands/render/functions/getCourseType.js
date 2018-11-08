@@ -15,12 +15,9 @@ export default function getCourseType(jsonPath, filename = 'data.json') {
   data = JSON.parse(data);
   data = data.data;
 
-  if (data.nanodegree)
-    courseType = 'NANODEGREE';
-  else if (data.course)
-    courseType = 'COURSE';
-  else
-    courseType = 'UNKNOWN';
+  if (data.nanodegree) courseType = 'NANODEGREE';
+  else if (data.course) courseType = 'COURSE';
+  else courseType = 'UNKNOWN';
 
   return courseType;
 }

@@ -10,12 +10,12 @@ import {
   listNanodegrees,
   render,
   renderdir,
-  setToken
-} from './commands/';
-import { 
+  setToken,
+} from './commands';
+import {
   logger,
-  getFullErrorMessage
-} from './commands/utils/';
+  getFullErrorMessage,
+} from './commands/utils';
 
 
 program
@@ -30,7 +30,8 @@ program
   .action((courseids, options) => {
     const targetdir = options.targetdir || process.cwd();
     download(courseids, targetdir);
-  }).on('--help', () => {
+  })
+  .on('--help', () => {
     console.log('');
     console.log('Examples:');
     console.log('');
@@ -59,7 +60,8 @@ program
     const targetdir = options.targetdir || process.cwd();
     global.ytVerbose = options.verbose;
     render(path, targetdir);
-  }).on('--help', () => {
+  })
+  .on('--help', () => {
     console.log('');
     console.log('Examples:');
     console.log('');
@@ -85,11 +87,12 @@ program
   .command('settoken')
   .description('Save Udacity authentication token locally.')
   .arguments('<token>')
-  .action(token => {
+  .action((token) => {
     setToken(token);
-  }).on('--help', () => {
+  })
+  .on('--help', () => {
     console.log('');
-    console.log(`NOTE: Log in to Udacity website and find _jwt key in your browser's cookies to get the token`);
+    console.log('NOTE: Log in to Udacity website and find _jwt key in your browser\'s cookies to get the token');
   });
 
 program

@@ -3,7 +3,7 @@ import {
   downloadImage,
   getFileExt,
   makeDir,
-  markdownToHtml
+  markdownToHtml,
 } from '../../../utils';
 import { loadTemplate } from '../templates';
 
@@ -30,7 +30,7 @@ export default function createHtmlImageAtom(atom, outputPath) {
   const promiseLoadTemplate = loadTemplate('atom.image');
 
   return Promise.all([promiseDownload, promiseLoadTemplate])
-    .then(data => {
+    .then((data) => {
       const [filenameImg, html] = data;
       const alt = caption;
       caption = markdownToHtml(caption);

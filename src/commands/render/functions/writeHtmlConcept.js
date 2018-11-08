@@ -11,16 +11,16 @@ import {
   createHtmlReflectAtom,
   createHtmlQuizAtom,
   createHtmlValidatedQuizAtom,
-  createHtmlWorkspaceAtom
+  createHtmlWorkspaceAtom,
 } from './atoms';
 import {
-  writeHtml
-} from './';
+  writeHtml,
+} from '.';
 import { loadTemplate } from './templates';
 import {
   filenamify,
   logger,
-  markdownToHtml
+  markdownToHtml,
 } from '../../utils';
 
 
@@ -35,9 +35,9 @@ import {
 export default function writeHtmlConcepts(concept, htmlSidebar, targetDir, i, doneLesson) {
   let contentMain = '';
   // prefix for file names
-  let prefix = i < 10 ? `0${i}` : i;
+  const prefix = i < 10 ? `0${i}` : i;
 
-  async.eachSeries(concept.atoms, function (atom, doneAtom) {
+  async.eachSeries(concept.atoms, (atom, doneAtom) => {
     const atomTitle = markdownToHtml(atom.title);
 
     let promiseAtom;
@@ -67,30 +67,30 @@ export default function writeHtmlConcepts(concept, htmlSidebar, targetDir, i, do
     } else if (semantic_type === 'WorkspaceAtom') {
       promiseAtom = createHtmlWorkspaceAtom(atom);
     } else {
-      const msg = `Unknown lesson atom type. Please contact the developer to make it compatible with this atom type!`;
+      const msg = 'Unknown lesson atom type. Please contact the developer to make it compatible with this atom type!';
       promiseAtom = new Promise(resolve => resolve(msg));
     }
 
     Promise.all([
       promiseAtom,
-      loadTemplate('atom')
+      loadTemplate('atom'),
     ])
-      .then(res => {
-        let [htmlAtom, htmlTemplate] = res;
+      .then((res) => {
+        const [htmlAtom, htmlTemplate] = res;
 
         const template = Handlebars.compile(htmlTemplate);
         const dataTemplate = {
           atomTitle,
           instructorNote,
-          htmlAtom
+          htmlAtom,
         };
         contentMain += template(dataTemplate);
         doneAtom();
       })
-      .catch(err => {
+      .catch((err) => {
         throw err;
       });
-  }, error => {
+  }, (error) => {
     if (error) throw error;
 
     // create HTML body content
@@ -107,7 +107,7 @@ export default function writeHtmlConcepts(concept, htmlSidebar, targetDir, i, do
       sidebar: htmlSidebar,
       srcCss,
       srcJs,
-      title
+      title,
     };
     let file = filenamify(concept.title);
     file = `${targetDir}/${prefix}. ${file}.html`;
@@ -118,7 +118,7 @@ export default function writeHtmlConcepts(concept, htmlSidebar, targetDir, i, do
 
         doneLesson();
       })
-      .catch(error => {
+      .catch((error) => {
         throw error;
       });
   });

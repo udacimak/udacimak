@@ -7,9 +7,11 @@ import { loadTemplate } from '../../templates';
  * @param {object} widget json data
  */
 export default function createHtmlWidget(widget) {
-  const { group, label, marker, placement } = widget;
+  const {
+    group, label, marker, placement,
+  } = widget;
 
-  let htmlInput = ''
+  let htmlInput = '';
   switch (widget.model) {
     case 'CheckboxWidget':
       htmlInput += `
@@ -43,7 +45,7 @@ export default function createHtmlWidget(widget) {
     position: absolute; top: ${placement.y * 100}%; left: ${placement.x * 100}%; width: ${placement.width * 100}%; height: ${placement.height * 100}%;
   `;
 
-  let html = `
+  const html = `
     <div style="${style}">
       ${htmlInput}
     </div>

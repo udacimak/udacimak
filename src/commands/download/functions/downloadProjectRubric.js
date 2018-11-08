@@ -1,9 +1,9 @@
 import fs from 'fs';
 import {
-  fetchProjectRubric
+  fetchProjectRubric,
 } from '../../../api';
 import {
-  logger
+  logger,
 } from '../../utils';
 
 
@@ -17,7 +17,7 @@ export default function downloadProjectRubric(project, targetDir, token) {
   const { rubric_id } = project;
 
   return fetchProjectRubric(rubric_id, token)
-    .then(res => {
+    .then((res) => {
       const jsonStr = JSON.stringify(res, null, 2);
       const file = `${targetDir}/rubric.json`;
       // save JSON file
