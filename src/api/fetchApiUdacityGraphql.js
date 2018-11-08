@@ -24,6 +24,7 @@ export default function fetchApiUdacityGraphql(url, queryGraphql, udacityAuthTok
     Origin: 'https://classroom.udacity.com',
     Referer: 'https://classroom.udacity.com/me',
     // https://github.com/request/request/issues/2047#issuecomment-272473278
+    // avoid socket hang up error
     Connection: 'keep-alive'      
   };
   const method = 'POST';
@@ -32,6 +33,7 @@ export default function fetchApiUdacityGraphql(url, queryGraphql, udacityAuthTok
     body: queryGraphql,
     method,
     headers,
+    // avoid socket hang up error
     forever: true
   };
 

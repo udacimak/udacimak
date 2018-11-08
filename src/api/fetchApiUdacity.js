@@ -22,13 +22,15 @@ export default function fetchApiUdacity(url, udacityAuthToken = '') {
     Origin: 'https://review.udacity.com',
     Referer: 'https://review.udacity.com',
     // https://github.com/request/request/issues/2047#issuecomment-272473278
-    Connection: 'keep-alive'      
+    // avoid socket hang up error
+    Connection: 'keep-alive'
   };
   const method = 'GET';
   const requestOptions = {
     url,
     method,
     headers,
+    // avoid socket hang up error
     forever: true
   };
 
