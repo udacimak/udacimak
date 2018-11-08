@@ -11,6 +11,10 @@ import { markdownToHtml } from '../../../utils';
  * @returns {string} HTML content
  */
 export default function createHtmlWorkspaceAtom(atom) {
+  if (!atom) {
+    return new Promise(resolve => resolve(''));
+  }
+
   const { configuration } = atom;
   let defaultPath = '';
   let openFiles = [];
