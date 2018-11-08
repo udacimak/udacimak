@@ -57,6 +57,6 @@ export default function writeHtmlRubric(rubric, projectJSON, htmlSidebar, output
   return writeHtml(templateDataIndex, file)
     .then(() => {
       logger.info(`Completed rendering rubric file ${file}`);
-      logger.info('----------------------------------------');
+      logger.info('____________________\n');
     });
 }

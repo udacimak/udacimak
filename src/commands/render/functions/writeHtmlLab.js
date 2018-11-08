@@ -92,7 +92,7 @@ export default function writeHtmlLab(lab, htmlSidebar, targetDir) {
   }).then(templateDataIndex => writeHtml(templateDataIndex, file))
     .then(() => {
       logger.info(`Completed rendering lab file ${file}`);
-      logger.info('----------------------------------------');
+      logger.info('____________________\n');
     })
     .catch(error => {
       throw error;

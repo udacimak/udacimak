@@ -87,7 +87,7 @@ export default function writeHtmlLessonSummary(data, targetDir) {
     .then(templateDataIndex => writeHtml(templateDataIndex, file))
     .then(() => {
       logger.info(`Completed rendering lesson summary file ${file}`);
-      logger.info('----------------------------------------');
+      logger.info('____________________\n');
     })
     .catch(error => {
       throw error;

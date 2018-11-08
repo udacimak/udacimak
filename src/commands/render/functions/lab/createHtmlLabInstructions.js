@@ -4,7 +4,6 @@ import {
   loadTemplate
 } from '../../functions/templates';
 import {
-  downloadImage,
   markdownToHtml
 } from '../../../utils';
 

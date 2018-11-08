@@ -52,7 +52,7 @@ export default function writeHtmlProjectDescription(project, htmlSidebar, output
   return writeHtml(templateDataIndex, file)
     .then(() => {
       logger.info(`Completed rendering project description file ${file}`);
-      logger.info('----------------------------------------');
+      logger.info('____________________\n');
     })
     .catch(error => {
       throw error;

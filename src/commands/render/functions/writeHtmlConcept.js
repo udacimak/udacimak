@@ -114,7 +114,7 @@ export default function writeHtmlConcepts(concept, htmlSidebar, targetDir, i, do
     writeHtml(templateDataIndex, file)
       .then(() => {
         logger.info(`Completed rendering lesson file ${file}`);
-        logger.info('----------------------------------------');
+        logger.info('____________________\n');
 
         doneLesson();
       })

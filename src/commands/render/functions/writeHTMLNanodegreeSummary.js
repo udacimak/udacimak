@@ -223,7 +223,7 @@ export default function writeHTMLNanodegreeSummary(jsonPath, targetDir, nanodegr
     })
     .then(() => {
       logger.info(`Completed rendering Nanodegree summary file ${targetDir}/index.html`);
-      logger.info('----------------------------------------');
+      logger.info('____________________\n');
     })
     .catch(error => {
       throw error;

@@ -20,10 +20,12 @@ export default function createHtmlLabIntroduction(overview, labTitle, targetDir)
 
   let { title, summary, key_takeaways, video } = overview;
   let htmlVideo = '';
-
+  
   // process all markdown to HTML
   title = markdownToHtml(title);
   summary = markdownToHtml(summary);
+  key_takeaways = key_takeaways || [];
+  
   for (let takeaway of key_takeaways) {
     takeaway = markdownToHtml(takeaway);
   }
