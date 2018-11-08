@@ -32,7 +32,7 @@ export default function createHtmlWorkspaceAtom(atom) {
       if (conf.openFiles && conf.openFiles.length) {
         ({ openFiles } = conf.openFiles);
       }
-      ({ userCode } = conf.userCode);
+      ({ userCode } = conf);
       userCode = markdownToHtml(userCode);
     } //.if conf
   } //.if configuration
