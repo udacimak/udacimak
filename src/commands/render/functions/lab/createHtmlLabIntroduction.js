@@ -24,7 +24,6 @@ export default function createHtmlLabIntroduction(overview, labTitle, targetDir)
   // process all markdown to HTML
   title = markdownToHtml(title);
   summary = markdownToHtml(summary);
-  key_takeaways = key_takeaways || [];
   
   for (let takeaway of key_takeaways) {
     takeaway = markdownToHtml(takeaway);
