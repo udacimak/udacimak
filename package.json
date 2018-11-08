@@ -4,8 +4,11 @@
   "description": "Udacity Nanodegree/course downloader and renderer",
   "main": "index.js",
   "scripts": {
-    "build": "rimraf lib && babel src --out-dir lib --copy-files",
-    "watch": "nodemon --watch src --exec \"rimraf lib && babel src --out-dir lib --copy-files\"",
+    "prelint": "rimraf lib",
+    "lint": "eslint ./src",
+    "prebuild": "npm run lint",
+    "build": "babel src --out-dir lib --copy-files",
+    "watch": "nodemon --watch src --exec \"npm run lint && babel src --out-dir lib --copy-files\"",
     "test": "",
     "release": "np",
     "version": "npm run build"
@@ -48,6 +51,10 @@
     "@babel/core": "^7.1.2",
     "@babel/plugin-transform-async-to-generator": "^7.1.0",
     "@babel/preset-env": "^7.1.0",
+    "babel-eslint": "^10.0.1",
+    "eslint": "^5.8.0",
+    "eslint-config-airbnb": "^17.1.0",
+    "eslint-plugin-import": "^2.14.0",
     "nodemon": "^1.18.4",
     "np": "^3.0.4"
   },
