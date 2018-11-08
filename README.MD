@@ -13,6 +13,9 @@
 [![Closed pull requests](https://img.shields.io/github/issues-pr-closed-raw/udacimak/udacimak.svg)](https://github.com/udacimak/udacimak/pulls?q=is%3Apr+is%3Aclosed)
 [![Github last commit](https://img.shields.io/github/last-commit/udacimak/udacimak.svg)](https://github.com/udacimak/udacimak/commits/master)
 
+_Udacimak is usable but currently under heavy development for improvements.
+Please check back and update often._
+
 ## Table of Contents
 
 - [Description](#description)
@@ -26,7 +29,7 @@
 - [Disclaimer](#disclaimer)
 
 ## Description
-`udacimak` is a command-line interface written to download
+Udacimak is a command-line interface written to download
 [Udacity](udacity.com) Nanodegree or course contents to store them locally.
 
 It was inspired after Udacity announced in October 2018 that students who
@@ -35,9 +38,9 @@ all access will be removed 12 months after graduation date. There are also cases
 where access to content will be removed immediately after graduation (eg. if
 you're an Enterprise or Scholarship student, etc.)
 
-If you want to keep the contents to yourself, `udacimak` is built for you.
+If you want to keep the contents to yourself, Udacimak is built for you.
 Or if you would like to have a local copy to quickly revise the lessons while
-doing the course, `udacimak` is also a good option.
+doing the course, Udacimak is also a good option.
 
 We hope you enjoy this CLI. __Stay Udacious__!
 
@@ -53,26 +56,13 @@ __Resources__
   npm install -g udacimak
   ```
 
-### Windows users and `youtube-dl`
-If you're using Windows, you may experience error thrown when the CLI tries
-to download Youtube videos. To fix the issue, please head to
-[youtube-dl Homepage](https://rg3.github.io/youtube-dl/), download the latest
-version of the `youtube-dl.exe` file and put it in this path:
+### Update
+
+To update to the latest version, run:
 
 ```
-%USERPROFILE%\AppData\Roaming\npm\node_modules\udacimak\node_modules\youtube-dl\bin
+npm update -g udacimak
 ```
-
-Note that the path `%USERPROFILE%\AppData\Roaming\npm\node_modules` is an
-example of where `node` will install global `npm` packages on Windows 7, 8 and
-10.
-
-Note that `youtube-dl.exe` requires
-__Microsoft Visual C++ 2010 Redistributable Package (x86)__ to be installed.
-(See link to download on
-[youtube-dl Homepage](https://rg3.github.io/youtube-dl/))
-
-If this is too much hassle, try to use Udacimak via [Docker](https://www.docker.com/) instead.
 
 ### Use Udacimak via [Docker](https://www.docker.com/) container
 There is a [Udacimak image](https://hub.docker.com/r/udacimak/udacimak/) that you can use.
@@ -82,7 +72,7 @@ Download the image by running:
 docker pull udacimak/udacimak
 ```
 
-`udacimak` is the `entrypoint` of the image so you can directly use it. Examples:
+Udacimak is the `entrypoint` of the image so you can directly use it. Examples:
 
 ```shell
 # show help
@@ -101,7 +91,7 @@ docker container run --rm -it -v "$(pwd)/:/downloads" --entrypoint /bin/bash uda
 
 ## How to use
 
-`udacimak` allows you to keep Udacity content locally in 2 main steps:
+Udacimak allows you to keep Udacity content locally in 2 main steps:
 1. __Download__: Download means fetching all JSON data of a course or Nanodegree
 from Udacity API and store them locally as `.json` files.
 1. __Render__: Render means converting the downloaded course JSON data into
@@ -159,7 +149,7 @@ Udacity authentication token is a secret key to is unique to you
 and you should not share it publicly.
 
 The token also will expire automatically after a period of time.
-If you find `udacimak`'s
+If you find Udacimak's
 `listnd` and `download` commands unusable, try to get the token again from
 the browser and `settoken` with the new token.
 
@@ -227,14 +217,14 @@ that you need to save the Nanodegree/course locally to your computer.
 To view the content in a readable manner, one could build a web app
 that read the JSON files and render it in HTML format. This can be a tedious
 process since you'll need to study the JSON structure built by Udacity
-to process them. That is why `udacimak` provide `render` functionality to
+to process them. That is why Udacimak provide `render` functionality to
 render all the course contents into _static web pages_.
 
 #### Note regarding workspaces
 Udacity has a number of types of workspaces for projects and
 quizzes/exercises, including Jupyter Notebook workspaces, IDE workspaces.
 The files of these workspaces are not downloadable, so all your workspaces
-will not be accessible from `udacimak`.
+will not be accessible from Udacimak.
 
 It is recommended that you download them manually. For Jupyter Notebook
 workspaces, please refer to this [StackOverflow answer](https://stackoverflow.com/questions/48122744/how-to-download-all-files-and-folder-hierarchy-from-jupyter-notebook?rq=1) on how to download all files in one go.
@@ -274,7 +264,7 @@ what `render` is not capable of:
   - :x: It is not possible to "submit" the quizzes to check for result from
   Udacity API. We simply can't have access to Udacity API to check the quizzes.
   - :x: For a few quiz types, (_Programming Quiz_ and _Image Format Quiz_) there are no solutions provided.
-- :x: __Workspaces__: As noted [above](#note-regarding-workspaces), `udacimak`
+- :x: __Workspaces__: As noted [above](#note-regarding-workspaces), Udacimak
 can't download the workspace files for you. So the lesson pages that contain
 workspaces will not display any workspace for you.
 
@@ -323,8 +313,7 @@ If you face any issue, you may want to share the section of the log file content
 that contains error log to the developer when reporting the issue.
 
 ## Note to Windows OS users:
-Besides to a small setup hickup as noted [above](#windows-users-and-youtube-dl),
-the CLI is prone to some known issues when using on Windows:
+The CLI is prone to some known issues when using on Windows:
 - 260-character file path limit: When facing this issue, you may have trouble
 viewing video file, moving files, etc.
 Windows will never fix this file path limitation, so...
@@ -370,8 +359,9 @@ newly released Nanodegree and the developers of this CLI can't update it unless
 they have access to the new Nanodegree. In this case, please contact directly
 to help us keep the CLI stable and usable.
 
-Please open an issue in __Issues__ tab to help us keep the CLI
-up-to-date if you face any issues using the CLI.
+Please open an issue in
+[__Issues__ tab](https://github.com/udacimak/udacimak/issues) to help us keep
+the CLI up-to-date if you face any issues using the CLI.
 
 ### CLI Update Note
 
@@ -384,7 +374,7 @@ Also see [note above](#re-rendering-a-course)
 ## Reporting Issues
 
 Before reporting any issues, please make sure you're using the latest version
-of `udacimak` first:
+of Udacimak first:
 
 ```shell
 # show current version
@@ -399,8 +389,10 @@ npm update -g udacimak
 udacimak --version
 ```
 
-If the issue persists, please open issue in __Issues__ tab. Please give us
-as much information as you can. However, note that you should not provide
+If the issue persists, please open issue in
+[__Issues__ tab](https://github.com/udacimak/udacimak/issues).
+Please give us as much information as you can.
+However, note that you should not provide
 your Udacity authentication token to anyone - it's a secret token of your
 own account.
 
