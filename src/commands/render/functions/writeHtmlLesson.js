@@ -74,6 +74,7 @@ export default function writeHtmlLesson(jsonPath, targetDir, doneModule) {
           promiseRubric = writeHtmlRubric(data.rubric, project, htmlSidebar, targetDir);
         }
         Promise.all([
+          promiseRubric,
           writeHtmlProjectDescription(project, htmlSidebar, targetDir),
           writeHtmlLab(lab, htmlSidebar, targetDir)
         ]).then(() => {
