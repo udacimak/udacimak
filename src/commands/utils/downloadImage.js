@@ -1,8 +1,9 @@
-const _cliProgress = require('cli-progress');
-const fs = require('fs');
-const path = require("path");
-const progress = require('request-progress');
-const request = require('request');
+import _cliProgress from 'cli-progress';
+import fs from 'fs';
+import ora from 'ora';
+import path from 'path';
+import progress from 'request-progress';
+import request from 'request';
 import { addHttp } from './index';
 import { logger } from '../utils';
 
@@ -47,7 +48,7 @@ If the link was temporary broken and is up again when you check, please re-run t
 
     // create a new progress bar instance
     const progressBar = new _cliProgress.Bar({}, _cliProgress.Presets.shades_classic);
-
+    const spinner = ora(`Download media file ${filename}`).start();
     let fileSize;
 
     // start the progress bar with a total value of 200 and start value of 0
@@ -65,7 +66,6 @@ If the link was temporary broken and is up again when you check, please re-run t
     progress(request(requestOptions))
       .on('progress', state => {
         if (!fileSize) {
-          logger.info(`\nDownloading media file ${filename}:`);
           fileSize = state.size.total;
           progressBar.start(fileSize, 0);
         } else {
@@ -74,6 +74,7 @@ If the link was temporary broken and is up again when you check, please re-run t
       })
       .on('response', response => {
         if (response.statusCode == 500) {
+          spinner.fail();
           logger.error(`Error Status 500: Request for media file fails!
 The url ${uri} returns Internal Server Error.
 ${errorCheck}`);
@@ -81,7 +82,9 @@ ${errorCheck}`);
         }
       })
       .on('error', error => {
-        if (error.code && error.code === 'ENOTFOUND') {
+        spinner.fail();
+
+        if (error.code && error.code === 'ENOTFOUND') {          
           logger.error(`${error.code}: Request for media file fails!
 The url ${uri} doesn't seem to exist.
 ${errorCheck}`);
@@ -91,6 +94,7 @@ ${errorCheck}`);
         }
       })
       .on('end', () => {
+        spinner.succeed();
         progressBar.update(fileSize);
         progressBar.stop();
       })
@@ -106,6 +110,7 @@ ${errorCheck}`);
             reject(error);
           }
 
+          logger.info(`Downloaded media file ${filename}`);
           resolve(filename);
         });
       });
