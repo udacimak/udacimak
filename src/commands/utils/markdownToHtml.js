@@ -1,4 +1,4 @@
-const showdown = require('showdown');
+import showdown from 'showdown';
 
 
 /**
@@ -15,13 +15,31 @@ export default function markdownToHtml(markdown) {
   // eg. <img src="<a href="https://example">https://example</a>" />
   markdown = markdown.replace(/<img src="https:/gm, '<img src="');
 
-  // extension to avoid parsing HTML blocks that represent
-  // math equations with mathquill
-  showdown.extension('ignoreMath', () => [
+  // extension to modify mathquill tags
+  showdown.extension('modifyMathquill', () => [
     {
       type: 'lang',
-      regex: /<span class=('|\")mathquill('|\")>(.*?)<\/span>/gmi,
-      replace: '<span class="mathquill ud-math">$3</span>',
+      filter: (text) => {
+        const pattern = /<span class=('|\")mathquill('|\")>((\r\n|\r|\n|.)*?)<\/span>/gmi;
+        // const patternHtml = /<\/?\w+((\s+\w+(\s*=\s*(?:".*?"|'.*?'|[\^'">\s]+))?)+\s*|\s*)\/?>/g;
+
+        const result = text
+          .replace(pattern, (match, p1, p2, p3, offset, string) => { // eslint-disable-line
+            const math = p3
+              // hack to fix backslash. For some reason, showdown convert
+              // "\\" to "\", which break latex division syntax!
+              .replace(/\\\\/g, '%UDACIMAK_REPLACE_BLACKSLASH%')
+              // remove new line characters, it should not be in latex syntax
+              .replace(/(\r|\n|\r\n)/g, '');
+            return `<span class="mathquill ud-math">${math}</span>`;
+          });
+
+        return result;
+      },
+    }, {
+      type: 'output',
+      regex: /%UDACIMAK_REPLACE_BLACKSLASH%/g,
+      replace: '\\\\',
     },
   ]);
 
@@ -34,7 +52,7 @@ export default function markdownToHtml(markdown) {
     emoji: true,
     openLinksInNewWindow: true,
     extensions: [
-      'ignoreMath',
+      'modifyMathquill',
     ],
   });
   converter.setFlavor('github');
