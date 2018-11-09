@@ -20,8 +20,8 @@ export default function markdownToHtml(markdown) {
   showdown.extension('ignoreMath', () => [
     {
       type: 'lang',
-      regex: /<span class=('mathquill'|\"mathquill\")>(.*?)<\/span>/gmi,
-      replace: '<span class=\'mathquill ud-math\'>$2</span>',
+      regex: /<span class=('|\")mathquill('|\")>(.*?)<\/span>/gmi,
+      replace: '<span class="mathquill ud-math">$3</span>',
     },
   ]);
 
