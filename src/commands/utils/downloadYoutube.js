@@ -1,6 +1,5 @@
 import _cliProgress from 'cli-progress';
-import async from 'async';
-import fs from 'fs';
+import fs from 'fs-extra';
 import ora from 'ora';
 import progress from 'progress-stream';
 import youtubedl from 'youtube-dl';
@@ -52,7 +51,6 @@ export default function downloadYoutube(videoId, outputPath, prefix, title, form
 
     video.on('info', (info) => {
       spinnerInfo.succeed();
-      let spinnerDl;
       // get video name
       const fileSize = info.size;
       // create a new progress bar instance
@@ -79,73 +77,69 @@ export default function downloadYoutube(videoId, outputPath, prefix, title, form
         .pipe(progressStream)
         .pipe(fs.createWriteStream(tempPath));
 
-      video.on('end', () => {
+      video.on('end', async () => {
         // rename temp file to final file name
-        fs.rename(tempPath, savePath, (error) => {
-          if (error) {
-            reject(error);
+        try {
+          fs.rename(tempPath, savePath);
+        } catch (errorRename) {
+          reject(errorRename);
+        }
+
+        logger.info(`Downloaded video ${filenameYoutube}`);
+
+        const spinnerSubtitles = ora(`Download subtitles for ${filenameYoutube}`).start();
+        const options = {
+          // Write automatic subtitle file (youtube only)
+          auto: false,
+          // Downloads all the available subtitles.
+          all: true,
+          // Languages of subtitles to download, separated by commas.
+          lang: 'en',
+          // The directory to save the downloaded files in.
+          cwd: outputPath,
+        };
+        youtubedl.getSubs(urlYoutube, options, async (errorGetSubs, files) => {
+          if (errorGetSubs) {
+            spinnerSubtitles.fail();
+            logger.warn(`Failed to download subtitles for ${filenameYoutube} with error:\n${errorGetSubs}\n`);
+            resolve(filenameYoutube);
             return;
           }
 
-          logger.info(`Downloaded video ${filenameYoutube}`);
+          try {
+            // loop and rename subtitle files according to video file name
+            // so that video players can show subtitle
+            for (let i = 0, len = files.length; i < len; i += 1) {
+              const file = files[i];
 
-          spinnerDl = ora(`Download subtitles for ${filenameYoutube}`).start();
-          const options = {
-            // Write automatic subtitle file (youtube only)
-            auto: false,
-            // Downloads all the available subtitles.
-            all: true,
-            // Languages of subtitles to download, separated by commas.
-            lang: 'en',
-            // The directory to save the downloaded files in.
-            cwd: outputPath,
-          };
-          youtubedl.getSubs(urlYoutube, options, (errorGetSubs, files) => {
-            if (errorGetSubs) {
-              spinnerDl.fail();
-              logger.warn(`Failed to download subtitles for ${filenameYoutube} with error:\n${errorGetSubs}\n`);
-            }
-
-            // loop and add prefix to each subtitle file name
-            async.eachSeries(files, (file, done) => {
               // extract file extension including language code
               // eg. Average Friends - Intro to Statistics-b6mTOiKw3vQ.ar.vtt -> .ar.vtt
               const ext = getFileExt(file);
 
               // couldn't find file extension, skip renaming for safety
-              if (!ext) {
-                done();
-                return;
-              }
+              if (ext) {
+                // construct subtitle file name
+                const filenameSubtitle = `${outputPath}/${filenameBase}${ext}`;
 
-              // construct subtitle file name
-              const filenameSubtitle = `${outputPath}/${filenameBase}${ext}`;
+                // avoid overwriting video file
+                if (!fs.existsSync(filenameSubtitle)) {
+                  try {
+                    await fs.rename(`${outputPath}/${file}`, filenameSubtitle);
+                  } catch (errorRename) {
+                    spinnerSubtitles.warn();
+                    logger.warn(`Failed to rename subtitles for ${file} with error:\n${errorRename}\n`);
+                  }
+                } //.if fs.exist
+              } //.if ext
+            } //.for files
 
-              // avoid overwriting video file
-              if (fs.existsSync(filenameSubtitle)) {
-                done();
-                return;
-              }
-
-              fs.rename(`${outputPath}/${file}`, filenameSubtitle, (errorRename) => {
-                if (errorRename) {
-                  spinnerDl.warn();
-                  logger.warn(`Failed to rename subtitles for ${file} with error:\n${errorRename}\n`);
-                }
-
-                done();
-              });
-            }, (errorAsyncRename) => {
-              if (errorAsyncRename) {
-                spinnerDl.warn();
-                logger.warn(`Failed to rename renaming subtitle files for video ${filenameYoutube} with error:\n${errorAsyncRename}\n`);
-              }
-
-              spinnerDl.succeed(`Downloaded subtitles for ${filenameYoutube}`);
-              resolve(filenameYoutube);
-            });
-          }); //.getSubs
-        }); //.fs.rename
+            spinnerSubtitles.succeed();
+            resolve(filenameYoutube);
+          } catch (errorLoopRename) {
+            spinnerSubtitles.warn();
+            logger.warn(`Failed to rename renaming subtitle files for video ${filenameYoutube} with error:\n${errorLoopRename}\n`);
+          } //.trycatch
+        }); //.getSubs
       }); //.video.on end
     }); //.video.on info
 

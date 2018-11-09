@@ -59,7 +59,6 @@
     "np": "^3.0.4"
   },
   "dependencies": {
-    "async": "^2.6.1",
     "cheerio": "^1.0.0-rc.2",
     "cli-progress": "^2.1.0",
     "commander": "^2.18.0",

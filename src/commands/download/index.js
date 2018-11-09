@@ -1,5 +1,4 @@
 #!/usr/bin/env node
-import async from 'async';
 import process from 'process';
 import {
   retrieveUdacityAuthToken,
@@ -22,7 +21,9 @@ export default async function download(courseIds, targetDir) {
   try {
     const token = await retrieveUdacityAuthToken();
 
-    async.eachSeries(courseIds, async (courseId) => {
+    for (let i = 0, len = courseIds.length; i < len; i += 1) {
+      const courseId = courseIds[i];
+
       let isNanodegree = false;
       // check if this is a course or Nanodegree
       if (courseId.startsWith('nd')) {
@@ -34,9 +35,7 @@ export default async function download(courseIds, targetDir) {
       } else {
         await downloadCourse(courseId, targetDir, token);
       }
-    }, (error) => {
-      if (error) throw error;
-    });
+    }
   } catch (error) {
     const errorMsg = getFullErrorMessage(error);
     logger.error(`Failed to download course. See error below:\n${errorMsg}`);
