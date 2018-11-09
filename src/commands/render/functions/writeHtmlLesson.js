@@ -56,10 +56,11 @@ export default async function writeHtmlLesson(jsonPath, targetDir) {
   try {
     await promiseRubric;
 
-    const htmlSidebar = await Promise.all([
+    const promises = await Promise.all([
       createHtmlSidebarLesson(data),
       writeHtmlLessonSummary(data, targetDir),
-    ])[0];
+    ]);
+    const htmlSidebar = promises[0];
 
     for (let i = 0, len = concepts.length; i < len; i += 1) {
       const conceptIndex = i + 1;
