@@ -33,6 +33,7 @@ import {
  */
 export default async function writeHtmlConcept(concept, htmlSidebar, targetDir, index) {
   let contentMain = '';
+  const conceptTitle = concept.title ? concept.title.trim() : '';
   // prefix for file names
   const prefix = index < 10 ? `0${index}` : index;
 
@@ -87,7 +88,7 @@ export default async function writeHtmlConcept(concept, htmlSidebar, targetDir, 
     }
 
     // create HTML body content
-    const title = `${prefix}. ${concept.title}`;
+    const title = `${prefix}. ${conceptTitle}`;
 
     // decide how many folders it needs to go up to access the assets
     const upDir = '../';
@@ -96,13 +97,13 @@ export default async function writeHtmlConcept(concept, htmlSidebar, targetDir, 
     // write html file
     const templateDataIndex = {
       contentMain,
-      docTitle: concept.title,
+      docTitle: conceptTitle,
       sidebar: htmlSidebar,
       srcCss,
       srcJs,
       title,
     };
-    let file = filenamify(concept.title);
+    let file = filenamify(conceptTitle);
     file = `${targetDir}/${prefix}. ${file}.html`;
 
     await writeHtml(templateDataIndex, file);
