@@ -8,19 +8,18 @@ import { loadTemplate } from './templates';
  * @param {object} data keys to parse to Handlbars for templating
  * @param {string} file path to write file to
  */
-export default function writeHtml(data, file) {
-  return loadTemplate('index')
-    .then((html) => {
-      const template = Handlebars.compile(html);
-      const htmlResult = template(data);
+export default async function writeHtml(data, file) {
+  const html = await loadTemplate('index');
 
-      // write HTML file
-      fs.writeFile(file, htmlResult, (error) => {
-        if (error) {
-          throw error;
-        }
+  const template = Handlebars.compile(html);
+  const htmlResult = template(data);
 
-        return file;
-      });
-    });
+  // write HTML file
+  fs.writeFile(file, htmlResult, (error) => {
+    if (error) {
+      throw error;
+    }
+
+    return file;
+  });
 }

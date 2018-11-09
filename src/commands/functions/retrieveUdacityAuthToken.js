@@ -15,18 +15,19 @@ import {
  * Try to retrieve Udacity authentication token from local settings.
  * If it hasn't been provided, prompt for one
  */
-export default function retrieveUdacityAuthToken() {
-  return new Promise((resolve) => {
+export default async function retrieveUdacityAuthToken() {
+  try {
     const savedToken = config.get(CLI_CONFIG_UDACITY_AUTH_TOKEN);
 
     if (savedToken) {
-      resolve(savedToken);
-      return;
+      return savedToken;
     }
 
     logger.warn('Udacity authentication token hasn\'t been set.');
-    promptInputUdacityAuthToken()
-      .then(token => validateSaveUdacityAuthToken(token))
-      .then(tokenValidated => resolve(tokenValidated));
-  });
+    const token = await promptInputUdacityAuthToken();
+    const tokenValidated = await validateSaveUdacityAuthToken(token);
+    return tokenValidated;
+  } catch (error) {
+    throw error;
+  }
 }

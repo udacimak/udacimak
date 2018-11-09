@@ -12,7 +12,7 @@ import {
  * @param {object} data JSON data of lesson
  * @param {string} targetDir output directory
  */
-export default function writeHtmlLessonSummary(data, targetDir) {
+export default async function writeHtmlLessonSummary(data, targetDir) {
   const concepts = [];
   let lab; let project; let
     rubric;
@@ -65,31 +65,30 @@ export default function writeHtmlLessonSummary(data, targetDir) {
   const srcCss = `${upDir}assets/css`;
   const srcJs = `${upDir}assets/js`;
   const file = `${targetDir}/index.html`;
-  return loadTemplate('summary.lesson')
-    .then((html) => {
-      const template = Handlebars.compile(html);
-      const dataTemplate = {
-        concepts,
-        lab,
-        project,
-        rubric,
-      };
-      const htmlSummary = template(dataTemplate);
+  const html = await loadTemplate('summary.lesson');
 
-      return {
-        contentMain: htmlSummary,
-        docTitle: pageTitle,
-        srcCss,
-        srcJs,
-        title: pageTitle,
-      };
-    })
-    .then(templateDataIndex => writeHtml(templateDataIndex, file))
-    .then(() => {
-      logger.info(`Completed rendering lesson summary file ${file}`);
-      logger.info('____________________\n');
-    })
-    .catch((error) => {
-      throw error;
-    });
+  const template = Handlebars.compile(html);
+  const dataTemplate = {
+    concepts,
+    lab,
+    project,
+    rubric,
+  };
+  const htmlSummary = template(dataTemplate);
+
+  const templateDataIndex = {
+    contentMain: htmlSummary,
+    docTitle: pageTitle,
+    srcCss,
+    srcJs,
+    title: pageTitle,
+  };
+
+  try {
+    await writeHtml(templateDataIndex, file);
+    logger.info(`Completed rendering lesson summary file ${file}`);
+    logger.info('____________________\n');
+  } catch (error) {
+    throw error;
+  }
 }

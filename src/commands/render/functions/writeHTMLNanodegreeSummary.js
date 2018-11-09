@@ -149,7 +149,7 @@ function createHtmlModuleSummary(part, prefixPart) {
  * @param {string} nanodegreeName name of Nanodegree
  * @param {string} filename file name of source JSON file
  */
-export default function writeHTMLNanodegreeSummary(jsonPath, targetDir, nanodegreeName, filename = 'data.json') {
+export default async function writeHTMLNanodegreeSummary(jsonPath, targetDir, nanodegreeName, filename = 'data.json') {
   const pathData = `${jsonPath}/${filename}`;
 
   // read json file for data
@@ -187,46 +187,39 @@ export default function writeHTMLNanodegreeSummary(jsonPath, targetDir, nanodegr
   }
 
   // download image to save locally then create html file
-  return Promise.all([
+  const [filenameImg, html] = await Promise.all([
     downloadImage(heroImageUrl, pathImg),
     loadTemplate('summary.nanodegree'),
-  ])
-    .then((res) => {
-      const [filenameImg, html] = res;
-      const {
-        key, version, title,
-      } = data;
-      const summary = markdownToHtml(data.summary);
-      const srcHeroImg = filenameImg ? `img/${filenameImg}` : null;
-      const heroImgAlt = title;
+  ]);
 
-      const dataTemplate = {
-        srcHeroImg,
-        heroImgAlt,
-        htmlParts,
-        key,
-        version,
-        summary,
-      };
-      const template = Handlebars.compile(html);
-      return template(dataTemplate);
-    })
-    .then((contentMain) => {
-      const templateDataIndex = {
-        contentMain,
-        docTitle: nanodegreeName,
-        srcCss: 'assets/css',
-        srcJs: 'assets/js',
-        title: data.title,
-      };
-      const file = `${targetDir}/index.html`;
-      return writeHtml(templateDataIndex, file);
-    })
-    .then(() => {
-      logger.info(`Completed rendering Nanodegree summary file ${targetDir}/index.html`);
-      logger.info('____________________\n');
-    })
-    .catch((error) => {
-      throw error;
-    });
+  const {
+    key, version, title,
+  } = data;
+  const summary = markdownToHtml(data.summary);
+  const srcHeroImg = filenameImg ? `img/${filenameImg}` : null;
+  const heroImgAlt = title;
+
+  const dataTemplate = {
+    srcHeroImg,
+    heroImgAlt,
+    htmlParts,
+    key,
+    version,
+    summary,
+  };
+  const template = Handlebars.compile(html);
+  const contentMain = template(dataTemplate);
+
+  const templateDataIndex = {
+    contentMain,
+    docTitle: nanodegreeName,
+    srcCss: 'assets/css',
+    srcJs: 'assets/js',
+    title: data.title,
+  };
+  const file = `${targetDir}/index.html`;
+  await writeHtml(templateDataIndex, file);
+
+  logger.info(`Completed rendering Nanodegree summary file ${targetDir}/index.html`);
+  logger.info('____________________\n');
 }

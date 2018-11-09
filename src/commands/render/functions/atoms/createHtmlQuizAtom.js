@@ -17,7 +17,7 @@ import {
  * @param {string} prefix prefix for file name
  * @returns {string} HTML content
  */
-export default function createHtmlQuizAtom(atom, targetDir, prefix) {
+export default async function createHtmlQuizAtom(atom, targetDir, prefix) {
   const { question } = atom;
   const semanticType = question.semantic_type;
   let promiseQuizQuestion;
@@ -35,37 +35,40 @@ export default function createHtmlQuizAtom(atom, targetDir, prefix) {
   // download instruction video if available
   const youtubeIdQuestion = (atom.instruction && atom.instruction.video)
     ? atom.instruction.video.youtube_id : '';
+  const filenameYoutubeQuestion = await downloadYoutube(youtubeIdQuestion,
+    targetDir, prefix, atom.title);
+
+  // all other promises
   const youtubeIdAnswer = (atom.answer && atom.answer.video)
     ? atom.answer.video.youtube_id : '';
-  const promiseDownloadYoutubeQuestion = downloadYoutube(youtubeIdQuestion,
-    targetDir, prefix, atom.title);
   const promiseDownloadYoutubeAnswer = downloadYoutube(youtubeIdAnswer,
     targetDir, prefix, atom.title);
   const promiseLoadTemplate = loadTemplate('atom.quiz');
 
-  return Promise.all([
-    promiseDownloadYoutubeQuestion,
+  const [
+    filenameYoutubeAnswer,
+    html,
+    htmlQuiz,
+  ] = await Promise.all([
     promiseDownloadYoutubeAnswer,
     promiseLoadTemplate,
     promiseQuizQuestion,
-  ]).then((res) => {
-    const [filenameYoutubeQuestion, filenameYoutubeAnswer, html, htmlQuiz] = res;
+  ]);
 
-    const instruction = atom.instruction ? markdownToHtml(atom.instruction.text) : '';
-    const answerText = atom.answer ? markdownToHtml(atom.answer.text) : '';
-    const hasSolution = filenameYoutubeAnswer || answerText;
-    const hasInstruction = filenameYoutubeQuestion || instruction;
+  const instruction = atom.instruction ? markdownToHtml(atom.instruction.text) : '';
+  const answerText = atom.answer ? markdownToHtml(atom.answer.text) : '';
+  const hasSolution = filenameYoutubeAnswer || answerText;
+  const hasInstruction = filenameYoutubeQuestion || instruction;
 
-    const dataTemplate = {
-      answerText,
-      instruction,
-      filenameYoutubeQuestion,
-      filenameYoutubeAnswer,
-      hasSolution,
-      hasInstruction,
-      htmlQuiz,
-    };
-    const template = Handlebars.compile(html);
-    return template(dataTemplate);
-  });
+  const dataTemplate = {
+    answerText,
+    instruction,
+    filenameYoutubeQuestion,
+    filenameYoutubeAnswer,
+    hasSolution,
+    hasInstruction,
+    htmlQuiz,
+  };
+  const template = Handlebars.compile(html);
+  return template(dataTemplate);
 }

@@ -1,4 +1,3 @@
-import async from 'async';
 import Handlebars from 'handlebars';
 import {
   createHtmlImageAtom,
@@ -29,69 +28,63 @@ import {
  * @param {object} concept contain lesson's concept to convert to html
  * @param {string} htmlSidebar sidebar html content
  * @param {string} targetDir output directory path
- * @param {number} i the numbering of the concept for producing file prefix
+ * @param {number} index the numbering of the concept for producing file prefix
  * @param {function} doneLesson callback function of lesson loop
  */
-export default function writeHtmlConcepts(concept, htmlSidebar, targetDir, i, doneLesson) {
+export default async function writeHtmlConcept(concept, htmlSidebar, targetDir, index) {
   let contentMain = '';
   // prefix for file names
-  const prefix = i < 10 ? `0${i}` : i;
+  const prefix = index < 10 ? `0${index}` : index;
 
-  async.eachSeries(concept.atoms, (atom, doneAtom) => {
-    const atomTitle = markdownToHtml(atom.title);
+  try {
+    for (let i = 0, len = concept.atoms.length; i < len; i += 1) {
+      const atom = concept.atoms[i];
+      const atomTitle = markdownToHtml(atom.title);
 
-    let promiseAtom;
-    const semanticType = atom.semantic_type;
-    const instructorNote = markdownToHtml(atom.instructor_notes);
+      let promiseAtom;
+      const semanticType = atom.semantic_type;
+      const instructorNote = markdownToHtml(atom.instructor_notes);
 
-    if (semanticType === 'ImageAtom') {
-      promiseAtom = createHtmlImageAtom(atom, targetDir);
-    } else if (semanticType === 'TaskListAtom') {
-      promiseAtom = createHtmlTaskListAtom(atom, targetDir, prefix);
-    } else if (semanticType === 'TextAtom') {
-      promiseAtom = createHtmlTextAtom(atom, targetDir);
-    } else if (semanticType === 'VideoAtom') {
-      promiseAtom = createHtmlVideoAtom(atom, targetDir, prefix);
-    } else if (semanticType === 'CheckboxQuizAtom') {
-      promiseAtom = createHtmlCheckboxQuizAtom(atom);
-    } else if (semanticType === 'MatchingQuizAtom') {
-      promiseAtom = createHtmlMatchingQuizAtom(atom);
-    } else if (semanticType === 'RadioQuizAtom') {
-      promiseAtom = createHtmlRadioQuizAtom(atom);
-    } else if (semanticType === 'ReflectAtom') {
-      promiseAtom = createHtmlReflectAtom(atom, targetDir, prefix);
-    } else if (semanticType === 'QuizAtom') {
-      promiseAtom = createHtmlQuizAtom(atom, targetDir, prefix);
-    } else if (semanticType === 'ValidatedQuizAtom') {
-      promiseAtom = createHtmlValidatedQuizAtom(atom);
-    } else if (semanticType === 'WorkspaceAtom') {
-      promiseAtom = createHtmlWorkspaceAtom(atom);
-    } else {
-      const msg = 'Unknown lesson atom type. Please contact the developer to make it compatible with this atom type!';
-      promiseAtom = new Promise(resolve => resolve(msg));
+      if (semanticType === 'ImageAtom') {
+        promiseAtom = createHtmlImageAtom(atom, targetDir);
+      } else if (semanticType === 'TaskListAtom') {
+        promiseAtom = createHtmlTaskListAtom(atom, targetDir, prefix);
+      } else if (semanticType === 'TextAtom') {
+        promiseAtom = createHtmlTextAtom(atom, targetDir);
+      } else if (semanticType === 'VideoAtom') {
+        promiseAtom = createHtmlVideoAtom(atom, targetDir, prefix);
+      } else if (semanticType === 'CheckboxQuizAtom') {
+        promiseAtom = createHtmlCheckboxQuizAtom(atom);
+      } else if (semanticType === 'MatchingQuizAtom') {
+        promiseAtom = createHtmlMatchingQuizAtom(atom);
+      } else if (semanticType === 'RadioQuizAtom') {
+        promiseAtom = createHtmlRadioQuizAtom(atom);
+      } else if (semanticType === 'ReflectAtom') {
+        promiseAtom = createHtmlReflectAtom(atom, targetDir, prefix);
+      } else if (semanticType === 'QuizAtom') {
+        promiseAtom = createHtmlQuizAtom(atom, targetDir, prefix);
+      } else if (semanticType === 'ValidatedQuizAtom') {
+        promiseAtom = createHtmlValidatedQuizAtom(atom);
+      } else if (semanticType === 'WorkspaceAtom') {
+        promiseAtom = createHtmlWorkspaceAtom(atom);
+      } else {
+        const msg = 'Unknown lesson atom type. Please contact the developer to make it compatible with this atom type!';
+        promiseAtom = new Promise(resolve => resolve(msg));
+      }
+
+      const [htmlAtom, htmlTemplate] = await Promise.all([
+        promiseAtom,
+        loadTemplate('atom'),
+      ]);
+
+      const template = Handlebars.compile(htmlTemplate);
+      const dataTemplate = {
+        atomTitle,
+        instructorNote,
+        htmlAtom,
+      };
+      contentMain += template(dataTemplate);
     }
-
-    Promise.all([
-      promiseAtom,
-      loadTemplate('atom'),
-    ])
-      .then((res) => {
-        const [htmlAtom, htmlTemplate] = res;
-
-        const template = Handlebars.compile(htmlTemplate);
-        const dataTemplate = {
-          atomTitle,
-          instructorNote,
-          htmlAtom,
-        };
-        contentMain += template(dataTemplate);
-        doneAtom();
-      })
-      .catch((err) => {
-        throw err;
-      });
-  }, (error) => {
-    if (error) throw error;
 
     // create HTML body content
     const title = `${prefix}. ${concept.title}`;
@@ -111,15 +104,11 @@ export default function writeHtmlConcepts(concept, htmlSidebar, targetDir, i, do
     };
     let file = filenamify(concept.title);
     file = `${targetDir}/${prefix}. ${file}.html`;
-    writeHtml(templateDataIndex, file)
-      .then(() => {
-        logger.info(`Completed rendering lesson file ${file}`);
-        logger.info('____________________\n');
 
-        doneLesson();
-      })
-      .catch((errorWriteFile) => {
-        throw errorWriteFile;
-      });
-  });
+    await writeHtml(templateDataIndex, file);
+    logger.info(`Completed rendering lesson file ${file}`);
+    logger.info('____________________\n');
+  } catch (error) {
+    throw error;
+  }
 }

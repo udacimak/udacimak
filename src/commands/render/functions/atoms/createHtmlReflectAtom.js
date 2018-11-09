@@ -13,7 +13,7 @@ import {
  * @param {string} prefix prefix for video file name
  * @returns {string} HTML content
  */
-export default function createHtmlReflectAtom(atom, targetDir, prefix) {
+export default async function createHtmlReflectAtom(atom, targetDir, prefix) {
   const questionTitle = markdownToHtml(atom.question.title);
   let questionText;
 
@@ -27,18 +27,16 @@ export default function createHtmlReflectAtom(atom, targetDir, prefix) {
   const youtubeId = atom.answer.video ? atom.answer.video.youtube_id : '';
   const promiseDownloadYoutube = downloadYoutube(youtubeId, targetDir, prefix, atom.title);
   const promiseLoadTemplate = loadTemplate('atom.reflect');
-  return Promise.all([promiseDownloadYoutube, promiseLoadTemplate])
-    .then((res) => {
-      const [filenameYoutube, html] = res;
 
-      const answer = markdownToHtml(atom.answer.text);
-      const dataTemplate = {
-        answer,
-        filenameYoutube,
-        questionTitle,
-        questionText,
-      };
-      const template = Handlebars.compile(html);
-      return template(dataTemplate);
-    });
+  const [filenameYoutube, html] = await Promise.all([promiseDownloadYoutube, promiseLoadTemplate]);
+
+  const answer = markdownToHtml(atom.answer.text);
+  const dataTemplate = {
+    answer,
+    filenameYoutube,
+    questionTitle,
+    questionText,
+  };
+  const template = Handlebars.compile(html);
+  return template(dataTemplate);
 }

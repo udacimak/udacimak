@@ -6,7 +6,7 @@ import { loadTemplate } from '../../templates';
  * Create HTML for ImageFormQuestion type of QuizAtom
  * @param {object} atom atom JSON
  */
-export default function createHtmlQuizProgrammingQuestion(atom) {
+export default async function createHtmlQuizProgrammingQuestion(atom) {
   const files = [];
   let active; let id; let isSelected; let file; let name; let
     text;
@@ -27,13 +27,12 @@ export default function createHtmlQuizProgrammingQuestion(atom) {
     });
   } //.for
 
-  return loadTemplate('atom.quiz.programmingQuestion')
-    .then((html) => {
-      const template = Handlebars.compile(html);
-      const dataTemplate = {
-        files,
-      };
+  const html = await loadTemplate('atom.quiz.programmingQuestion');
 
-      return template(dataTemplate);
-    });
+  const template = Handlebars.compile(html);
+  const dataTemplate = {
+    files,
+  };
+
+  return template(dataTemplate);
 }

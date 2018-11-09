@@ -5,7 +5,7 @@ import inquirer from 'inquirer';
  * Prompt if user wants to overwrite the course/Nanodegree directory
  * @param {string} dir directory name
  */
-export default function promptOverwriteDir(dir) {
+export default async function promptOverwriteDir(dir) {
   const questions = [
     {
       type: 'confirm',
@@ -14,7 +14,6 @@ export default function promptOverwriteDir(dir) {
     },
   ];
 
-  return inquirer
-    .prompt(questions)
-    .then(answers => answers.overwriteExistingFolder);
+  const answers = await inquirer.prompt(questions);
+  return answers.overwriteExistingFolder;
 }

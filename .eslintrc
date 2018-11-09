@@ -5,12 +5,13 @@
       "func-names": 0,
       "import/prefer-default-export": "off",
       "linebreak-style": 0,
+      "no-await-in-loop": 0,
       "no-console": 0,
       "no-param-reassign": 0,
       "no-useless-escape": 0,
       "no-unused-expressions": 0,
       "no-underscore-dangle": 0,
-      "space-before-function-paren": ["error", "never"],
+      "space-before-function-paren": 0,
       "spaced-comment": 0
     }
   }

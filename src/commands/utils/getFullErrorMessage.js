@@ -23,5 +23,5 @@ export default function getFullErrorMessage(error) {
 
   if (stack) str += `STACK: ${stack}`;
 
-  return str || error;
+  return str || JSON.stringify(error, null, 4) || error;
 }

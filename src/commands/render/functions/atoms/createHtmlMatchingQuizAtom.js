@@ -8,7 +8,7 @@ import { markdownToHtml } from '../../../utils';
  * @param {object} atom atom json
  * @returns {string} HTML content
  */
-export default function createHtmlMatchingQuizAtom(atom) {
+export default async function createHtmlMatchingQuizAtom(atom) {
   const { question } = atom;
   const prompt = markdownToHtml(question.complex_prompt.text);
   const concepts = [];
@@ -42,17 +42,15 @@ export default function createHtmlMatchingQuizAtom(atom) {
     }
   }
 
-  return loadTemplate('atom.matchingQuiz')
-    .then((html) => {
-      const dataTemplate = {
-        answers,
-        answersLabel,
-        concepts,
-        conceptsLabel,
-        solutions,
-        prompt,
-      };
-      const template = Handlebars.compile(html);
-      return template(dataTemplate);
-    });
+  const html = await loadTemplate('atom.matchingQuiz');
+  const dataTemplate = {
+    answers,
+    answersLabel,
+    concepts,
+    conceptsLabel,
+    solutions,
+    prompt,
+  };
+  const template = Handlebars.compile(html);
+  return template(dataTemplate);
 }

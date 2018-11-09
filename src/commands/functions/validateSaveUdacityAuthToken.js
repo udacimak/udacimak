@@ -16,34 +16,36 @@ import {
  * if it is valid
  * @param {string} token Udacity authentication token
  */
-export default function validateSaveUdacityAuthToken(token) {
+export default async function validateSaveUdacityAuthToken(token) {
   const spinner = ora('Validate Udacity authentication token via Udacity API').start();
-  return fetchUdacityUserInfo(token)
-    .then((res) => {
-      if (!res.data || !res.data.user) {
-        spinner.fail();
-        logger.error(`Could not validate your Udacity token. Please try again. Here's the error message:
-        ${res.body}`);
-        return null;
-      }
-      // save token
-      config.set(CLI_CONFIG_UDACITY_AUTH_TOKEN, token);
-      spinner.succeed();
 
-      const { user } = res.data;
-      const name = user.nickname || user.first_name;
-      const msgSuccess = 'You have successfully saved authentication token locally!';
-      if (name) {
-        logger.info(`Hi ${name}. ${msgSuccess}`);
-      } else {
-        logger.info(`${msgSuccess}`);
-      }
+  try {
+    const res = await fetchUdacityUserInfo(token);
 
-      return token;
-    })
-    .catch((error) => {
+    if (!res.data || !res.data.user) {
       spinner.fail();
-      logger.error(`Failed to validate your Udacity token. Please try again. Here's the error message:
-      ${JSON.stringify(error, null, 4)}`);
-    });
+      logger.error(`Could not validate your Udacity token. Please try again. Here's the error message:
+      ${res.body}`);
+      return null;
+    }
+    // save token
+    config.set(CLI_CONFIG_UDACITY_AUTH_TOKEN, token);
+    spinner.succeed();
+
+    const { user } = res.data;
+    const name = user.nickname || user.first_name;
+    const msgSuccess = 'You have successfully saved authentication token locally!';
+    if (name) {
+      logger.info(`Hi ${name}. ${msgSuccess}`);
+    } else {
+      logger.info(`${msgSuccess}`);
+    }
+
+    return token;
+  } catch (error) {
+    spinner.fail();
+    logger.error(`Failed to validate your Udacity token. Please try again. Here's the error message:
+${JSON.stringify(error, null, 4)}`);
+    return null;
+  }
 }

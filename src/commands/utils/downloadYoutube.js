@@ -20,7 +20,7 @@ import {
  * @param {string} format youtube-dl quality setting (eg. best)
  */
 export default function downloadYoutube(videoId, outputPath, prefix, title, format = 'best') {
-  // return new Promise((resolve, reject) => {
+  // return new Promise((resolve) => {
   //   resolve('');
   // });
 

@@ -8,7 +8,7 @@ import { loadTemplate } from '../templates';
  * @param {object} atom atom json
  * @returns {string} HTML content
  */
-export default function createHtmlValidatedQuizAtom(atom) {
+export default async function createHtmlValidatedQuizAtom(atom) {
   const prompt = markdownToHtml(atom.question.prompt);
   const matchers = [];
 
@@ -17,14 +17,12 @@ export default function createHtmlValidatedQuizAtom(atom) {
     matchers.push(matcher.expression);
   }
 
-  return loadTemplate('atom.validatedQuiz')
-    .then((html) => {
-      const template = Handlebars.compile(html);
-      const data = {
-        prompt,
-        matchers,
-      };
+  const html = await loadTemplate('atom.validatedQuiz');
+  const template = Handlebars.compile(html);
+  const data = {
+    prompt,
+    matchers,
+  };
 
-      return template(data);
-    });
+  return template(data);
 }

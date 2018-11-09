@@ -13,7 +13,7 @@ import {
  * @param {object} overview Introduction JSON data
  * @param {string} targetDir target directory
  */
-export default function createHtmlLabIntroduction(overview, labTitle, targetDir) {
+export default async function createHtmlLabIntroduction(overview, labTitle, targetDir) {
   if (!overview) {
     return '(No Lab Introduction data available)';
   }
@@ -41,36 +41,30 @@ export default function createHtmlLabIntroduction(overview, labTitle, targetDir)
     promiseVideo = new Promise(resolve => resolve());
   }
 
+  const filenameYoutube = await promiseVideo;
+  if (filenameYoutube) {
+    htmlVideo = `
+      <video controls>
+        <source src="${filenameYoutube}" type="video/mp4">
+      </video>
+    `;
+  }
 
-  return promiseVideo
-    .then((filenameYoutube) => {
-      if (!filenameYoutube) {
-        return;
-      }
+  if (!title && !summary && (!keyTakeaways || !keyTakeaways.length) && !htmlVideo) {
+    return '(No Lab Introduction data available)';
+  }
 
-      htmlVideo = `
-        <video controls>
-          <source src="${filenameYoutube}" type="video/mp4">
-        </video>
-      `;
-    })
-    .then(() => loadTemplate('lab.introduction'))
-    .then((html) => {
-      console.log(title, summary, keyTakeaways, htmlVideo);
-      if (!title && !summary && (!keyTakeaways || !keyTakeaways.length) && !htmlVideo) {
-        return '(No Lab Introduction data available)';
-      }
+  const html = loadTemplate('lab.introduction');
 
-      const dataTemplate = {
-        title,
-        summary,
-        keyTakeaways,
-        video: htmlVideo,
-      };
+  const dataTemplate = {
+    title,
+    summary,
+    keyTakeaways,
+    video: htmlVideo,
+  };
 
-      const template = Handlebars.compile(html);
-      const htmlResult = template(dataTemplate);
+  const template = Handlebars.compile(html);
+  const htmlResult = template(dataTemplate);
 
-      return htmlResult;
-    });
+  return htmlResult;
 }

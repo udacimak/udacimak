@@ -13,7 +13,7 @@ import {
  * @param {string} prefix prefix for video file name
  * @returns {string} HTML content
  */
-export default function createHtmlTaskListAtom(atom, targetDir, prefix) {
+export default async function createHtmlTaskListAtom(atom, targetDir, prefix) {
   let { description } = atom;
   let positiveFeedback = atom.positive_feedback;
   description = markdownToHtml(description);
@@ -34,19 +34,16 @@ export default function createHtmlTaskListAtom(atom, targetDir, prefix) {
   const promiseDownloadYoutube = downloadYoutube(youtubeId, targetDir, prefix, atom.title);
   const promiseLoadTemplate = loadTemplate('atom.taskList');
 
-  return Promise.all([promiseDownloadYoutube, promiseLoadTemplate])
-    .then((res) => {
-      const [filenameYoutube, html] = res;
-      const hasFeedback = (filenameYoutube || positiveFeedback);
+  const [filenameYoutube, html] = await Promise.all([promiseDownloadYoutube, promiseLoadTemplate])
+  const hasFeedback = (filenameYoutube || positiveFeedback);
 
-      const dataTemplate = {
-        description,
-        hasFeedback,
-        tasks,
-        filenameYoutube,
-        positiveFeedback,
-      };
-      const template = Handlebars.compile(html);
-      return template(dataTemplate);
-    });
+  const dataTemplate = {
+    description,
+    hasFeedback,
+    tasks,
+    filenameYoutube,
+    positiveFeedback,
+  };
+  const template = Handlebars.compile(html);
+  return template(dataTemplate);
 }

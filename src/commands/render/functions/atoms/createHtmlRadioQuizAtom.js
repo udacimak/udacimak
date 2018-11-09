@@ -8,7 +8,7 @@ import { markdownToHtml } from '../../../utils';
  * @param {object} atom atom json
  * @returns {string} HTML content
  */
-export default function createHtmlRadioQuizAtom(atom) {
+export default async function createHtmlRadioQuizAtom(atom) {
   const prompt = markdownToHtml(atom.question.prompt);
 
   const answers = [];
@@ -31,14 +31,12 @@ export default function createHtmlRadioQuizAtom(atom) {
     });
   }
 
-  return loadTemplate('atom.radioQuiz')
-    .then((html) => {
-      const dataTemplate = {
-        answers,
-        solution,
-        prompt,
-      };
-      const template = Handlebars.compile(html);
-      return template(dataTemplate);
-    });
+  const html = await loadTemplate('atom.radioQuiz');
+  const dataTemplate = {
+    answers,
+    solution,
+    prompt,
+  };
+  const template = Handlebars.compile(html);
+  return template(dataTemplate);
 }

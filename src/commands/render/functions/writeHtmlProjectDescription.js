@@ -14,9 +14,9 @@ import {
  * @param {string} htmlSidebar sidebar html content
  * @param {string} outputPath target directory
  */
-export default function writeHtmlProjectDescription(project, htmlSidebar, outputPath) {
+export default async function writeHtmlProjectDescription(project, htmlSidebar, outputPath) {
   if (!project) {
-    return null;
+    return;
   }
 
   let { description, summary } = project;
@@ -50,12 +50,12 @@ export default function writeHtmlProjectDescription(project, htmlSidebar, output
   };
   let file = filenamify(`Project Description - ${title}.html`);
   file = `${outputPath}/${file}`;
-  return writeHtml(templateDataIndex, file)
-    .then(() => {
-      logger.info(`Completed rendering project description file ${file}`);
-      logger.info('____________________\n');
-    })
-    .catch((error) => {
-      throw error;
-    });
+
+  try {
+    await writeHtml(templateDataIndex, file);
+    logger.info(`Completed rendering project description file ${file}`);
+    logger.info('____________________\n');
+  } catch (error) {
+    throw error;
+  }
 }

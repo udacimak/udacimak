@@ -12,7 +12,7 @@ import {
  * @param {object} details instruction JSON data
  * @param {string} targetDir target directory
  */
-export default function createHtmlLabInstructions(details) {
+export default async function createHtmlLabInstructions(details) {
   if (!details) {
     return '(No Lab Instructions data available)';
   }
@@ -21,15 +21,12 @@ export default function createHtmlLabInstructions(details) {
   text = markdownToHtml(text);
   // TODO: find all media links and download them
 
-  return loadTemplate('lab.instructions')
-    .then((html) => {
-      const dataTemplate = {
-        text,
-      };
+  const html = await loadTemplate('lab.instructions');
 
-      const template = Handlebars.compile(html);
-      const htmlResult = template(dataTemplate);
+  const dataTemplate = {
+    text,
+  };
 
-      return htmlResult;
-    });
+  const template = Handlebars.compile(html);
+  return template(dataTemplate);
 }

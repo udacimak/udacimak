@@ -12,7 +12,7 @@ import {
  * @param {object} atom atom JSON
  * @param {string} outputPath path to save the assets folder for videos
  */
-export default function createHtmlQuizImageFormQuestion(atom, outputPath) {
+export default async function createHtmlQuizImageFormQuestion(atom, outputPath) {
   // create directory for image assets
   const pathImg = makeDir(outputPath, 'img');
   const { question } = atom;
@@ -22,22 +22,21 @@ export default function createHtmlQuizImageFormQuestion(atom, outputPath) {
   const promiseDownloadImage = downloadImage(question.background_image, pathImg, filename);
   const promiseLoadTemplate = loadTemplate('atom.quiz.imageFormQuestion');
 
-  return Promise.all([
+  const [filenameImg, html] = await Promise.all([
     promiseDownloadImage,
     promiseLoadTemplate,
-  ]).then((res) => {
-    const [filenameImg, html] = res;
-    let htmlWidgets = '';
-    for (let i = 0, len = question.widgets.length; i < len; i += 1) {
-      const widget = question.widgets[i];
-      htmlWidgets += createHtmlWidget(widget);
-    }
+  ]);
 
-    const template = Handlebars.compile(html);
-    const dataTemplate = {
-      htmlWidgets,
-      srcImg: `img/${filenameImg}`,
-    };
-    return template(dataTemplate);
-  });
+  let htmlWidgets = '';
+  for (let i = 0, len = question.widgets.length; i < len; i += 1) {
+    const widget = question.widgets[i];
+    htmlWidgets += createHtmlWidget(widget);
+  }
+
+  const template = Handlebars.compile(html);
+  const dataTemplate = {
+    htmlWidgets,
+    srcImg: `img/${filenameImg}`,
+  };
+  return template(dataTemplate);
 }

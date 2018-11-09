@@ -1,6 +1,9 @@
 export { default as checkOverwriteDir } from './checkOverwriteDir';
 export { default as downloadCourse } from './downloadCourse';
 export { default as downloadLesson } from './downloadLesson';
+export { default as downloadLessons } from './downloadLessons';
+export { default as downloadModules } from './downloadModules';
+export { default as downloadParts } from './downloadParts';
 export { default as downloadNanodegree } from './downloadNanodegree';
 export { default as downloadProjectRubric } from './downloadProjectRubric';
 export { default as promptOverwriteDir } from './promptOverwriteDir';

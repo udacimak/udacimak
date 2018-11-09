@@ -4,7 +4,7 @@ import inquirer from 'inquirer';
 /**
  * Prompt user input for Udacity authentication token
  */
-export default function promptInputUdacityAuthToken() {
+export default async function promptInputUdacityAuthToken() {
   const questions = [
     {
       type: 'input',
@@ -13,7 +13,6 @@ export default function promptInputUdacityAuthToken() {
     },
   ];
 
-  return inquirer
-    .prompt(questions)
-    .then(answers => answers.udacityAuthToken);
+  const answers = await inquirer.prompt(questions);
+  return answers.udacityAuthToken;
 }

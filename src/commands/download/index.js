@@ -18,37 +18,28 @@ import {
  * @param {array} courseIds list of course ids to download
  * @param {string} targetDir target directory to save downloaded courses/Nanodegrees
  */
-export default function download(courseIds, targetDir) {
-  retrieveUdacityAuthToken()
-    .then((token) => {
-      async.eachSeries(courseIds, (courseId, doneCourseIds) => {
-        let isNanodegree = false;
-        // check if this is a course or Nanodegree
-        if (courseId.startsWith('nd')) {
-          isNanodegree = true;
-        }
+export default async function download(courseIds, targetDir) {
+  try {
+    const token = await retrieveUdacityAuthToken();
 
-        let promise;
-        if (isNanodegree) {
-          promise = downloadNanodegree(courseId, targetDir, token);
-        } else {
-          promise = downloadCourse(courseId, targetDir, token);
-        }
+    async.eachSeries(courseIds, async (courseId) => {
+      let isNanodegree = false;
+      // check if this is a course or Nanodegree
+      if (courseId.startsWith('nd')) {
+        isNanodegree = true;
+      }
 
-        promise
-          .then(() => {
-            doneCourseIds();
-          })
-          .catch((error) => {
-            error = getFullErrorMessage(error);
-            logger.error(error);
-            process.exit(1);
-          });
-      }, (error) => {
-        if (error) throw error;
-      });
-    })
-    .catch((error) => {
-      throw error;
+      if (isNanodegree) {
+        await downloadNanodegree(courseId, targetDir, token);
+      } else {
+        await downloadCourse(courseId, targetDir, token);
+      }
+    }, (error) => {
+      if (error) throw error;
     });
+  } catch (error) {
+    const errorMsg = getFullErrorMessage(error);
+    logger.error(`Failed to download course. See error below:\n${errorMsg}`);
+    process.exit(1);
+  }
 }

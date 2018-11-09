@@ -7,7 +7,7 @@ import { filenamify } from '../../../utils';
  * Create HTML for table of content on the sidebar for lessons
  * @param {object} lesson lesson JSON data
  */
-export default function createHtmlSidebarLesson(lesson) {
+export default async function createHtmlSidebarLesson(lesson) {
   const list = [];
   const {
     concepts, lab, project, rubric, title,
@@ -61,15 +61,14 @@ export default function createHtmlSidebarLesson(lesson) {
     },
   ];
 
-  return loadTemplate('sidebar')
-    .then((html) => {
-      const template = Handlebars.compile(html);
-      const dataTemplate = {
-        bottomLinks,
-        title,
-        list,
-      };
+  const html = await loadTemplate('sidebar');
 
-      return template(dataTemplate);
-    });
+  const template = Handlebars.compile(html);
+  const dataTemplate = {
+    bottomLinks,
+    title,
+    list,
+  };
+
+  return template(dataTemplate);
 }

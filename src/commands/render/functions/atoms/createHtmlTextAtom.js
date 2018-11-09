@@ -1,3 +1,4 @@
+import cheerio from 'cheerio';
 import Handlebars from 'handlebars';
 import {
   downloadImage,
@@ -7,9 +8,6 @@ import {
 } from '../../../utils';
 import { loadTemplate } from '../templates';
 
-const async = require('async');
-const cheerio = require('cheerio');
-
 
 /**
  * Create HTML content for TextAtom
@@ -17,42 +15,43 @@ const cheerio = require('cheerio');
  * @param {string} outputPath path to save the assets
  * @returns {string} HTML content
  */
-export default function createHtmlTextAtom(atom, outputPath) {
-  return new Promise((resolve, reject) => {
-    let text = markdownToHtml(atom.text);
+export default async function createHtmlTextAtom(atom, outputPath) {
+  let text = markdownToHtml(atom.text);
 
-    // find if there are videos / images need to be downloaded
-    const $ = cheerio.load(text);
-    const videos = $('video source');
-    const images = $('img');
+  // find if there are videos / images need to be downloaded
+  const $ = cheerio.load(text);
+  const videos = $('video source');
+  const images = $('img');
 
-    // save links to download video / images
-    const links = [];
-    // create directory for video / image assets
-    const pathMedia = makeDir(outputPath, 'media');
+  // save links to download video / images
+  const links = [];
+  // create directory for video / image assets
+  const pathMedia = makeDir(outputPath, 'media');
 
-    if (videos && videos.length) {
-      videos.each((i, video) => {
-        links.push({
-          i,
-          type: 'video',
-          src: video.attribs.src,
-        });
+  if (videos && videos.length) {
+    videos.each((i, video) => {
+      links.push({
+        i,
+        type: 'video',
+        src: video.attribs.src,
       });
-    }
+    });
+  }
 
-    if (images && images.length) {
-      images.each((i, image) => {
-        links.push({
-          i,
-          type: 'img',
-          src: image.attribs.src,
-        });
+  if (images && images.length) {
+    images.each((i, image) => {
+      links.push({
+        i,
+        type: 'img',
+        src: image.attribs.src,
       });
-    }
+    });
+  }
 
+  try {
     // loop and download all media links
-    async.eachSeries(links, (link, done) => {
+    for (let j = 0, len = links.length; j < len; j += 1) {
+      const link = links[j];
       const { i, type, src } = link;
 
       // since these src values may contain a link, but won't return a proper filename
@@ -66,28 +65,17 @@ export default function createHtmlTextAtom(atom, outputPath) {
         filename = `unnamed-${atom.id}-${i}${extension}`;
       }
 
-      downloadImage(src, pathMedia, filename)
-        .then((filenameImg) => {
-          text = text.replace(src, `media/${filenameImg}`);
-          done();
-        })
-        .catch((error) => {
-          reject(error);
-        });
-    }, (error) => {
-      if (error) reject(error);
+      const filenameImg = await downloadImage(src, pathMedia, filename);
+      text = text.replace(src, `media/${filenameImg}`);
+    } //.for links
 
-      loadTemplate('atom.text')
-        .then((html) => {
-          const data = {
-            text,
-          };
-
-          const template = Handlebars.compile(html);
-          const htmlResult = template(data);
-
-          resolve(htmlResult);
-        });
-    });
-  });
+    const html = await loadTemplate('atom.text');
+    const data = {
+      text,
+    };
+    const template = Handlebars.compile(html);
+    return template(data);
+  } catch (error) {
+    throw error;
+  }
 }

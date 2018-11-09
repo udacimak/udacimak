@@ -10,22 +10,22 @@ import {
  * @param {string} prefix prefix for file name
  * @returns {string} HTML content
  */
-export default function createHtmlVideoAtom(atom, outputPath, prefix) {
-  return new Promise((resolve, reject) => {
-    // create directory for video assets
-    const pathVideo = outputPath;
+export default async function createHtmlVideoAtom(atom, outputPath, prefix) {
+  // create directory for video assets
+  const pathVideo = outputPath;
 
-    downloadYoutube(atom.video.youtube_id, pathVideo, prefix, atom.title)
-      .then((filenameYoutube) => {
-        const html = `
-          <video controls>
-            <source src="${filenameYoutube}" type="video/mp4">
-          </video>
-        `;
+  try {
+    const filenameYoutube = await downloadYoutube(atom.video.youtube_id,
+      pathVideo, prefix, atom.title);
 
-        resolve(html);
-      }).catch((error) => {
-        reject(error);
-      });
-  });
+    const html = `
+      <video controls>
+        <source src="${filenameYoutube}" type="video/mp4">
+      </video>
+    `;
+
+    return html;
+  } catch (error) {
+    throw error;
+  }
 }

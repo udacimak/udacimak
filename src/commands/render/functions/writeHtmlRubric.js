@@ -18,7 +18,7 @@ import {
  * @param {string} htmlSidebar sidebar html content
  * @param {string} outputPath target directory
  */
-export default function writeHtmlRubric(rubric, projectJSON, htmlSidebar, outputPath) {
+export default async function writeHtmlRubric(rubric, projectJSON, htmlSidebar, outputPath) {
   const { sections } = rubric;
   // need to use the project title from projectJSON instead of from the rubric
   // This allow the Nanodegree and lesson summary pages to be able to link
@@ -54,9 +54,8 @@ export default function writeHtmlRubric(rubric, projectJSON, htmlSidebar, output
   };
   let file = filenamify(`Project Rubric - ${title}.html`);
   file = `${outputPath}/${file}`;
-  return writeHtml(templateDataIndex, file)
-    .then(() => {
-      logger.info(`Completed rendering rubric file ${file}`);
-      logger.info('____________________\n');
-    });
+
+  await writeHtml(templateDataIndex, file);
+  logger.info(`Completed rendering rubric file ${file}`);
+  logger.info('____________________\n');
 }

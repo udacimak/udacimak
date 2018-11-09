@@ -8,7 +8,7 @@ import { markdownToHtml } from '../../../utils';
  * @param {object} atom atom json
  * @returns {string} HTML content
  */
-export default function createHtmlCheckboxQuizAtom(atom) {
+export default async function createHtmlCheckboxQuizAtom(atom) {
   const prompt = markdownToHtml(atom.question.prompt);
 
   const answers = [];
@@ -30,14 +30,12 @@ export default function createHtmlCheckboxQuizAtom(atom) {
     });
   }
 
-  return loadTemplate('atom.checkboxQuiz')
-    .then((html) => {
-      const dataTemplate = {
-        answers,
-        solution,
-        prompt,
-      };
-      const template = Handlebars.compile(html);
-      return template(dataTemplate);
-    });
+  const html = await loadTemplate('atom.checkboxQuiz');
+  const dataTemplate = {
+    answers,
+    solution,
+    prompt,
+  };
+  const template = Handlebars.compile(html);
+  return template(dataTemplate);
 }

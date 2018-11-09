@@ -101,10 +101,12 @@ program
 
 // handle uncaught exceptions and uncaught promise rejections
 process.on('uncaughtException', (err) => {
-  logger.error(getFullErrorMessage(err));
+  const errorMsg = getFullErrorMessage(err);
+  logger.error(`Uncaught Exception:\n${errorMsg}`);
   process.exit(1);
 });
 process.on('unhandledRejection', (err) => {
-  logger.error(getFullErrorMessage(err));
+  const errorMsg = getFullErrorMessage(err);
+  logger.error(`Unhandled Promise Rejection:\n${errorMsg}`);
   process.exit(1);
 });

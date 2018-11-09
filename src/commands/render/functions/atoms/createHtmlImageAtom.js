@@ -14,7 +14,7 @@ import { loadTemplate } from '../templates';
  * @param {string} outputPath path to save the assets folder for images
  * @returns {string} HTML content
  */
-export default function createHtmlImageAtom(atom, outputPath) {
+export default async function createHtmlImageAtom(atom, outputPath) {
   let { caption } = atom;
   // create directory for image assets
   const pathImg = makeDir(outputPath, 'img');
@@ -29,18 +29,15 @@ export default function createHtmlImageAtom(atom, outputPath) {
   const promiseDownload = downloadImage(atom.url, pathImg, filename);
   const promiseLoadTemplate = loadTemplate('atom.image');
 
-  return Promise.all([promiseDownload, promiseLoadTemplate])
-    .then((data) => {
-      const [filenameImg, html] = data;
-      const alt = caption;
-      caption = markdownToHtml(caption);
-      const dataTemplate = {
-        file: `img/${filenameImg}`,
-        alt,
-        caption,
-      };
-      const template = Handlebars.compile(html);
+  const [filenameImg, html] = await Promise.all([promiseDownload, promiseLoadTemplate]);
+  const alt = caption;
+  caption = markdownToHtml(caption);
+  const dataTemplate = {
+    file: `img/${filenameImg}`,
+    alt,
+    caption,
+  };
+  const template = Handlebars.compile(html);
 
-      return template(dataTemplate);
-    });
+  return template(dataTemplate);
 }

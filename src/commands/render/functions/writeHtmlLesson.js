@@ -1,3 +1,4 @@
+import fs from 'fs';
 import {
   writeHtmlConcept,
   writeHtmlLab,
@@ -8,9 +9,6 @@ import {
 import { createHtmlSidebarLesson } from './sidebar';
 import { deleteFilesInFolder } from '../../utils';
 
-const async = require('async');
-const fs = require('fs');
-
 
 /**
  * Iterate through lessons to trigger writing HTML files for concepts,
@@ -19,7 +17,7 @@ const fs = require('fs');
  * @param {string} targetDir output directory
  * @param {function} doneModule callback function of module loop
  */
-export default function writeHtmlLesson(jsonPath, targetDir, doneModule) {
+export default async function writeHtmlLesson(jsonPath, targetDir) {
   const filename = 'data.json';
   const pathData = `${jsonPath}/${filename}`;
   const pathRubric = `${jsonPath}/rubric.json`;
@@ -55,36 +53,28 @@ export default function writeHtmlLesson(jsonPath, targetDir, doneModule) {
     }); //.fs.access rubric
   }); //.promise
 
-  promiseRubric
-    .then(() => Promise.all([
+  try {
+    await promiseRubric;
+
+    const htmlSidebar = await Promise.all([
       createHtmlSidebarLesson(data),
       writeHtmlLessonSummary(data, targetDir),
-    ]))
-    .then((res) => {
-      const htmlSidebar = res[0];
+    ])[0];
 
-      let i = 1;
-      async.eachSeries(concepts, (concept, doneLesson) => {
-        writeHtmlConcept(concept, htmlSidebar, targetDir, i, doneLesson);
-        i += 1;
-      }, (error) => {
-        if (error) throw error;
-        let promiseWriteHtmlRubric;
-        if (data.rubric) {
-          promiseWriteHtmlRubric = writeHtmlRubric(data.rubric, project, htmlSidebar, targetDir);
-        }
-        Promise.all([
-          promiseWriteHtmlRubric,
-          writeHtmlProjectDescription(project, htmlSidebar, targetDir),
-          writeHtmlLab(lab, htmlSidebar, targetDir),
-        ]).then(() => {
-          doneModule();
-        }).catch((errorPromiseAll) => {
-          throw errorPromiseAll;
-        });
-      }); //.async.eachSeries concepts
-    })
-    .catch((error) => {
-      throw error;
-    }); //.promiseRubric
+    for (let i = 0, len = concepts.length; i < len; i += 1) {
+      const conceptIndex = i + 1;
+      await writeHtmlConcept(concepts[i], htmlSidebar, targetDir, conceptIndex);
+    }
+
+    let promiseWriteHtmlRubric;
+    if (data.rubric) {
+      promiseWriteHtmlRubric = writeHtmlRubric(data.rubric, project, htmlSidebar, targetDir);
+    }
+
+    await promiseWriteHtmlRubric;
+    await writeHtmlProjectDescription(project, htmlSidebar, targetDir);
+    await writeHtmlLab(lab, htmlSidebar, targetDir);
+  } catch (error) {
+    throw error;
+  }
 }

@@ -1,4 +1,3 @@
-import async from 'async';
 import dirTree from 'directory-tree';
 import { renderCourse } from '../render/functions';
 import {
@@ -12,7 +11,7 @@ import {
  * downloaded course JSON data from Udacity API
  * @param {string} targetDir target directory to save rendered courses
  */
-export default function renderdir(sourceDir, targetDir) {
+export default async function renderdir(sourceDir, targetDir) {
   if (sourceDir === targetDir) {
     logger.error('Target directory must not be the same with source directory. Please change the target directory.');
     return;
@@ -24,27 +23,17 @@ export default function renderdir(sourceDir, targetDir) {
     return;
   }
 
-  // loop through each
-  async.forEachSeries(dirTreeSource.children, (child, done) => {
-    if (child.type !== 'directory') {
-      done();
-      return;
-    }
-
-    const dirCourse = child.path;
-    renderCourse(dirCourse, targetDir)
-      .then(() => {
-        done();
-      })
-      .catch((error) => {
-        logger.error(error);
-      });
-  }, (error) => {
-    if (error) {
-      logger.error(error);
-      return;
+  try {
+    for (let i = 0, len = dirTreeSource.children.length; i < len; i += 1) {
+      const child = dirTreeSource.children[i];
+      if (child.type === 'directory') {
+        const dirCourse = child.path;
+        await renderCourse(dirCourse, targetDir);
+      }
     }
 
     logger.info('Completed downloading all courses/Nanodegrees');
-  });
+  } catch (error) {
+    throw error;
+  }
 }

@@ -26,9 +26,9 @@ import {
  * @param {string} htmlSidebar sidebar html content
  * @param {string} targetDir target directory
  */
-export default function writeHtmlLab(lab, htmlSidebar, targetDir) {
+export default async function writeHtmlLab(lab, htmlSidebar, targetDir) {
   if (!lab) {
-    return null;
+    return;
   }
 
   const {
@@ -49,51 +49,50 @@ export default function writeHtmlLab(lab, htmlSidebar, targetDir) {
   const promiseHtmlWorkspace = createHtmlWorkspaceAtom(workspace);
   const templateLab = loadTemplate('lab');
 
-  return Promise.all([
+  const [
+    instructions,
+    introduction,
+    htmlWorkspace,
+    filenameYoutube,
+    html,
+  ] = await Promise.all([
     promiseInstructions,
     promiseIntroduction,
     promiseHtmlWorkspace,
     reviewVideo,
     templateLab,
-  ]).then((data) => {
-    const [instructions, introduction, htmlWorkspace, filenameYoutube, html] = data;
+  ]);
 
-    const htmlReviewVideo = `
-      <video controls>
-        <source src="${filenameYoutube}" type="video/mp4">
-      </video>
-    `;
-    const dataLab = {
-      introduction,
-      instructions,
-      htmlReviewVideo,
-      reflection: '(Reflection is only available online on Udacity website)',
-      workspace: htmlWorkspace,
-    };
-    const template = Handlebars.compile(html);
-    const htmlLab = template(dataLab);
+  const htmlReviewVideo = `
+    <video controls>
+      <source src="${filenameYoutube}" type="video/mp4">
+    </video>
+  `;
+  const dataLab = {
+    introduction,
+    instructions,
+    htmlReviewVideo,
+    reflection: '(Reflection is only available online on Udacity website)',
+    workspace: htmlWorkspace,
+  };
+  const template = Handlebars.compile(html);
+  const htmlLab = template(dataLab);
 
-    // decide how many folders it needs to go up to access the assets
-    const upDir = '../';
-    const srcCss = `${upDir}assets/css`;
-    const srcJs = `${upDir}assets/js`;
-    // write html file
-    const templateDataIndex = {
-      docTitle: title,
-      sidebar: htmlSidebar,
-      srcCss,
-      srcJs,
-      title: `Lab: ${title}`,
-      contentMain: htmlLab,
-    };
+  // decide how many folders it needs to go up to access the assets
+  const upDir = '../';
+  const srcCss = `${upDir}assets/css`;
+  const srcJs = `${upDir}assets/js`;
+  // write html file
+  const templateDataIndex = {
+    docTitle: title,
+    sidebar: htmlSidebar,
+    srcCss,
+    srcJs,
+    title: `Lab: ${title}`,
+    contentMain: htmlLab,
+  };
 
-    return templateDataIndex;
-  }).then(templateDataIndex => writeHtml(templateDataIndex, file))
-    .then(() => {
-      logger.info(`Completed rendering lab file ${file}`);
-      logger.info('____________________\n');
-    })
-    .catch((error) => {
-      throw error;
-    });
+  await writeHtml(templateDataIndex, file);
+  logger.info(`Completed rendering lab file ${file}`);
+  logger.info('____________________\n');
 }

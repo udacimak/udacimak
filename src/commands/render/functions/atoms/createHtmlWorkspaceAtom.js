@@ -10,7 +10,7 @@ import { markdownToHtml } from '../../../utils';
  * @param {object} atom atom json
  * @returns {string} HTML content
  */
-export default function createHtmlWorkspaceAtom(atom) {
+export default async function createHtmlWorkspaceAtom(atom) {
   if (!atom) {
     return '(No Workspace data available)';
   }
@@ -37,18 +37,14 @@ export default function createHtmlWorkspaceAtom(atom) {
     } //.if conf
   } //.if configuration
 
-  return loadTemplate('atom.workspace')
-    .then((html) => {
-      const data = {
-        defaultPath,
-        kind,
-        openFiles,
-        userCode,
-      };
+  const html = await loadTemplate('atom.workspace');
+  const data = {
+    defaultPath,
+    kind,
+    openFiles,
+    userCode,
+  };
 
-      const template = Handlebars.compile(html);
-      const htmlResult = template(data);
-
-      return htmlResult;
-    });
+  const template = Handlebars.compile(html);
+  return template(data);
 }

@@ -18,7 +18,7 @@ import {
  * @param {function} filename optional file name parameter
  */
 export default function downloadImage(uri, outputDir, filename = undefined) {
-  // return new Promise((resolve, reject) => {
+  // return new Promise((resolve) => {
   //   resolve('');
   // });
 

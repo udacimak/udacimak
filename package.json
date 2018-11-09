@@ -8,7 +8,7 @@
     "lint": "eslint ./src",
     "prebuild": "npm run lint",
     "build": "babel src --out-dir lib --copy-files",
-    "watch": "nodemon --watch src --exec \"npm run lint && babel src --out-dir lib --copy-files\"",
+    "watch": "nodemon --watch src --exec \"babel src --out-dir lib --copy-files\"",
     "test": "",
     "release": "np",
     "version": "npm run build"
@@ -66,6 +66,7 @@
     "copy-dir": "^0.4.0",
     "directory-tree": "^2.1.0",
     "filenamify": "^2.1.0",
+    "fs-extra": "^7.0.1",
     "handlebars": "^4.0.12",
     "inquirer": "^6.2.0",
     "npm": "^6.4.1",
