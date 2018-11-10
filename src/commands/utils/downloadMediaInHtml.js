@@ -23,7 +23,6 @@ export default async function downloadMediaInHtml(html, targetDir, atomId) {
   // save links to download video / images
   const links = [];
   // create directory for video / image assets
-  const pathMedia = makeDir(targetDir, 'media');
 
   if (videos && videos.length) {
     videos.each((i, video) => {
@@ -46,6 +45,7 @@ export default async function downloadMediaInHtml(html, targetDir, atomId) {
   }
 
   if (!links.length) return html;
+  const pathMedia = makeDir(targetDir, 'media');
 
   try {
     // loop and download all media links
