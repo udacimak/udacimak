@@ -58,7 +58,7 @@ function createHtmlLessonSummary(module, prefixModule) {
     const lesson = module.lessons[i];
     const numbering = (i + 1 < 10) ? `0${i + 1}` : i + 1;
     const prefixLesson = `Lesson ${numbering}`;
-    const linkLesson = `${prefixModule}-${prefixLesson}_${filenamify(lesson.title)}`;
+    const linkLesson = `${prefixModule}-${prefixLesson}_${filenamify(lesson.title.trim())}`;
     const lessonSummary = lesson.summary ? `<p>${markdownToHtml(lesson.summary)}</p>` : '';
     const htmlConcepts = createHtmlSectionSummary(lesson, 'concepts', 'Concept', linkLesson);
     let htmlProjectDescription = '';

@@ -39,7 +39,7 @@ function createHtmlCourseLessonSummary(lessons) {
     const lesson = lessons[i];
     const numbering = (i + 1 < 10) ? `0${i + 1}` : i + 1;
     const prefix = `Lesson ${numbering}`;
-    const pathLesson = `${prefix}_${filenamify(lesson.title)}`;
+    const pathLesson = `${prefix}_${filenamify(lesson.title.trim())}`;
     const link = path.join(pathLesson, 'index.html');
     const summary = lesson.summary ? `<p>${markdownToHtml(lesson.summary)}` : '';
     const htmlConcepts = createHtmlConceptSummary(lesson.concepts, pathLesson);
