@@ -1,5 +1,6 @@
 import Handlebars from 'handlebars';
 import filenamify from 'filenamify';
+import path from 'path';
 import { loadTemplate } from './templates';
 import { writeHtml } from '.';
 import {
@@ -8,7 +9,7 @@ import {
 
 
 /**
- * Write HTML for sidebar which contains table of contents for data.concepts
+ * Write HTML for lesson index page to contain table of contents
  * @param {object} data JSON data of lesson
  * @param {string} targetDir output directory
  */
@@ -56,8 +57,8 @@ export default async function writeHtmlLessonSummary(data, targetDir) {
     };
   } //.if lab
 
-  // title for html template
-  let pageTitle = targetDir.split('/');
+  // title for html template, get it from the target directory
+  let pageTitle = targetDir.split(path.sep);
   pageTitle = pageTitle[pageTitle.length - 1];
 
   // decide how many folders it needs to go up to access the assets
