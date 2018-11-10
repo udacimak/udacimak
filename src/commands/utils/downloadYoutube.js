@@ -54,9 +54,7 @@ export default function downloadYoutube(videoId, outputPath, prefix, title, form
       // get video name
       const fileSize = info.size;
       // create a new progress bar instance
-      const progressBar = new _cliProgress.Bar({
-        stopOnComplete: true,
-      }, _cliProgress.Presets.shades_classic);
+      const progressBar = new _cliProgress.Bar({}, _cliProgress.Presets.shades_classic);
       progressBar.start(fileSize, 0);
 
 
@@ -85,6 +83,8 @@ export default function downloadYoutube(videoId, outputPath, prefix, title, form
           reject(errorRename);
         }
 
+        progressBar.update(fileSize);
+        progressBar.stop();
         logger.info(`Downloaded video ${filenameYoutube}`);
 
         const spinnerSubtitles = ora(`Download subtitles for ${filenameYoutube}`).start();
