@@ -1,6 +1,6 @@
 FROM debian:latest
 
-MAINTAINER "udacimak <udacimak@tutanota.com>"
+LABEL maintainer="udacimak <udacimak@tutanota.com>"
 
 # replace shell with bash so we can source files
 RUN rm /bin/sh && ln -s /bin/bash /bin/sh
@@ -9,6 +9,7 @@ RUN rm /bin/sh && ln -s /bin/bash /bin/sh
 # and install dependencies
 RUN apt-get update \
     && apt-get install -y curl python \
+    && apt-get install -y git \
     && apt-get -y autoclean
 
 
