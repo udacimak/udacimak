@@ -1,3 +1,4 @@
+import path from 'path';
 import {
   writeHtml,
 } from '.';
@@ -37,8 +38,8 @@ export default async function writeHtmlProjectDescription(project, htmlSidebar, 
 
   // decide how many folders it needs to go up to access the assets
   const upDir = '../';
-  const srcCss = `${upDir}assets/css`;
-  const srcJs = `${upDir}assets/js`;
+  const srcCss = path.join(upDir, 'assets/css');
+  const srcJs = path.join(upDir, 'assets/js');
   // write html file
   const templateDataIndex = {
     contentMain,
@@ -49,7 +50,7 @@ export default async function writeHtmlProjectDescription(project, htmlSidebar, 
     title,
   };
   let file = filenamify(`Project Description - ${title}.html`);
-  file = `${outputPath}/${file}`;
+  file = path.join(outputPath, file);
 
   try {
     await writeHtml(templateDataIndex, file);

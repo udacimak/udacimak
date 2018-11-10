@@ -63,9 +63,9 @@ export default async function writeHtmlLessonSummary(data, targetDir) {
 
   // decide how many folders it needs to go up to access the assets
   const upDir = '../';
-  const srcCss = `${upDir}assets/css`;
-  const srcJs = `${upDir}assets/js`;
-  const file = `${targetDir}/index.html`;
+  const srcCss = path.join(upDir, 'assets/css');
+  const srcJs = path.join(upDir, 'assets/js');
+  const file = path.join(targetDir, 'index.html');
   const html = await loadTemplate('summary.lesson');
 
   const template = Handlebars.compile(html);

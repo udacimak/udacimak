@@ -1,4 +1,5 @@
 import fs from 'fs';
+import path from 'path';
 import {
   writeHtmlConcept,
   writeHtmlLab,
@@ -18,9 +19,8 @@ import { deleteFilesInFolder } from '../../utils';
  * @param {function} doneModule callback function of module loop
  */
 export default async function writeHtmlLesson(jsonPath, targetDir) {
-  const filename = 'data.json';
-  const pathData = `${jsonPath}/${filename}`;
-  const pathRubric = `${jsonPath}/rubric.json`;
+  const pathData = path.join(jsonPath, 'data.json');
+  const pathRubric = path.join(jsonPath, 'rubric.json');
 
   // Delete all existing html files in the lesson folder if any
   // This is to make sure when the cli is updated and the new file

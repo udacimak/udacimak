@@ -1,10 +1,10 @@
+import path from 'path';
 import {
   writeHtml,
 } from '.';
 import {
   filenamify,
   logger,
-  markdownToHtml,
 } from '../../utils';
 import {
   createHtmlRubricSections,
@@ -42,8 +42,8 @@ export default async function writeHtmlRubric(rubric, projectJSON, htmlSidebar, 
 
   // decide how many folders it needs to go up to access the assets
   const upDir = '../';
-  const srcCss = `${upDir}assets/css`;
-  const srcJs = `${upDir}assets/js`;
+  const srcCss = path.join(upDir, 'assets/css');
+  const srcJs = path.join(upDir, 'assets/js');
   // write html file
   const templateDataIndex = {
     contentMain: htmlRubric,
@@ -54,7 +54,7 @@ export default async function writeHtmlRubric(rubric, projectJSON, htmlSidebar, 
     title,
   };
   let file = filenamify(`Project Rubric - ${title}.html`);
-  file = `${outputPath}/${file}`;
+  file = path.join(outputPath, file);
 
   await writeHtml(templateDataIndex, file);
   logger.info(`Completed rendering rubric file ${file}`);

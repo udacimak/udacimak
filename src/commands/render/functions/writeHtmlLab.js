@@ -80,8 +80,8 @@ export default async function writeHtmlLab(lab, htmlSidebar, targetDir) {
 
   // decide how many folders it needs to go up to access the assets
   const upDir = '../';
-  const srcCss = `${upDir}assets/css`;
-  const srcJs = `${upDir}assets/js`;
+  const srcCss = path.join(upDir, 'assets/css');
+  const srcJs = path.join(upDir, 'assets/js');
   // write html file
   const templateDataIndex = {
     docTitle: title,

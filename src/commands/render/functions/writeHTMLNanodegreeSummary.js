@@ -1,5 +1,6 @@
 import Handlebars from 'handlebars';
 import fs from 'fs';
+import path from 'path';
 import { loadTemplate } from './templates';
 import {
   writeHtml,
@@ -150,7 +151,7 @@ function createHtmlModuleSummary(part, prefixPart) {
  * @param {string} filename file name of source JSON file
  */
 export default async function writeHTMLNanodegreeSummary(jsonPath, targetDir, nanodegreeName, filename = 'data.json') {
-  const pathData = `${jsonPath}/${filename}`;
+  const pathData = path.join(jsonPath, filename);
 
   // read json file for data
   let data = fs.readFileSync(pathData, 'utf-8');
@@ -221,7 +222,7 @@ export default async function writeHTMLNanodegreeSummary(jsonPath, targetDir, na
     srcJs: 'assets/js',
     title: data.title,
   };
-  const file = `${targetDir}/index.html`;
+  const file = path.join(targetDir, 'index.html');
   await writeHtml(templateDataIndex, file);
 
   logger.info(`Completed rendering Nanodegree summary file ${targetDir}/index.html`);

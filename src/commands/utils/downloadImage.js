@@ -11,7 +11,7 @@ import {
 
 
 /**
- * Download image and save it as image assets
+ * Download media file and save it as image assets
  * @see https://stackoverflow.com/questions/12740659/downloading-images-with-node-js
  * @param {string} uri URI of image
  * @param {string} outputDir output directory path
@@ -37,8 +37,8 @@ If the link was temporary broken and is up again when you check, please re-run t
     uri = addHttp(uri);
 
     if (!filename) filename = path.basename(uri);
-    const savePath = `${outputDir}/${filename}`;
-    const tempPath = `${outputDir}/.${filename}`;
+    const savePath = path.join(outputDir, filename);
+    const tempPath = path.join(outputDir, `.${filename}`);
 
     // avoid re-downloading images if it already exists
     if (fs.existsSync(savePath)) {

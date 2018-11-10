@@ -1,4 +1,5 @@
 import Handlebars from 'handlebars';
+import path from 'path';
 import {
   createHtmlImageAtom,
   createHtmlTaskListAtom,
@@ -93,8 +94,8 @@ export default async function writeHtmlConcept(concept, htmlSidebar, targetDir, 
 
     // decide how many folders it needs to go up to access the assets
     const upDir = '../';
-    const srcCss = `${upDir}assets/css`;
-    const srcJs = `${upDir}assets/js`;
+    const srcCss = path.join(upDir, 'assets/css');
+    const srcJs = path.join(upDir, 'assets/js');
     // write html file
     const templateDataIndex = {
       contentMain,
@@ -105,7 +106,7 @@ export default async function writeHtmlConcept(concept, htmlSidebar, targetDir, 
       title,
     };
     let file = filenamify(conceptTitle);
-    file = `${targetDir}/${prefix}. ${file}.html`;
+    file = path.join(targetDir, `${prefix}. ${file}.html`);
 
     await writeHtml(templateDataIndex, file);
     logger.info(`Completed rendering lesson file ${file}`);

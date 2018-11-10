@@ -1,6 +1,7 @@
 import _cliProgress from 'cli-progress';
 import fs from 'fs-extra';
 import ora from 'ora';
+import path from 'path';
 import progress from 'progress-stream';
 import youtubedl from 'youtube-dl';
 import {
@@ -32,8 +33,8 @@ export default function downloadYoutube(videoId, outputPath, prefix, title, form
     const filenameBase = `${prefix}. ${filenamify(title || '')}-${videoId}`;
     const filenameYoutube = `${filenameBase}.mp4`;
     const urlYoutube = `https://www.youtube.com/watch?v=${videoId}`;
-    const savePath = `${outputPath}/${filenameYoutube}`;
-    const tempPath = `${outputPath}/.${filenameYoutube}`;
+    const savePath = path.join(outputPath, filenameYoutube); `${outputPath}/${filenameYoutube}`;
+    const tempPath = path.join(outputPath, `.${filenameYoutube}`);
 
     // avoid re-downloading videos if it already exists
     if (fs.existsSync(savePath)) {
@@ -119,12 +120,12 @@ export default function downloadYoutube(videoId, outputPath, prefix, title, form
               // couldn't find file extension, skip renaming for safety
               if (ext) {
                 // construct subtitle file name
-                const filenameSubtitle = `${outputPath}/${filenameBase}${ext}`;
+                const filenameSubtitle = path.join(outputPath, `${filenameBase}${ext}`);
 
                 // avoid overwriting video file
                 if (!fs.existsSync(filenameSubtitle)) {
                   try {
-                    await fs.rename(`${outputPath}/${file}`, filenameSubtitle);
+                    await fs.rename(path.join(outputPath, file), filenameSubtitle);
                   } catch (errorRename) {
                     spinnerSubtitles.warn();
                     logger.warn(`Failed to rename subtitles for ${file} with error:\n${errorRename}\n`);
