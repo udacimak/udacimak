@@ -193,7 +193,10 @@ export default async function writeHTMLNanodegreeSummary(jsonPath, targetDir, na
   ]);
 
   const {
-    key, version, title,
+    key,
+    locale,
+    version,
+    title,
   } = data;
   const summary = markdownToHtml(data.summary);
   const srcHeroImg = filenameImg ? `img/${filenameImg}` : null;
@@ -204,6 +207,7 @@ export default async function writeHTMLNanodegreeSummary(jsonPath, targetDir, na
     heroImgAlt,
     htmlParts,
     key,
+    locale,
     version,
     summary,
   };
