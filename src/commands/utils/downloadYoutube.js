@@ -79,7 +79,7 @@ export default function downloadYoutube(videoId, outputPath, prefix, title, form
       video.on('end', async () => {
         // rename temp file to final file name
         try {
-          fs.rename(tempPath, savePath);
+          await fs.rename(tempPath, savePath);
         } catch (errorRename) {
           reject(errorRename);
         }
