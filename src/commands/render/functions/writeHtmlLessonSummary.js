@@ -1,9 +1,9 @@
 import Handlebars from 'handlebars';
-import filenamify from 'filenamify';
 import path from 'path';
 import { loadTemplate } from './templates';
 import { writeHtml } from '.';
 import {
+  filenamify,
   logger,
 } from '../../utils';
 
