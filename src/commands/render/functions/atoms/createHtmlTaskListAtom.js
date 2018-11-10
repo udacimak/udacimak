@@ -34,7 +34,7 @@ export default async function createHtmlTaskListAtom(atom, targetDir, prefix) {
   const promiseDownloadYoutube = downloadYoutube(youtubeId, targetDir, prefix, atom.title);
   const promiseLoadTemplate = loadTemplate('atom.taskList');
 
-  const [filenameYoutube, html] = await Promise.all([promiseDownloadYoutube, promiseLoadTemplate])
+  const [filenameYoutube, html] = await Promise.all([promiseDownloadYoutube, promiseLoadTemplate]);
   const hasFeedback = (filenameYoutube || positiveFeedback);
 
   const dataTemplate = {

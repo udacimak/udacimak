@@ -4,11 +4,10 @@
   "description": "Udacity Nanodegree/course downloader and renderer",
   "main": "index.js",
   "scripts": {
-    "prelint": "rimraf lib",
     "lint": "eslint ./src",
-    "prebuild": "npm run lint",
+    "prebuild": "rimraf lib && npm run lint",
     "build": "babel src --out-dir lib --copy-files",
-    "watch": "nodemon --watch src --exec \"babel src --out-dir lib --copy-files\"",
+    "watch": "nodemon --watch src --exec \"rimraf lib && babel src --out-dir lib --copy-files\"",
     "test": "",
     "release": "np",
     "version": "npm run build"
