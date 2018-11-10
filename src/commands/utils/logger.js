@@ -34,10 +34,12 @@ const logger = createLogger({
       filename: 'udacimak.error.log',
       level: 'error',
       maxsize: MAX_SIZE,
+      maxFiles: 1,
     }),
     new transports.File({
       filename: 'udacimak.info.log',
       maxsize: MAX_SIZE,
+      maxFiles: 1,
     }),
   ],
   exceptionHandlers: [
