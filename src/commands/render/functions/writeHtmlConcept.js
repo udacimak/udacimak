@@ -21,6 +21,7 @@ import {
   logger,
   markdownToHtml,
 } from '../../utils';
+import { createHtmlText } from './utils';
 
 
 /**
@@ -44,7 +45,7 @@ export default async function writeHtmlConcept(concept, htmlSidebar, targetDir, 
 
       let promiseAtom;
       const semanticType = atom.semantic_type;
-      const instructorNote = markdownToHtml(atom.instructor_notes);
+      const instructorNote = await createHtmlText(atom.instructor_notes, targetDir);
 
       if (semanticType === 'ImageAtom') {
         promiseAtom = createHtmlImageAtom(atom, targetDir);
@@ -55,17 +56,17 @@ export default async function writeHtmlConcept(concept, htmlSidebar, targetDir, 
       } else if (semanticType === 'VideoAtom') {
         promiseAtom = createHtmlVideoAtom(atom, targetDir, prefix);
       } else if (semanticType === 'CheckboxQuizAtom') {
-        promiseAtom = createHtmlCheckboxQuizAtom(atom);
+        promiseAtom = createHtmlCheckboxQuizAtom(atom, targetDir);
       } else if (semanticType === 'MatchingQuizAtom') {
-        promiseAtom = createHtmlMatchingQuizAtom(atom);
+        promiseAtom = createHtmlMatchingQuizAtom(atom, targetDir);
       } else if (semanticType === 'RadioQuizAtom') {
-        promiseAtom = createHtmlRadioQuizAtom(atom);
+        promiseAtom = createHtmlRadioQuizAtom(atom, targetDir);
       } else if (semanticType === 'ReflectAtom') {
         promiseAtom = createHtmlReflectAtom(atom, targetDir, prefix);
       } else if (semanticType === 'QuizAtom') {
         promiseAtom = createHtmlQuizAtom(atom, targetDir, prefix);
       } else if (semanticType === 'ValidatedQuizAtom') {
-        promiseAtom = createHtmlValidatedQuizAtom(atom);
+        promiseAtom = createHtmlValidatedQuizAtom(atom, targetDir);
       } else if (semanticType === 'WorkspaceAtom') {
         promiseAtom = createHtmlWorkspaceAtom(atom);
       } else {

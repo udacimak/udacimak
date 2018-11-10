@@ -1,8 +1,9 @@
 import copydir from 'copy-dir';
+import path from 'path';
 import rimraf from 'rimraf';
 import {
   makeDir,
-} from '../../utils';
+} from '../../../utils';
 
 
 /**
@@ -21,7 +22,7 @@ export default function makeRootDir(outpath, courseName) {
   rimraf.sync(dirAsset);
   // copy CSS, JS assets to target folder
   try {
-    const dirAssetSource = `${__dirname}/../templates/assets/`;
+    const dirAssetSource = path.join(__dirname, '/../../templates/assets/');
     copydir.sync(dirAssetSource, dirAsset);
   } catch (error) {
     throw error;

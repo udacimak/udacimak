@@ -1,8 +1,7 @@
 import Handlebars from 'handlebars';
 import {
-  downloadMediaInHtml,
-  markdownToHtml,
-} from '../../../utils';
+  createHtmlText,
+} from '../utils';
 import { loadTemplate } from '../templates';
 
 
@@ -13,8 +12,7 @@ import { loadTemplate } from '../templates';
  * @returns {string} HTML content
  */
 export default async function createHtmlTextAtom(atom, outputPath) {
-  let text = markdownToHtml(atom.text);
-  text = await downloadMediaInHtml(text, outputPath, atom.id);
+  const text = await createHtmlText(atom.text, outputPath, atom.id);
 
   const html = await loadTemplate('atom.text');
   const data = {

@@ -6,8 +6,8 @@ import {
 } from './quizAtom';
 import {
   downloadYoutube,
-  markdownToHtml,
 } from '../../../utils';
+import { createHtmlText } from '../utils';
 
 
 /**
@@ -56,8 +56,10 @@ export default async function createHtmlQuizAtom(atom, targetDir, prefix) {
       promiseLoadTemplate,
     ]);
 
-    const instruction = atom.instruction ? markdownToHtml(atom.instruction.text) : '';
-    const answerText = atom.answer ? markdownToHtml(atom.answer.text) : '';
+    const instruction = atom.instruction
+      ? await createHtmlText(atom.instruction.text, targetDir) : '';
+    const answerText = atom.answer
+      ? await createHtmlText(atom.answer.text, targetDir) : '';
     const hasSolution = filenameYoutubeAnswer || answerText;
     const hasInstruction = filenameYoutubeQuestion || instruction;
 

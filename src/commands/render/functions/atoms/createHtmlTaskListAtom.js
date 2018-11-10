@@ -4,7 +4,7 @@ import {
   downloadYoutube,
   markdownToHtml,
 } from '../../../utils';
-
+import { createHtmlText } from '../utils';
 
 /**
  * Create HTML content for TaskListAtom
@@ -16,8 +16,8 @@ import {
 export default async function createHtmlTaskListAtom(atom, targetDir, prefix) {
   let { description } = atom;
   let positiveFeedback = atom.positive_feedback;
-  description = markdownToHtml(description);
-  positiveFeedback = markdownToHtml(positiveFeedback);
+  description = await createHtmlText(description, targetDir);
+  positiveFeedback = await createHtmlText(positiveFeedback, targetDir);
 
   const tasks = [];
   for (let i = 0, len = atom.tasks.length; i < len; i += 1) {

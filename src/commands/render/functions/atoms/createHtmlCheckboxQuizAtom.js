@@ -1,21 +1,23 @@
 import Handlebars from 'handlebars';
 import { loadTemplate } from '../templates';
-import { markdownToHtml } from '../../../utils';
+import { createHtmlText } from '../utils';
 
 
 /**
  * Create HTML content for CheckboxQuizAtom
  * @param {object} atom atom json
+ * @param {string} targetDir output directory path
  * @returns {string} HTML content
  */
-export default async function createHtmlCheckboxQuizAtom(atom) {
-  const prompt = markdownToHtml(atom.question.prompt);
+export default async function createHtmlCheckboxQuizAtom(atom, targetDir) {
+  const prompt = await createHtmlText(atom.question.prompt);
 
   const answers = [];
   const solution = [];
   for (let i = 0, len = atom.question.answers.length; i < len; i += 1) {
     const answer = atom.question.answers[i];
-    const { id, text } = answer;
+    const { id } = answer;
+    const text = await createHtmlText(answer.text, targetDir);
     const isCorrect = answer.is_correct;
 
     // if this is the correct answer, add to solution
@@ -26,7 +28,7 @@ export default async function createHtmlCheckboxQuizAtom(atom) {
     answers.push({
       id,
       name: atom.id,
-      text: markdownToHtml(text),
+      text,
     });
   }
 

@@ -1,15 +1,16 @@
 import Handlebars from 'handlebars';
 import { loadTemplate } from '../templates';
-import { markdownToHtml } from '../../../utils';
+import { createHtmlText } from '../utils';
 
 
 /**
  * Create HTML content for RadioQuizAtom
  * @param {object} atom atom json
+ * @param {string} targetDir output directory path
  * @returns {string} HTML content
  */
-export default async function createHtmlRadioQuizAtom(atom) {
-  const prompt = markdownToHtml(atom.question.prompt);
+export default async function createHtmlRadioQuizAtom(atom, targetDir) {
+  const prompt = await createHtmlText(atom.question.prompt, targetDir);
 
   const answers = [];
   let solution;
@@ -17,7 +18,7 @@ export default async function createHtmlRadioQuizAtom(atom) {
     const answer = atom.question.answers[i];
     const { id } = answer;
     const isCorrect = answer.is_correct;
-    const text = markdownToHtml(answer.text);
+    const text = await createHtmlText(answer.text, targetDir);
 
     // if this is the correct answer, add to solution
     if ('is_correct' in answer && isCorrect !== null && isCorrect === true) {

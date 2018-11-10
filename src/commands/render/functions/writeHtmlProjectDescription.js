@@ -4,8 +4,8 @@ import {
 import {
   filenamify,
   logger,
-  markdownToHtml,
 } from '../../utils';
+import { createHtmlText } from './utils';
 
 
 /**
@@ -22,8 +22,8 @@ export default async function writeHtmlProjectDescription(project, htmlSidebar, 
   let { description, summary } = project;
   const { title } = project;
 
-  description = markdownToHtml(description);
-  summary = markdownToHtml(summary);
+  description = await createHtmlText(description, outputPath);
+  summary = await createHtmlText(summary, outputPath);
   // create HTML body content
   const htmlSummary = summary ? `
     <p class="text-center">${summary}</p>

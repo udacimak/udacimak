@@ -3,9 +3,8 @@ import {
   loadTemplate,
 } from '../templates';
 import {
-  downloadMediaInHtml,
-  markdownToHtml,
-} from '../../../utils';
+  createHtmlText,
+} from '../utils';
 
 
 /**
@@ -19,8 +18,7 @@ export default async function createHtmlLabInstructions(details, targetDir) {
   }
 
   let { text } = details;
-  text = markdownToHtml(text);
-  text = await downloadMediaInHtml(text, targetDir, 'lab');
+  text = await createHtmlText(text, targetDir);
 
   const html = await loadTemplate('lab.instructions');
 

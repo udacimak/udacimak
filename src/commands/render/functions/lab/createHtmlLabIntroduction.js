@@ -6,6 +6,7 @@ import {
   downloadYoutube,
   markdownToHtml,
 } from '../../../utils';
+import { createHtmlText } from '../utils';
 
 
 /**
@@ -27,11 +28,11 @@ export default async function createHtmlLabIntroduction(overview, labTitle, targ
 
   // process all markdown to HTML
   title = markdownToHtml(title);
-  summary = markdownToHtml(summary);
+  summary = await createHtmlText(summary, targetDir);
   keyTakeaways = keyTakeaways || [];
 
   for (let i = 0, len = keyTakeaways.length; i < len; i += 1) {
-    keyTakeaways[i] = markdownToHtml(keyTakeaways[i]);
+    keyTakeaways[i] = await createHtmlText(keyTakeaways[i], targetDir);
   }
 
   let promiseVideo;

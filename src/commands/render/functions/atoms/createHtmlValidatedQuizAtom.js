@@ -1,15 +1,16 @@
 import Handlebars from 'handlebars';
-import { markdownToHtml } from '../../../utils';
 import { loadTemplate } from '../templates';
+import { createHtmlText } from '../utils';
 
 
 /**
  * Create HTML content for ValidatedQuizAtom
  * @param {object} atom atom json
+ * @param {string} targetDir output directory path
  * @returns {string} HTML content
  */
-export default async function createHtmlValidatedQuizAtom(atom) {
-  const prompt = markdownToHtml(atom.question.prompt);
+export default async function createHtmlValidatedQuizAtom(atom, targetDir) {
+  const prompt = await createHtmlText(atom.question.prompt, targetDir);
   const matchers = [];
 
   for (let i = 0, len = atom.question.matchers; i < len; i += 1) {

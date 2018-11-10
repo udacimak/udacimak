@@ -1,5 +1,3 @@
-export { default as getCourseType } from './getCourseType';
-export { default as makeRootDir } from './makeRootDir';
 export { default as renderCourse } from './renderCourse';
 export { default as writeHtml } from './writeHtml';
 export { default as writeHtmlConcept } from './writeHtmlConcept';

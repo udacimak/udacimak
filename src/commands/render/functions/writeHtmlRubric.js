@@ -9,6 +9,7 @@ import {
 import {
   createHtmlRubricSections,
 } from './rubric';
+import { createHtmlText } from './utils';
 
 
 /**
@@ -30,7 +31,7 @@ export default async function writeHtmlRubric(rubric, projectJSON, htmlSidebar, 
 
   // create html for standout tips if available
   if (rubric.stand_out) {
-    const standout = markdownToHtml(rubric.stand_out);
+    const standout = await createHtmlText(rubric.stand_out, outputPath);
     htmlRubric += `
       <div class="jumbotron">
         <h3>Tips to make your project standout:</h3>

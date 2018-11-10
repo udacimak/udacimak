@@ -4,6 +4,7 @@ import {
   downloadYoutube,
   markdownToHtml,
 } from '../../../utils';
+import { createHtmlText } from '../utils';
 
 
 /**
@@ -18,7 +19,7 @@ export default async function createHtmlReflectAtom(atom, targetDir, prefix) {
   let questionText;
 
   if (atom.question.semantic_type === 'TextQuestion') {
-    questionText = markdownToHtml(atom.question.text);
+    questionText = await createHtmlText(atom.question.text, targetDir);
   } else {
     questionText = '<p>Unknown question type. Please contact the developer to make it compatible with this atom type!</p>';
   }
@@ -30,7 +31,7 @@ export default async function createHtmlReflectAtom(atom, targetDir, prefix) {
 
   const [filenameYoutube, html] = await Promise.all([promiseDownloadYoutube, promiseLoadTemplate]);
 
-  const answer = markdownToHtml(atom.answer.text);
+  const answer = await createHtmlText(atom.answer.text, targetDir);
   const dataTemplate = {
     answer,
     filenameYoutube,

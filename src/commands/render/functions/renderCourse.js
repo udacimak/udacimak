@@ -1,8 +1,6 @@
 #!/usr/bin/env node
 import fs from 'fs-extra';
 import {
-  getCourseType,
-  makeRootDir,
   writeHtmlCourseSummary,
   writeHtmlLesson,
   writeHTMLNanodegreeSummary,
@@ -12,6 +10,10 @@ import {
   makeDir,
   filenamify,
 } from '../../utils';
+import {
+  getCourseType,
+  makeRootDir,
+} from './utils';
 
 const dirTree = require('directory-tree');
 
