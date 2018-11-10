@@ -33,7 +33,7 @@ import {
  */
 export default async function writeHtmlConcept(concept, htmlSidebar, targetDir, index) {
   let contentMain = '';
-  const conceptTitle = concept.title ? concept.title.trim() : '';
+  const conceptTitle = concept.title || '';
   // prefix for file names
   const prefix = index < 10 ? `0${index}` : index;
 

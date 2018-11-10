@@ -3,6 +3,7 @@ export { default as makeRootDir } from './makeRootDir';
 export { default as renderCourse } from './renderCourse';
 export { default as writeHtml } from './writeHtml';
 export { default as writeHtmlConcept } from './writeHtmlConcept';
+export { default as writeHtmlCourseSummary } from './writeHtmlCourseSummary';
 export { default as writeHtmlLab } from './writeHtmlLab';
 export { default as writeHtmlLessonSummary } from './writeHtmlLessonSummary';
 export { default as writeHtmlLesson } from './writeHtmlLesson';

@@ -3,6 +3,7 @@ import fs from 'fs-extra';
 import {
   getCourseType,
   makeRootDir,
+  writeHtmlCourseSummary,
   writeHtmlLesson,
   writeHTMLNanodegreeSummary,
 } from '.';
@@ -62,15 +63,16 @@ export default async function renderCourse(path, targetDir) {
   }
   // create the root folder for the course
   const dirNanodegree = makeRootDir(targetDir, nanodegreeName);
+
   // create Nanodegree summary home page
-  let promiseNanodegreeSummary;
+  let promiseCourseSummary;
   if (courseType === 'NANODEGREE') {
-    promiseNanodegreeSummary = writeHTMLNanodegreeSummary(path, dirNanodegree, nanodegreeName);
+    promiseCourseSummary = writeHTMLNanodegreeSummary(path, dirNanodegree, nanodegreeName);
   } else {
-    promiseNanodegreeSummary = new Promise(resolveNdSummary => resolveNdSummary());
+    promiseCourseSummary = writeHtmlCourseSummary(path, dirNanodegree, nanodegreeName);
   }
 
-  await promiseNanodegreeSummary;
+  await promiseCourseSummary;
 
   // loop Part folders
   for (let i = 0, len = sourceDirTree.children.length; i < len; i += 1) {
