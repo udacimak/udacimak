@@ -1,4 +1,4 @@
-# Udacimak - the Ultimate Udacity Nanodegree and Course Downloader
+# Udacimak - A Udacity Nanodegree and Course Downloader
 
 
 [![npm version](https://img.shields.io/npm/v/udacimak.svg)](https://www.npmjs.com/package/udacimak)
@@ -256,7 +256,7 @@ course content and find all lessons
 - :white_check_mark: For each lesson:
   - Download all videos (including subtitles), images and create lesson contents as HTML files to
   view on your favorite browser.
-  - Create HTML files for project descriptions and project rubrics pages.
+  - Create HTML files for labs, project descriptions and project rubrics pages.
 
 It is also :heavy_exclamation_mark: important to know
 what `render` is not capable of:
