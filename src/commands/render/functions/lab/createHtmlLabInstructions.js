@@ -3,6 +3,7 @@ import {
   loadTemplate,
 } from '../templates';
 import {
+  downloadMediaInHtml,
   markdownToHtml,
 } from '../../../utils';
 
@@ -12,14 +13,14 @@ import {
  * @param {object} details instruction JSON data
  * @param {string} targetDir target directory
  */
-export default async function createHtmlLabInstructions(details) {
+export default async function createHtmlLabInstructions(details, targetDir) {
   if (!details) {
     return '(No Lab Instructions data available)';
   }
 
   let { text } = details;
   text = markdownToHtml(text);
-  // TODO: find all media links and download them
+  text = await downloadMediaInHtml(text, targetDir, 'lab');
 
   const html = await loadTemplate('lab.instructions');
 

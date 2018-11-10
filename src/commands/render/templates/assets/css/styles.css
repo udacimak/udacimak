@@ -8,6 +8,12 @@ html {
   border-top: 3px dashed #cecece;
 }
 
+img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
 .header {
   padding: 10px 0;
   margin-bottom: 40px;

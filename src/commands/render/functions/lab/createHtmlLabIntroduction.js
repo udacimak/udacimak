@@ -54,7 +54,7 @@ export default async function createHtmlLabIntroduction(overview, labTitle, targ
     return '(No Lab Introduction data available)';
   }
 
-  const html = loadTemplate('lab.introduction');
+  const html = await loadTemplate('lab.introduction');
 
   const dataTemplate = {
     title,
