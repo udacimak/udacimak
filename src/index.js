@@ -4,7 +4,6 @@
  */
 import process from 'process';
 import program from 'commander';
-import pkg from '../package.json';
 import {
   download,
   listNanodegrees,
@@ -15,11 +14,12 @@ import {
 import {
   logger,
   getFullErrorMessage,
+  getPkgInfo,
 } from './commands/utils';
 
 
 program
-  .version(pkg.version, '-v, --version')
+  .version(`v${getPkgInfo().version}`, '-v, --version')
   .usage('<command> <args> [options]');
 
 program

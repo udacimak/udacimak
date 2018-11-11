@@ -1,12 +1,10 @@
 import settings from 'user-settings';
-
-const pkginfo = require('pkginfo')(module); // eslint-disable-line
+import getPkgInfo from './getPkgInfo';
 
 
 class Config {
   constructor() {
-    const packageInfo = module.exports; // refer to pkginfo
-    const appName = packageInfo.name;
+    const appName = getPkgInfo().name;
     // initialize user settings
     this.settings = settings.file(`.${appName}`);
   }
