@@ -5,7 +5,7 @@
 [![Downloads](https://img.shields.io/npm/dt/udacimak.svg)](https://www.npmjs.com/package/udacimak)
 [![Github stars](https://img.shields.io/github/stars/udacimak/udacimak.svg?style=social&label=Stars)](https://github.com/udacimak/udacimak/stargazers)
 [![License](https://img.shields.io/npm/l/udacimak.svg)](https://github.com/udacimak/udacimak/blob/master/LICENSE)
-[![Commits to be deployed](https://img.shields.io/github/commits-since/udacimak/udacimak/v1.0.0.svg)](https://github.com/udacimak/udacimak/commits/master)
+[![Commits to be deployed](https://img.shields.io/github/commits-since/udacimak/udacimak/v1.0.1.svg)](https://github.com/udacimak/udacimak/commits/master)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://github.com/udacimak/udacimak/blob/master/CONTRIBUTING.MD)
 
 [![Opened issues](https://img.shields.io/github/issues-raw/udacimak/udacimak.svg)](https://github.com/udacimak/udacimak/issues)
@@ -64,10 +64,10 @@ __Resources:__
 
 ### Update
 
-To update to the latest version, run:
+To update to the latest version, run the same `install` command:
 
 ```
-npm update -g udacimak
+npm install -g udacimak
 ```
 
 ### Use Udacimak via [Docker](https://www.docker.com/) container
@@ -380,7 +380,7 @@ npm list udacimak
 udacimak --version
 
 # update udacimak
-npm update -g udacimak
+npm install -g udacimak
 
 # check current version
 udacimak --version
