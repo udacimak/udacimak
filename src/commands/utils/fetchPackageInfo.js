@@ -14,6 +14,8 @@ export default function fetchPackageInfo() {
   const options = {
     url,
     method: 'GET',
+    // allow only 5 seconds for better UX
+    timeout: 5 * 1000,
   };
 
   return new Promise((resolve, reject) => {
