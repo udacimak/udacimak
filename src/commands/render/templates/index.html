@@ -1,3 +1,6 @@
+{{#if pkgInfo}}
+<!-- {{pkgInfo.name}} v{{pkgInfo.version}} -->
+{{/if}}
 <!DOCTYPE html>
 <html lang="en">
 
@@ -11,7 +14,6 @@
   <link rel="stylesheet" href="{{srcCss}}/katex.min.css">
   <link rel="stylesheet" href="{{srcCss}}/jquery.mCustomScrollbar.min.css">
   <link rel="stylesheet" href="{{srcCss}}/styles.css">
-
 </head>
 
 <body>
@@ -53,7 +55,11 @@
         <div class="container">
           <div class="row">
             <div class="col-12">
-
+              <p class="text-center">
+                {{#if pkgInfo}}
+                <a href="{{pkgInfo.homepage}}" target="_blank">{{pkgInfo.name}} v{{pkgInfo.version}}</a>
+                {{/if}}
+              </p>
             </div>
           </div>
         </div>

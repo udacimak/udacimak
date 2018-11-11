@@ -33,6 +33,12 @@ img {
   box-shadow: 0 2px 4px -2px rgba(0,0,0,.5);
 }
 
+footer a,
+footer a:visited,
+footer a:hover {
+  color: #fff;
+}
+
 .ud-math {
   margin: 1.5em auto;
 }

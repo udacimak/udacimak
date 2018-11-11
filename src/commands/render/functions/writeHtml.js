@@ -1,6 +1,7 @@
 import Handlebars from 'handlebars';
 import fs from 'fs';
 import { loadTemplate } from './templates';
+import { getPkgInfo } from '../../utils';
 
 
 /**
@@ -9,8 +10,8 @@ import { loadTemplate } from './templates';
  * @param {string} file path to write file to
  */
 export default async function writeHtml(data, file) {
+  data.pkgInfo = getPkgInfo();
   const html = await loadTemplate('index');
-
   const template = Handlebars.compile(html);
   const htmlResult = template(data);
 

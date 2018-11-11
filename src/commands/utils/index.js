@@ -12,4 +12,3 @@ export { default as logger } from './logger';
 export { default as makeDir } from './makeDir';
 export { default as markdownToHtml } from './markdownToHtml';
 export { default as readFileSync } from './readFileSync';
-export { default as writePackageInfoFile } from './writePackageInfoFile';
