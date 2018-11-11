@@ -19,7 +19,7 @@ Local version is v${versionCurrent}
 Latest version is v${version}
 To update, please run:
 
-  npm update -g ${name}
+  npm install -g ${name}
 
 `);
     }
