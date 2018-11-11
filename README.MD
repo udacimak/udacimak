@@ -1,11 +1,11 @@
-# Udacimak - A Udacity Nanodegree and Course Downloader
+# Udacimak - A Udacity Nanodegree Downloader
 
 
 [![npm version](https://img.shields.io/npm/v/udacimak.svg)](https://www.npmjs.com/package/udacimak)
-[![Downloads](https://img.shields.io/npm/dm/udacimak.svg)](https://www.npmjs.com/package/udacimak)
+[![Downloads](https://img.shields.io/npm/dt/udacimak.svg)](https://www.npmjs.com/package/udacimak)
 [![Github stars](https://img.shields.io/github/stars/udacimak/udacimak.svg?style=social&label=Stars)](https://github.com/udacimak/udacimak/stargazers)
 [![License](https://img.shields.io/npm/l/udacimak.svg)](https://github.com/udacimak/udacimak/blob/master/LICENSE)
-[![Commits to be deployed](https://img.shields.io/github/commits-since/udacimak/udacimak/v0.10.9.svg)](https://github.com/udacimak/udacimak/commits/master)
+[![Commits to be deployed](https://img.shields.io/github/commits-since/udacimak/udacimak/v1.0.0.svg)](https://github.com/udacimak/udacimak/commits/master)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://github.com/udacimak/udacimak/blob/master/CONTRIBUTING.MD)
 
 [![Opened issues](https://img.shields.io/github/issues-raw/udacimak/udacimak.svg)](https://github.com/udacimak/udacimak/issues)
@@ -14,8 +14,6 @@
 [![Closed pull requests](https://img.shields.io/github/issues-pr-closed-raw/udacimak/udacimak.svg)](https://github.com/udacimak/udacimak/pulls?q=is%3Apr+is%3Aclosed)
 [![Github last commit](https://img.shields.io/github/last-commit/udacimak/udacimak.svg)](https://github.com/udacimak/udacimak/commits/master)
 
-_Udacimak is usable but currently under heavy development for improvements.
-Please check back and update often._
 
 ## Table of Contents
 
@@ -30,22 +28,29 @@ Please check back and update often._
 - [Disclaimer](#disclaimer)
 
 ## Description
-Udacimak is a command-line interface written to download
-[Udacity](udacity.com) Nanodegree or course contents to store them locally.
 
-It was inspired after Udacity announced in October 2018 that students who
+Udacimak is a command-line interface tool to download
+[Udacity](udacity.com) Nanodegree contents and keep them locally
+on your computer.
+
+Udacimak downloads all videos, images, text contents and present them as local
+web pages in a similar manner to Udacity classroom website.
+
+Udacimak was inspired after Udacity announced in October 2018 that students who
 graduate will no longer have life-time access to the course content. Instead,
 all access will be removed 12 months after graduation date. There are also cases
 where access to content will be removed immediately after graduation (eg. if
 you're an Enterprise or Scholarship student, etc.)
 
-If you want to keep the contents to yourself, Udacimak is built for you.
-Or if you would like to have a local copy to quickly revise the lessons while
+If you want to keep the contents to yourself, Udacimak is built for you;
+or if you would like to have a local copy to quickly revise the lessons while
 doing the course, Udacimak is also a good option.
 
-We hope you enjoy this CLI. __Stay Udacious__!
+We hope you enjoy this downloader.
 
-__Resources__
+__Stay Udacious__!
+
+__Resources:__
 - [How long will I have access to Nanodegree program content after I graduate? (Udacity Support)](https://udacity.zendesk.com/hc/en-us/articles/360015665011-How-long-will-I-have-access-to-Nanodegree-program-content-after-I-graduate-)
 
 ## Installation
@@ -107,8 +112,8 @@ _Please read further instruction below for detailed usage._
 - [`listnd`: List your Nanodegree keys](#listnd-list-your-nanodegree-keys)
 - [`download`: Download course content as JSON data from Udacity API](#download-download-course-content-as-JSON-data-from-udacity-api)
 - [`render`: Render downloaded JSON course contents](#render-render-downloaded-json-course-contents)
+- [`renderdir`: Iteratively render multiple JSON course contents](#renderdir-Iteratively-render-multiple-JSON-course-contents)
 - [Log Files](#log-files)
-- [Note to Windows OS users](#note-to-windows-os-users)
 
 ### `settoken`: Set Udacity Authentication Token
 First, your __Udacity authentication token__
@@ -149,10 +154,10 @@ copy(getCookie('_jwt'));
 Udacity authentication token is a secret key to is unique to you
 and you should not share it publicly.
 
-The token also will expire automatically after a period of time.
+The secret token also will expire automatically after a period of time.
 If you find Udacimak's
-`listnd` and `download` commands unusable, try to get the token again from
-the browser and `settoken` with the new token.
+`listnd` and `download` commands unusable due to unauthorized error,
+try to get the token again from the browser and `settoken` with the new token.
 
 ### `listnd`: List your Nanodegree keys
 
@@ -278,7 +283,7 @@ Once it is done, you can enjoy the lessons on your computer:
 
 #### Re-rendering a course
 If you cancel the command or the CLI is cut off for some reason (eg. the CLI
-stops because internet is disconnected), or even the CLI is updated with new
+stops because internet is disconnected); or when the CLI is updated with new
 rendering features (better formatting, fixing missing content, etc.)
 you can re-run the render process later.
 Just use the same command, the CLI will:
@@ -309,9 +314,16 @@ __Optional parameter:__
 
 ### Log Files
 Please note that the CLI will produce log files in the working directory of
-your terminal. The log files will include all CLI output of the commands.
+your terminal, including:
+- `udacimak.error.log`
+- `udacimak.info.log`
+
+The log files will contain the latest CLI output of the commands.
+They are limited to 10MB per file
+
 If you face any issue, you may want to share the section of the log file content
 that contains error log to the developer when reporting the issue.
+
 
 ## Note to Windows OS users:
 The CLI is prone to some known issues when using on Windows:
@@ -329,48 +341,32 @@ course to make sure all files are processed safely.
 If you use Windows, you will need to accept that:
 - You will have trouble moving/copying the downloaded/rendered course folder.
 Though you can find softwares that can get around this issue for you.
-- Subtitles won't be named
-according to video files (so that video players such as [VLC](https://www.videolan.org/index.html)
-can automatically detect them)
+- Some subtitles won't be named according to video files (so that video players
+such as [VLC](https://www.videolan.org/index.html) can automatically detect
+them)
 
-## Development Experience
-
-Unlike other course downloaders (Udemy/edX/etc downloaders), building a
-downloader for Udacity courses is not as straightforward.
-Downloading Udemy, edX, etc. only requires downloading videos and a few
-accompanying text contents.
-
-Udacity is different.
-Udacity content relies on various number of resources and format, including
-video, text content, some types of quizzes, workspace, etc.
-We can't build a downloader for a few of those content types.
-These include different types of workspaces, programming quiz solutions.
-
-This means that it is NOT possible to build a downloader that can get 100% all
-the Udacity resources onto your computer. We have to live with this.
-
-But we believe that what we have done is still of great value to fellow
-students.
 
 ## Breaking Changes from Udacity API
 Because of the complexity of the course structure, the CLI is error prone to
-changes being made in Udacity API.
-Beware that changes in Udacity API can potentially only be obviously seen in a
-newly released Nanodegree and the developers of this CLI can't update it unless
-they have access to the new Nanodegree. In this case, please contact directly
-to help us keep the CLI stable and usable.
+changes being made in Udacity API, especially in a newly released course. If
+the JSON structures from the API have changed, we will have to reverse-engineer
+again and make update to Udacimak to adapt to the new structure.
 
 Please open an issue in
 [__Issues__ tab](https://github.com/udacimak/udacimak/issues) to help us keep
-the CLI up-to-date if you face any issues using the CLI.
+the CLI up-to-date if you face any problems using the CLI.
 
 ### CLI Update Note
 
 When Udacimak is updated to a newer version, it may contain new rendering
-features. In this case, you would want to run the render process again.
+features. You can check the changes of each version on
+[the Commits page](https://github.com/udacimak/udacimak/commits/master)
+
+In this case, you may want to run the render process again.
 It should take a few seconds per Nanodegree/course because the CLI doesn't
 re-download online media files when re-render a course.
 Also see [note above](#re-rendering-a-course)
+
 
 ## Reporting Issues
 
@@ -397,6 +393,7 @@ However, note that you should not provide
 your Udacity authentication token to anyone - it's a secret token of your
 own account.
 
+
 ## User Privacy
 Since you will have to provide the secret Udacity authentication token for the
 CLI to work, the CLI does have access to your personal information via Udacity
@@ -420,6 +417,7 @@ authentication token, will be sent to anybody else.
 [example-rerender]: https://github.com/udacimak/udacimak/raw/master/img/example-rerender.gif
 [example-html-lesson-01]: https://github.com/udacimak/udacimak/raw/master/img/example-html-lesson-01.jpg
 [example-html-lesson-02]: https://github.com/udacimak/udacimak/raw/master/img/example-html-lesson-02.jpg
+
 
 ## Disclaimer
 
