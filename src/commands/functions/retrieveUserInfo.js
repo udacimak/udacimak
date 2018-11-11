@@ -1,5 +1,5 @@
+import ora from 'ora';
 import { fetchUdacityUserInfo } from '../../api';
-import { logger } from '../utils';
 
 
 /**
@@ -7,17 +7,21 @@ import { logger } from '../utils';
  * @param {string} token Udacity authentication token
  */
 export default async function retrieveUserInfo(token) {
+  const spinner = ora('Fetch user information');
   try {
+    spinner.start();
     const res = await fetchUdacityUserInfo(token);
+    spinner.succeed();
 
     if (!res.data || !res.data.user) {
-      logger.error(`Could not fetch user information with error:
+      spinner.fail();
+      throw new Error(`Could not fetch user information with error:
       ${res.body}`);
-      return null;
     }
 
     return res.data.user;
   } catch (error) {
+    spinner.fail();
     throw error;
   }
 }
