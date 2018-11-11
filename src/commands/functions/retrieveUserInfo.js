@@ -7,7 +7,7 @@ import { fetchUdacityUserInfo } from '../../api';
  * @param {string} token Udacity authentication token
  */
 export default async function retrieveUserInfo(token) {
-  const spinner = ora('Fetch user information');
+  const spinner = ora('Fetch user information via Udacity API');
   try {
     spinner.start();
     const res = await fetchUdacityUserInfo(token);
