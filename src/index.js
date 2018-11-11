@@ -16,6 +16,7 @@ import {
   getFullErrorMessage,
   getPkgInfo,
 } from './commands/utils';
+import { preCli } from './cli';
 
 
 program
@@ -27,7 +28,9 @@ program
   .description('Fetch course/Nanodegree data from Udacity and save them locally as JSON files.')
   .arguments('[courseid...]')
   .option('-t, --targetdir <targetdir>', 'Target directory to save downloaded course JSON data')
-  .action((courseids, options) => {
+  .action(async (courseids, options) => {
+    await preCli();
+
     const targetdir = options.targetdir || process.cwd();
     download(courseids, targetdir);
   })
@@ -46,7 +49,8 @@ program
 program
   .command('listnd')
   .description('List user\'s enrolled and graduated Nanodegree')
-  .action(() => {
+  .action(async () => {
+    await preCli();
     listNanodegrees();
   });
 
@@ -56,7 +60,9 @@ program
   .arguments('<path>')
   .option('-t, --targetdir <targetdir>', 'Target directory to save rendered course contents')
   .option('-v, --verbose', 'For youtube-dl to print various debugging information')
-  .action((path, options) => {
+  .action(async (path, options) => {
+    await preCli();
+
     const targetdir = options.targetdir || process.cwd();
     global.ytVerbose = options.verbose;
     render(path, targetdir);
@@ -77,7 +83,9 @@ program
   .arguments('<path>')
   .option('-t, --targetdir <targetdir>', 'Target directory to save rendered course contents')
   .option('-v, --verbose', 'For youtube-dl to print various debugging information')
-  .action((path, options) => {
+  .action(async (path, options) => {
+    await preCli();
+
     const targetdir = options.targetdir || process.cwd();
     global.ytVerbose = options.verbose;
     renderdir(path, targetdir);
@@ -87,7 +95,9 @@ program
   .command('settoken')
   .description('Save Udacity authentication token locally.')
   .arguments('<token>')
-  .action((token) => {
+  .action(async (token) => {
+    await preCli();
+
     setToken(token);
   })
   .on('--help', () => {
