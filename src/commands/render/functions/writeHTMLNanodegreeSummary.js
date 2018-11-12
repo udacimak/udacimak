@@ -179,11 +179,11 @@ export default async function writeHTMLNanodegreeSummary(jsonPath, targetDir, na
     `;
   } //.for data.parts
 
-  // create directory for image assets
-  const pathImg = makeDir(targetDir, 'img');
-
+  let pathImg;
   let heroImageUrl = '';
   if (data.hero_image) {
+    // create directory for image assets
+    pathImg = makeDir(targetDir, 'img');
     heroImageUrl = data.hero_image.url;
   }
 
