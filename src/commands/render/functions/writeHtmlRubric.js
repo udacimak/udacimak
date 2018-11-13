@@ -41,16 +41,13 @@ export default async function writeHtmlRubric(rubric, projectJSON, htmlSidebar, 
   }
 
   // decide how many folders it needs to go up to access the assets
-  const upDir = '../';
-  const srcCss = path.join(upDir, 'assets/css');
-  const srcJs = path.join(upDir, 'assets/js');
+  const pathToAssets = '../';
   // write html file
   const templateDataIndex = {
     contentMain: htmlRubric,
     docTitle: title,
     sidebar: htmlSidebar,
-    srcCss,
-    srcJs,
+    pathToAssets,
     title,
   };
   let file = filenamify(`Project Rubric - ${title}.html`);

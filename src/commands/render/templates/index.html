@@ -9,11 +9,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>{{docTitle}}</title>
-  <link rel="stylesheet" href="{{srcCss}}/bootstrap.min.css">
-  <link rel="stylesheet" href="{{srcCss}}/plyr.css">
-  <link rel="stylesheet" href="{{srcCss}}/katex.min.css">
-  <link rel="stylesheet" href="{{srcCss}}/jquery.mCustomScrollbar.min.css">
-  <link rel="stylesheet" href="{{srcCss}}/styles.css">
+  <link rel="stylesheet" href="{{pathToAssets}}assets/css/bootstrap.min.css">
+  <link rel="stylesheet" href="{{pathToAssets}}assets/css/plyr.css">
+  <link rel="stylesheet" href="{{pathToAssets}}assets/css/katex.min.css">
+  <link rel="stylesheet" href="{{pathToAssets}}assets/css/jquery.mCustomScrollbar.min.css">
+  <link rel="stylesheet" href="{{pathToAssets}}assets/css/styles.css">
 </head>
 
 <body>
@@ -68,11 +68,11 @@
   </div>
 
 
-  <script src="{{srcJs}}/jquery-3.3.1.min.js"></script>
-  <script src="{{srcJs}}/plyr.polyfilled.min.js"></script>
-  <script src="{{srcJs}}/bootstrap.min.js"></script>
-  <script src="{{srcJs}}/jquery.mCustomScrollbar.concat.min.js"></script>
-  <script src="{{srcJs}}/katex.min.js"></script>
+  <script src="{{pathToAssets}}assets/js/jquery-3.3.1.min.js"></script>
+  <script src="{{pathToAssets}}assets/js/plyr.polyfilled.min.js"></script>
+  <script src="{{pathToAssets}}assets/js/bootstrap.min.js"></script>
+  <script src="{{pathToAssets}}assets/js/jquery.mCustomScrollbar.concat.min.js"></script>
+  <script src="{{pathToAssets}}assets/js/katex.min.js"></script>
   <script>
     // Initialize Plyr video players
     const players = Array.from(document.querySelectorAll('video')).map(p => new Plyr(p));

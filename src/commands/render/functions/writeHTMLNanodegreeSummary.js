@@ -218,8 +218,7 @@ export default async function writeHTMLNanodegreeSummary(jsonPath, targetDir, na
   const templateDataIndex = {
     contentMain,
     docTitle: nanodegreeName,
-    srcCss: 'assets/css',
-    srcJs: 'assets/js',
+    pathToAssets: '',
     title: data.title,
   };
   const file = path.join(targetDir, 'index.html');

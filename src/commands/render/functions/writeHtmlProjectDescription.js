@@ -37,16 +37,13 @@ export default async function writeHtmlProjectDescription(project, htmlSidebar, 
   `;
 
   // decide how many folders it needs to go up to access the assets
-  const upDir = '../';
-  const srcCss = path.join(upDir, 'assets/css');
-  const srcJs = path.join(upDir, 'assets/js');
+  const pathToAssets = '../';
   // write html file
   const templateDataIndex = {
     contentMain,
     docTitle: title || 'Project Description',
     sidebar: htmlSidebar,
-    srcCss,
-    srcJs,
+    pathToAssets,
     title,
   };
   let file = filenamify(`Project Description - ${title}.html`);

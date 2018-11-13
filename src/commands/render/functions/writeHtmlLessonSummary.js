@@ -62,9 +62,7 @@ export default async function writeHtmlLessonSummary(data, targetDir) {
   pageTitle = pageTitle[pageTitle.length - 1];
 
   // decide how many folders it needs to go up to access the assets
-  const upDir = '../';
-  const srcCss = path.join(upDir, 'assets/css');
-  const srcJs = path.join(upDir, 'assets/js');
+  const pathToAssets = '../';
   const file = path.join(targetDir, 'index.html');
   const html = await loadTemplate('summary.lesson');
 
@@ -80,8 +78,7 @@ export default async function writeHtmlLessonSummary(data, targetDir) {
   const templateDataIndex = {
     contentMain: htmlSummary,
     docTitle: pageTitle,
-    srcCss,
-    srcJs,
+    pathToAssets,
     title: pageTitle,
   };
 

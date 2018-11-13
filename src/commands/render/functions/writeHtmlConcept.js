@@ -93,16 +93,13 @@ export default async function writeHtmlConcept(concept, htmlSidebar, targetDir, 
     const title = `${prefix}. ${conceptTitle}`;
 
     // decide how many folders it needs to go up to access the assets
-    const upDir = '../';
-    const srcCss = path.join(upDir, 'assets/css');
-    const srcJs = path.join(upDir, 'assets/js');
+    const pathToAssets = '../';
     // write html file
     const templateDataIndex = {
       contentMain,
       docTitle: conceptTitle,
       sidebar: htmlSidebar,
-      srcCss,
-      srcJs,
+      pathToAssets,
       title,
     };
     let file = filenamify(conceptTitle);

@@ -99,8 +99,7 @@ export default async function writeHtmlCourseSummary(jsonPath, targetDir, course
   const templateDataIndex = {
     contentMain,
     docTitle: courseName,
-    srcCss: 'assets/css',
-    srcJs: 'assets/js',
+    pathToAssets: '',
     title,
   };
 
