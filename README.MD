@@ -5,7 +5,7 @@
 [![Downloads](https://img.shields.io/npm/dt/udacimak.svg)](https://www.npmjs.com/package/udacimak)
 [![Github stars](https://img.shields.io/github/stars/udacimak/udacimak.svg?style=social&label=Stars)](https://github.com/udacimak/udacimak/stargazers)
 [![License](https://img.shields.io/npm/l/udacimak.svg)](https://github.com/udacimak/udacimak/blob/master/LICENSE)
-[![Commits to be deployed](https://img.shields.io/github/commits-since/udacimak/udacimak/v1.1.1.svg)](https://github.com/udacimak/udacimak/commits/master)
+[![Commits to be deployed](https://img.shields.io/github/commits-since/udacimak/udacimak/v1.1.2.svg)](https://github.com/udacimak/udacimak/commits/master)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://github.com/udacimak/udacimak/blob/master/CONTRIBUTING.MD)
 
 [![Opened issues](https://img.shields.io/github/issues-raw/udacimak/udacimak.svg)](https://github.com/udacimak/udacimak/issues)
@@ -287,7 +287,10 @@ stops because internet is disconnected); or when the CLI is updated with new
 rendering features (better formatting, fixing missing content, etc.)
 you can re-run the render process later.
 Just use the same command, the CLI will:
-- NOT re-download video/image files that are already downloaded
+- NOT re-download video/image files that are already downloaded. Only a few
+image files may be re-downloaded because the original image url to download
+doesn't contain image file name, which means Udacimak won't be able to tell
+if those images have been downloaded or not.
 - Re-create all HTML files
 
 ![rerender Example GIF][example-rerender]
