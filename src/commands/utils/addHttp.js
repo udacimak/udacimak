@@ -6,7 +6,9 @@
 export default function addHttp(url) {
   url = url.trim();
   // this is a wrong protocol that exists in a JSON file in a Udacity Nanodegree...
-  url = url.replace('https:///', '');
+  url = url
+    .replace('https:///', '')
+    .replace('https:////', '');
   if (!/^(?:f|ht)tps?\:\/\//.test(url)) {
     url = `https:${url}`;
   }
