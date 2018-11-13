@@ -10,7 +10,7 @@ import { createHtmlText } from '../utils';
  * @returns {string} HTML content
  */
 export default async function createHtmlCheckboxQuizAtom(atom, targetDir) {
-  const prompt = await createHtmlText(atom.question.prompt);
+  const prompt = await createHtmlText(atom.question.prompt, targetDir);
 
   const answers = [];
   const solution = [];
