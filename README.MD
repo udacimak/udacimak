@@ -5,7 +5,7 @@
 [![Downloads](https://img.shields.io/npm/dt/udacimak.svg)](https://www.npmjs.com/package/udacimak)
 [![Github stars](https://img.shields.io/github/stars/udacimak/udacimak.svg?style=social&label=Stars)](https://github.com/udacimak/udacimak/stargazers)
 [![License](https://img.shields.io/npm/l/udacimak.svg)](https://github.com/udacimak/udacimak/blob/master/LICENSE)
-[![Commits to be deployed](https://img.shields.io/github/commits-since/udacimak/udacimak/v1.0.3.svg)](https://github.com/udacimak/udacimak/commits/master)
+[![Commits to be deployed](https://img.shields.io/github/commits-since/udacimak/udacimak/v1.1.3.svg)](https://github.com/udacimak/udacimak/commits/master)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://github.com/udacimak/udacimak/blob/master/CONTRIBUTING.MD)
 
 [![Opened issues](https://img.shields.io/github/issues-raw/udacimak/udacimak.svg)](https://github.com/udacimak/udacimak/issues)
@@ -164,7 +164,7 @@ try to get the token again from the browser and `settoken` with the new token.
 To download the Nanodegrees, you need to know the Nanodegree key to
 pass to the command.
 
-Nanodegree key is simply an id that is assigned to a Nanodegree in the format
+Nanodegree key is an id that is assigned to a Nanodegree in the format
 of `ndXXX`, `ndXXXt`, etc. where `XXX` is the number assigned to that
 Nanodegree. You can see it in the Udacity classroom or catalog url.
 The two examples below shows urls of Nanodegree key `nd1337`:
@@ -281,7 +281,7 @@ Once it is done, you can enjoy the lessons on your computer:
 
 ![HTML Lesson Example 02][example-html-lesson-02]
 
-#### Re-rendering a course
+#### Re-rendering a Course
 If you cancel the command or the CLI is cut off for some reason (eg. the CLI
 stops because internet is disconnected); or when the CLI is updated with new
 rendering features (better formatting, fixing missing content, etc.)
@@ -297,6 +297,26 @@ current terminal working directory if `--targetdir` is not provided) is the
 same as the source folder that contains course JSON data, it will
 think that this is a re-render, and will avoid re-downloading any online
 media files that already exist in the course folder.
+
+#### Watching Video with Subtitles
+Since `v1.1.x`, Udacimak supports showing subtitles on the videos on the web
+video player.
+On Firefox, the subtitles should show up normally.
+If you use Google Chrome or Microsoft Edge, a web server needs to be set up
+for the subtitles to show up.
+
+To set up a web server, you can use
+[npm `serve` package](https://www.npmjs.com/package/serve), or Python 3's
+`http.server` module, etc.
+
+It is important that you set up a server from the Nanodegree or course's
+__root directory__. Otherwise, when going to the lesson pages, they won't be
+able to find the `assets` folder to load the required libraries for the web page
+to run properly.
+
+__Known Issue:__ On Google Chrome, when viewing the pages with a web server,
+you will not be able to "jump" the video. See here for why:
+- [HTML5 video will not loop](https://stackoverflow.com/questions/8088364/html5-video-will-not-loop/9549404#9549404)
 
 ### `renderdir`: Iteratively render multiple JSON course contents
 
