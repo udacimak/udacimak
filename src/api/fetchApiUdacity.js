@@ -24,6 +24,7 @@ export default function fetchApiUdacity(url, udacityAuthToken = '') {
     // https://github.com/request/request/issues/2047#issuecomment-272473278
     // avoid socket hang up error
     Connection: 'keep-alive',
+    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.102 Safari/537.36',
   };
   const method = 'GET';
   const requestOptions = {
