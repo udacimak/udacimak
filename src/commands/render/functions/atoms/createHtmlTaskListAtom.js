@@ -1,10 +1,10 @@
 import Handlebars from 'handlebars';
 import { loadTemplate } from '../templates';
+import { markdownToHtml } from '../../../utils';
 import {
-  downloadYoutube,
-  markdownToHtml,
-} from '../../../utils';
-import { createHtmlText } from '../utils';
+  createHtmlVideo,
+  createHtmlText,
+} from '../utils';
 
 /**
  * Create HTML content for TaskListAtom
@@ -31,17 +31,17 @@ export default async function createHtmlTaskListAtom(atom, targetDir, prefix) {
 
   // download feedback video if available
   const youtubeId = atom.video_feedback ? atom.video_feedback.youtube_id : '';
-  const promiseDownloadYoutube = downloadYoutube(youtubeId, targetDir, prefix, atom.title);
+  const promiseHtmlVideo = createHtmlVideo(youtubeId, targetDir, prefix, atom.title);
   const promiseLoadTemplate = loadTemplate('atom.taskList');
 
-  const [filenameYoutube, html] = await Promise.all([promiseDownloadYoutube, promiseLoadTemplate]);
-  const hasFeedback = (filenameYoutube || positiveFeedback);
+  const [video, html] = await Promise.all([promiseHtmlVideo, promiseLoadTemplate]);
+  const hasFeedback = (video || positiveFeedback);
 
   const dataTemplate = {
     description,
     hasFeedback,
     tasks,
-    filenameYoutube,
+    video,
     positiveFeedback,
   };
   const template = Handlebars.compile(html);

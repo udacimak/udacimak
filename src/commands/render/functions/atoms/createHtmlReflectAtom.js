@@ -1,10 +1,10 @@
 import Handlebars from 'handlebars';
 import { loadTemplate } from '../templates';
+import { markdownToHtml } from '../../../utils';
 import {
-  downloadYoutube,
-  markdownToHtml,
-} from '../../../utils';
-import { createHtmlText } from '../utils';
+  createHtmlText,
+  createHtmlVideo,
+} from '../utils';
 
 
 /**
@@ -26,15 +26,15 @@ export default async function createHtmlReflectAtom(atom, targetDir, prefix) {
 
   // download answer video if available
   const youtubeId = atom.answer.video ? atom.answer.video.youtube_id : '';
-  const promiseDownloadYoutube = downloadYoutube(youtubeId, targetDir, prefix, atom.title);
+  const promiseHtmlVideo = createHtmlVideo(youtubeId, targetDir, prefix, atom.title);
   const promiseLoadTemplate = loadTemplate('atom.reflect');
 
-  const [filenameYoutube, html] = await Promise.all([promiseDownloadYoutube, promiseLoadTemplate]);
+  const [video, html] = await Promise.all([promiseHtmlVideo, promiseLoadTemplate]);
 
   const answer = await createHtmlText(atom.answer.text, targetDir);
   const dataTemplate = {
     answer,
-    filenameYoutube,
+    video,
     questionTitle,
     questionText,
   };

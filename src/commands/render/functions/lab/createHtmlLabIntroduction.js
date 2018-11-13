@@ -2,11 +2,11 @@ import Handlebars from 'handlebars';
 import {
   loadTemplate,
 } from '../templates';
+import { markdownToHtml } from '../../../utils';
 import {
-  downloadYoutube,
-  markdownToHtml,
-} from '../../../utils';
-import { createHtmlText } from '../utils';
+  createHtmlVideo,
+  createHtmlText,
+} from '../utils';
 
 
 /**
@@ -24,7 +24,6 @@ export default async function createHtmlLabIntroduction(overview, labTitle, targ
   } = overview;
   const { video } = overview;
   let keyTakeaways = overview.key_takeaways;
-  let htmlVideo = '';
 
   // process all markdown to HTML
   title = markdownToHtml(title);
@@ -35,20 +34,9 @@ export default async function createHtmlLabIntroduction(overview, labTitle, targ
     keyTakeaways[i] = await createHtmlText(keyTakeaways[i], targetDir);
   }
 
-  let promiseVideo;
+  let htmlVideo;
   if (video && video.youtube_id) {
-    promiseVideo = downloadYoutube(video.youtube_id, targetDir, '', labTitle);
-  } else {
-    promiseVideo = new Promise(resolve => resolve());
-  }
-
-  const filenameYoutube = await promiseVideo;
-  if (filenameYoutube) {
-    htmlVideo = `
-      <video controls>
-        <source src="${filenameYoutube}" type="video/mp4">
-      </video>
-    `;
+    htmlVideo = await createHtmlVideo(video.youtube_id, targetDir, '', labTitle);
   }
 
   if (!title && !summary && (!keyTakeaways || !keyTakeaways.length) && !htmlVideo) {

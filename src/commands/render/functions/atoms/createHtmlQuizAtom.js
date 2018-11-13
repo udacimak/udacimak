@@ -5,9 +5,9 @@ import {
   createHtmlQuizProgrammingQuestion,
 } from './quizAtom';
 import {
-  downloadYoutube,
-} from '../../../utils';
-import { createHtmlText } from '../utils';
+  createHtmlText,
+  createHtmlVideo,
+} from '../utils';
 
 
 /**
@@ -26,7 +26,7 @@ export default async function createHtmlQuizAtom(atom, targetDir, prefix) {
     // download instruction video if available
     const youtubeIdQuestion = (atom.instruction && atom.instruction.video)
       ? atom.instruction.video.youtube_id : '';
-    const filenameYoutubeQuestion = await downloadYoutube(youtubeIdQuestion,
+    const videoQuestion = await createHtmlVideo(youtubeIdQuestion,
       targetDir, prefix, atom.title);
 
     // process different semantic types of QuizAtom
@@ -44,12 +44,12 @@ export default async function createHtmlQuizAtom(atom, targetDir, prefix) {
     // all other promises
     const youtubeIdAnswer = (atom.answer && atom.answer.video)
       ? atom.answer.video.youtube_id : '';
-    const promiseDownloadYoutubeAnswer = downloadYoutube(youtubeIdAnswer,
+    const promiseDownloadYoutubeAnswer = createHtmlVideo(youtubeIdAnswer,
       targetDir, prefix, atom.title);
     const promiseLoadTemplate = loadTemplate('atom.quiz');
 
     const [
-      filenameYoutubeAnswer,
+      videoAnswer,
       html,
     ] = await Promise.all([
       promiseDownloadYoutubeAnswer,
@@ -60,14 +60,14 @@ export default async function createHtmlQuizAtom(atom, targetDir, prefix) {
       ? await createHtmlText(atom.instruction.text, targetDir) : '';
     const answerText = atom.answer
       ? await createHtmlText(atom.answer.text, targetDir) : '';
-    const hasSolution = filenameYoutubeAnswer || answerText;
-    const hasInstruction = filenameYoutubeQuestion || instruction;
+    const hasSolution = videoAnswer || answerText;
+    const hasInstruction = videoQuestion || instruction;
 
     const dataTemplate = {
       answerText,
       instruction,
-      filenameYoutubeQuestion,
-      filenameYoutubeAnswer,
+      videoQuestion,
+      videoAnswer,
       hasSolution,
       hasInstruction,
       htmlQuiz,

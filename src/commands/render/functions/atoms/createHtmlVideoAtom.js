@@ -1,6 +1,6 @@
 import {
-  downloadYoutube,
-} from '../../../utils';
+  createHtmlVideo,
+} from '../utils';
 
 
 /**
@@ -15,14 +15,8 @@ export default async function createHtmlVideoAtom(atom, outputPath, prefix) {
   const pathVideo = outputPath;
 
   try {
-    const filenameYoutube = await downloadYoutube(atom.video.youtube_id,
+    const html = await createHtmlVideo(atom.video.youtube_id,
       pathVideo, prefix, atom.title);
-
-    const html = `
-      <video controls>
-        <source src="${filenameYoutube}" type="video/mp4">
-      </video>
-    `;
 
     return html;
   } catch (error) {

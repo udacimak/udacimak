@@ -3,10 +3,8 @@
     <div>
       <h4>Question:</h4>
 
-      {{#if filenameYoutubeQuestion}}
-        <video controls>
-            <source src="{{filenameYoutubeQuestion}}" type="video/mp4">
-        </video>
+      {{#if videoQuestion}}
+        {{{videoQuestion}}}
       {{/if}}
 
       {{#if instruction}}
@@ -23,10 +21,8 @@
     <details>
       <summary><strong>Solution:</strong></summary>
       <div>
-        {{#if filenameYoutubeAnswer}}
-          <video controls>
-              <source src="{{filenameYoutubeAnswer}}" type="video/mp4">
-          </video>
+        {{#if videoAnswer}}
+          {{{videoAnswer}}}
         {{/if}}
 
         {{#if answerText}}

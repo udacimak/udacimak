@@ -14,10 +14,10 @@ import {
   loadTemplate,
 } from './templates';
 import {
-  downloadYoutube,
   filenamify,
   logger,
 } from '../../utils';
+import { createHtmlVideo } from './utils';
 
 
 /**
@@ -39,9 +39,9 @@ export default async function writeHtmlLab(lab, htmlSidebar, targetDir) {
   } = lab;
   const file = path.join(targetDir, filenamify(`Lab - ${title}.html`));
 
-  let reviewVideo;
+  let promiseHtmlReviewVideo;
   if (lab.review_video && lab.review_video.youtube_id) {
-    reviewVideo = downloadYoutube(lab.review_video.youtube_id, targetDir, 'Lab - ', title);
+    promiseHtmlReviewVideo = createHtmlVideo(lab.review_video.youtube_id, targetDir, 'Lab - ', title);
   }
 
   const promiseInstructions = createHtmlLabInstructions(details, targetDir);
@@ -53,25 +53,19 @@ export default async function writeHtmlLab(lab, htmlSidebar, targetDir) {
     instructions,
     introduction,
     htmlWorkspace,
-    filenameYoutube,
+    reviewVideo,
     html,
   ] = await Promise.all([
     promiseInstructions,
     promiseIntroduction,
     promiseHtmlWorkspace,
-    reviewVideo,
+    promiseHtmlReviewVideo,
     templateLab,
   ]);
-
-  const htmlReviewVideo = `
-    <video controls>
-      <source src="${filenameYoutube}" type="video/mp4">
-    </video>
-  `;
   const dataLab = {
     introduction,
     instructions,
-    htmlReviewVideo,
+    reviewVideo,
     reflection: '(Reflection is only available online on Udacity website)',
     workspace: htmlWorkspace,
   };

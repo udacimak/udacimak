@@ -1,3 +1,9 @@
+{{#with video}}
 <video controls>
-  <source src="{{filename}}" type="video/mp4">
+  <source src="{{src}}" type="video/mp4">
+
+  {{#each subtitles}}
+  <track default="{{this.default}}" kind="subtitles" srclang="{{this.srclang}}" src="{{this.src}}" label="{{this.srclang}}">
+  {{/each}}
 </video>
+{{/with}}
