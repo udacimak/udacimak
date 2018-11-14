@@ -1,28 +1,39 @@
-import deleteFilesInFolder from './deleteFilesInFolder';
+import mockfs from 'mock-fs';
 import fs from 'fs';
-import mockFs from 'mock-fs';
+import path from 'path';
+import deleteFilesInFolder from './deleteFilesInFolder';
 
 
 describe('Delete Files in Folder', () => {
-  const PATH_DIR = 'fakeDir';
+  const PATH_DIR = './fakeDir';
 
   beforeEach(() => {
-    mockFs({
-      PATH_DIR: {
-        'web1.html': 'test',
-        'web2.html': 'test',
-        'web3.html': 'test',
-        'img1.png': 'test',
-        'img2.png': 'test',
+    mockfs({
+      './fakeDir': {
+        'web.html': 'test',
+        'img.png': 'test',
       },
     });
   });
 
   afterEach(() => {
-    mockFs.restore();
+    mockfs.restore();
   });
 
-  xtest('should delete files in folder', (done) => {
+  test('should delete files in folder', () => {
+    deleteFilesInFolder(PATH_DIR);
 
+    const file = path.join(PATH_DIR, 'web.html');
+    expect(fs.existsSync(file)).toBeFalsy();
+  });
+
+  test('should not delete unwanted files in folder', () => {
+    deleteFilesInFolder(PATH_DIR, 'html');
+
+    const fileDeleted = path.join(PATH_DIR, 'web.html');
+    const fileExist = path.join(PATH_DIR, 'img.png');
+
+    expect(fs.existsSync(fileDeleted)).toBeFalsy();
+    expect(fs.existsSync(fileExist)).toBeTruthy();
   });
 });

@@ -5,14 +5,12 @@
  */
 export default function addHttp(url) {
   url = url.trim();
-  // this is a wrong protocol that exists in a JSON file in a Udacity Nanodegree...
+  // remove all protocols, JSON data sometimes contain invalid protocols
+  // so it's best to remove them then add valid protocol again
   url = url
-    .replace('https:///', 'https://')
-    .replace('http:///', 'https://')
-    .replace('https:///', 'https://')
-    .replace('http:////', 'https://');
-  if (!/^(?:f|ht)tps?\:\/\//.test(url)) {
-    url = `https:${url}`;
-  }
+    .replace(/^(?:f|ht)tps?\:\/{1,}/, '')
+    .replace(/^\/{1,}/, '');
+
+  url = `https://${url}`;
   return url;
 }
