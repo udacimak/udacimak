@@ -1,3 +1,4 @@
 lib/**
 img/**
+src/**/*.test.js
 src/commands/render/templates/**

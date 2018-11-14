@@ -4,7 +4,7 @@
   "description": "Udacity Nanodegree/course downloader and renderer",
   "main": "index.js",
   "scripts": {
-    "coverage": "jest --collectCoverageFrom=src/**.js --coverage src",
+    "coverage": "jest --coverage src",
     "lint": "eslint ./src",
     "prebuild": "rimraf lib && npm run lint",
     "build": "babel src --out-dir lib --copy-files",
