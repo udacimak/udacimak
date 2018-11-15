@@ -31,6 +31,7 @@ export default async function createHtmlQuizProgrammingQuestion(atom) {
 
   const template = Handlebars.compile(html);
   const dataTemplate = {
+    id: 'question',
     files,
   };
 

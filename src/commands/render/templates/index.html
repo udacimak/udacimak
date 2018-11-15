@@ -14,7 +14,7 @@
   <link rel="stylesheet" href="{{pathToAssets}}assets/css/katex.min.css">
   <link rel="stylesheet" href="{{pathToAssets}}assets/css/jquery.mCustomScrollbar.min.css">
   <link rel="stylesheet" href="{{pathToAssets}}assets/css/styles.css">
-  <link rel="shortcut icon" type="image/png" href="{{pathToAssets}}assets/img/udacimak.png"/>
+  <link rel="shortcut icon" type="image/png" href="{{pathToAssets}}assets/img/udacimak.png" />
 </head>
 
 <body>
@@ -89,10 +89,21 @@
     }
 
     // this hack will make sure Bootstrap tabs work when using Handlebars
-    $("a.nav-link").on('click', function () {
-      $(".tab-pane").hide();
-      $($(this).attr("href")).show();
-    });
+    if ($('#question-tabs').length && $('#user-answer-tabs').length) {
+      $("#question-tabs a.nav-link").on('click', function () {
+        $("#question-tab-contents .tab-pane").hide();
+        $($(this).attr("href")).show();
+      });
+      $("#user-answer-tabs a.nav-link").on('click', function () {
+        $("#user-answer-tab-contents .tab-pane").hide();
+        $($(this).attr("href")).show();
+      });
+    } else {
+      $("a.nav-link").on('click', function () {
+        $(".tab-pane").hide();
+        $($(this).attr("href")).show();
+      });
+    }
 
     // side bar events
     $(document).ready(function () {

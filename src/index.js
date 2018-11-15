@@ -58,13 +58,15 @@ program
   .command('render')
   .description('Render downloaded json course content into HTML by downloading all videos, creating text content, etc.')
   .arguments('<path>')
-  .option('-t, --targetdir <targetdir>', 'Target directory to save rendered course contents')
-  .option('-v, --verbose', 'For youtube-dl to print various debugging information')
+  .option('-t, --targetdir <targetdir>', '(Optional) Target directory to save rendered course contents')
+  .option('-v, --verbose', '(Optional) Force youtube-dl to log debugging information')
+  .option('--userquizanswer', '(Optional) Force rendering user\'s Programming Question code answer')
   .action(async (path, options) => {
     await preCli();
 
     const targetdir = options.targetdir || process.cwd();
     global.ytVerbose = options.verbose;
+    global.optRenderUserQuizAnswer = options.userquizanswer;
     render(path, targetdir);
   })
   .on('--help', () => {
@@ -81,13 +83,15 @@ program
   .command('renderdir')
   .description('Render a whole directory of downloaded json course contents')
   .arguments('<path>')
-  .option('-t, --targetdir <targetdir>', 'Target directory to save rendered course contents')
-  .option('-v, --verbose', 'For youtube-dl to print various debugging information')
+  .option('-t, --targetdir <targetdir>', '(Optional) Target directory to save rendered course contents')
+  .option('-v, --verbose', '(Optional) Force youtube-dl to log debugging information')
+  .option('--userquizanswer', '(Optional) Force rendering user\'s Programming Question code answer')
   .action(async (path, options) => {
     await preCli();
 
     const targetdir = options.targetdir || process.cwd();
     global.ytVerbose = options.verbose;
+    global.optRenderUserQuizAnswer = options.userquizanswer;
     renderdir(path, targetdir);
   });
 
