@@ -1,7 +1,7 @@
 import cheerio from 'cheerio';
+import path from 'path';
 import {
   downloadImage,
-  getFileExt,
   makeDir,
 } from '.';
 
@@ -55,7 +55,7 @@ export default async function downloadMediaInHtml(html, targetDir, atomId) {
 
       // since these src values may contain a link, but won't return a proper filename
       // manually create the file name
-      let extension = getFileExt(src);
+      let extension = path.extname(src);
       let filename;
       if (!extension) {
         // provide extension if it's not in the url

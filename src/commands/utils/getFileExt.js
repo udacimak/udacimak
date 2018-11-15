@@ -4,5 +4,5 @@
  */
 export default function getFileExt(filename) {
   // wrap in string literal to get string out of string.match()
-  return `${filename.match(/\..+\.[0-9a-z]{3,}$/i)}`;
+  return `${filename.match(/\.[^\.]+\.[^\.]+$/i)}`;
 }

@@ -8,7 +8,7 @@
     "lint": "eslint ./src",
     "prebuild": "rimraf lib && npm run lint",
     "build": "babel src --out-dir lib --copy-files",
-    "watch": "nodemon --watch src --exec \"rimraf lib && babel src --out-dir lib --copy-files && npm run lint && npm run test\"",
+    "watch": "nodemon --watch src --exec \"rimraf lib && babel src --out-dir lib --copy-files\"",
     "test": "jest src",
     "release": "np",
     "version": "npm run build"

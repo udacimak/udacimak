@@ -1,13 +1,12 @@
 import compareVersions from 'compare-versions';
 import fetchPackageInfo from './fetchPackageInfo';
-import getPkgInfo from './getPkgInfo';
+import pkg from '../../../package.json';
 import { logger } from '.';
 
 
 export default async function notifyLatestVersion() {
   try {
-    const pkgInfo = getPkgInfo();
-    const versionCurrent = pkgInfo.version;
+    const versionCurrent = pkg.version;
     const info = await fetchPackageInfo();
     const { name, version } = info;
     const compare = compareVersions(versionCurrent, version);

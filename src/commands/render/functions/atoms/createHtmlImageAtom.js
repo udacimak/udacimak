@@ -1,7 +1,7 @@
 import Handlebars from 'handlebars';
+import path from 'path';
 import {
   downloadImage,
-  getFileExt,
   makeDir,
   markdownToHtml,
 } from '../../../utils';
@@ -21,7 +21,7 @@ export default async function createHtmlImageAtom(atom, outputPath) {
 
   // if link doesn't contain image extension, create a custom file name
   let filename;
-  if (!getFileExt(atom.url)) {
+  if (!path.extname(atom.url)) {
     filename = `${atom.id}.gif`;
   }
 
