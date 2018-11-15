@@ -334,7 +334,7 @@ you can use `renderdir` to render all of them:
 udacimak renderdir PATH_TO_DIRECTORY
 ```
 
-__Parameter:__
+__Parameters:__
 
 ```
 -t, --targetdir <targetdir>  (Optional) Target directory to save rendered course contents
