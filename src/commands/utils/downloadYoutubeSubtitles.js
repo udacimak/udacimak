@@ -16,6 +16,10 @@ import {
  * @param {string} targetDir target directory
  */
 export default function downloadYoutubeSubtitles(videoId, filenameYoutube, targetDir) {
+  if (!videoId || !videoId.trim()) {
+    return null;
+  }
+
   const spinnerSubtitles = ora(`Download subtitles for ${filenameYoutube}`).start();
   const urlYoutube = `https://www.youtube.com/watch?v=${videoId}`;
   const options = {
