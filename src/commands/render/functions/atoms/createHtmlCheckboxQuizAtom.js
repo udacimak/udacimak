@@ -10,14 +10,14 @@ import { createHtmlText } from '../utils';
  * @returns {string} HTML content
  */
 export default async function createHtmlCheckboxQuizAtom(atom, targetDir) {
-  const prompt = await createHtmlText(atom.question.prompt, targetDir);
+  const prompt = await createHtmlText(atom.question.prompt, targetDir, atom.id);
 
   const answers = [];
   const solution = [];
   for (let i = 0, len = atom.question.answers.length; i < len; i += 1) {
     const answer = atom.question.answers[i];
     const { id } = answer;
-    const text = await createHtmlText(answer.text, targetDir);
+    const text = await createHtmlText(answer.text, targetDir, atom.id);
     const isCorrect = answer.is_correct;
 
     // if this is the correct answer, add to solution

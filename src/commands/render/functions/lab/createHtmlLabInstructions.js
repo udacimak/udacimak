@@ -18,7 +18,7 @@ export default async function createHtmlLabInstructions(details, targetDir) {
   }
 
   let { text } = details;
-  text = await createHtmlText(text, targetDir);
+  text = await createHtmlText(text, targetDir, 'lab-instructions');
 
   const html = await loadTemplate('lab.instructions');
 

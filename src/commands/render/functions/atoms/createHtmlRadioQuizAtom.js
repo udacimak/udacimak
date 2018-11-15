@@ -10,7 +10,7 @@ import { createHtmlText } from '../utils';
  * @returns {string} HTML content
  */
 export default async function createHtmlRadioQuizAtom(atom, targetDir) {
-  const prompt = await createHtmlText(atom.question.prompt, targetDir);
+  const prompt = await createHtmlText(atom.question.prompt, targetDir, atom.id);
 
   const answers = [];
   let solution;
@@ -18,7 +18,7 @@ export default async function createHtmlRadioQuizAtom(atom, targetDir) {
     const answer = atom.question.answers[i];
     const { id } = answer;
     const isCorrect = answer.is_correct;
-    const text = await createHtmlText(answer.text, targetDir);
+    const text = await createHtmlText(answer.text, targetDir, atom.id);
 
     // if this is the correct answer, add to solution
     if ('is_correct' in answer && isCorrect !== null && isCorrect === true) {

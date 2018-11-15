@@ -24,14 +24,15 @@ export default async function createHtmlLabIntroduction(overview, labTitle, targ
   } = overview;
   const { video } = overview;
   let keyTakeaways = overview.key_takeaways;
+  const mediaFileLabel = 'lab-intro';
 
   // process all markdown to HTML
   title = markdownToHtml(title);
-  summary = await createHtmlText(summary, targetDir);
+  summary = await createHtmlText(summary, targetDir, mediaFileLabel);
   keyTakeaways = keyTakeaways || [];
 
   for (let i = 0, len = keyTakeaways.length; i < len; i += 1) {
-    keyTakeaways[i] = await createHtmlText(keyTakeaways[i], targetDir);
+    keyTakeaways[i] = await createHtmlText(keyTakeaways[i], targetDir, mediaFileLabel);
   }
 
   let htmlVideo;

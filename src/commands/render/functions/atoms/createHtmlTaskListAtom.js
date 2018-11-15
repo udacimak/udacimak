@@ -16,8 +16,8 @@ import {
 export default async function createHtmlTaskListAtom(atom, targetDir, prefix) {
   let { description } = atom;
   let positiveFeedback = atom.positive_feedback;
-  description = await createHtmlText(description, targetDir);
-  positiveFeedback = await createHtmlText(positiveFeedback, targetDir);
+  description = await createHtmlText(description, targetDir, atom.id);
+  positiveFeedback = await createHtmlText(positiveFeedback, targetDir, atom.id);
 
   const tasks = [];
   for (let i = 0, len = atom.tasks.length; i < len; i += 1) {

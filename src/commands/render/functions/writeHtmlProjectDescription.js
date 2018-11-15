@@ -23,8 +23,9 @@ export default async function writeHtmlProjectDescription(project, htmlSidebar, 
   let { description, summary } = project;
   const { title } = project;
 
-  description = await createHtmlText(description, outputPath);
-  summary = await createHtmlText(summary, outputPath);
+  const mediaFileLabel = 'project-desc';
+  description = await createHtmlText(description, outputPath, mediaFileLabel);
+  summary = await createHtmlText(summary, outputPath, mediaFileLabel);
   // create HTML body content
   const htmlSummary = summary ? `
     <p class="text-center">${summary}</p>

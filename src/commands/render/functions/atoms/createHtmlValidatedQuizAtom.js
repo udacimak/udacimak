@@ -10,7 +10,7 @@ import { createHtmlText } from '../utils';
  * @returns {string} HTML content
  */
 export default async function createHtmlValidatedQuizAtom(atom, targetDir) {
-  const prompt = await createHtmlText(atom.question.prompt, targetDir);
+  const prompt = await createHtmlText(atom.question.prompt, targetDir, atom.id);
   const matchers = [];
 
   for (let i = 0, len = atom.question.matchers; i < len; i += 1) {

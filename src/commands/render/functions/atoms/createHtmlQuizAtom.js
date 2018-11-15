@@ -57,9 +57,9 @@ export default async function createHtmlQuizAtom(atom, targetDir, prefix) {
     ]);
 
     const instruction = atom.instruction
-      ? await createHtmlText(atom.instruction.text, targetDir) : '';
+      ? await createHtmlText(atom.instruction.text, targetDir, atom.id) : '';
     const answerText = atom.answer
-      ? await createHtmlText(atom.answer.text, targetDir) : '';
+      ? await createHtmlText(atom.answer.text, targetDir, atom.id) : '';
     const hasSolution = videoAnswer || answerText;
     const hasInstruction = videoQuestion || instruction;
 

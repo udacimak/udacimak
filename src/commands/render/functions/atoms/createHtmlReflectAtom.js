@@ -19,7 +19,7 @@ export default async function createHtmlReflectAtom(atom, targetDir, prefix) {
   let questionText;
 
   if (atom.question.semantic_type === 'TextQuestion') {
-    questionText = await createHtmlText(atom.question.text, targetDir);
+    questionText = await createHtmlText(atom.question.text, targetDir, atom.id);
   } else {
     questionText = '<p>Unknown question type. Please contact the developer to make it compatible with this atom type!</p>';
   }
@@ -31,7 +31,7 @@ export default async function createHtmlReflectAtom(atom, targetDir, prefix) {
 
   const [video, html] = await Promise.all([promiseHtmlVideo, promiseLoadTemplate]);
 
-  const answer = await createHtmlText(atom.answer.text, targetDir);
+  const answer = await createHtmlText(atom.answer.text, targetDir, atom.id);
   const dataTemplate = {
     answer,
     video,

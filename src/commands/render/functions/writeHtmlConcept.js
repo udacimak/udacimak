@@ -46,7 +46,7 @@ export default async function writeHtmlConcept(concept, htmlSidebar, targetDir, 
 
       let promiseAtom;
       const semanticType = atom.semantic_type;
-      const instructorNote = await createHtmlText(atom.instructor_notes, targetDir);
+      const instructorNote = await createHtmlText(atom.instructor_notes, targetDir, `${atom.id}-instructor-note`);
 
       if (semanticType === 'ImageAtom') {
         promiseAtom = createHtmlImageAtom(atom, targetDir);

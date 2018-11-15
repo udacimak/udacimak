@@ -61,7 +61,7 @@ export default async function downloadMediaInHtml(html, targetDir, atomId) {
         // provide extension if it's not in the url
         extension = (type === 'video') ? '.mp4' : '.gif';
         // generate file name with atom id and i (index of links array)
-        filename = `unnamed-${atomId || ''}-${i}${extension}`;
+        filename = `unnamed-${atomId}-${i}${extension}`;
       }
 
       const filenameImg = await downloadImage(src, pathMedia, filename);
