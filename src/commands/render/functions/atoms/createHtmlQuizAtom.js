@@ -3,6 +3,7 @@ import { loadTemplate } from '../templates';
 import {
   createHtmlQuizImageFormQuestion,
   createHtmlQuizProgrammingQuestion,
+  createHtmlProgrammingQuestionUserAnswer,
 } from './quizAtom';
 import {
   createHtmlText,
@@ -22,6 +23,7 @@ export default async function createHtmlQuizAtom(atom, targetDir, prefix) {
     const { question } = atom;
     const semanticType = question.semantic_type;
     let promiseQuizQuestion;
+    let promiseQuizUserAnswer;
 
     // download instruction video if available
     const youtubeIdQuestion = (atom.instruction && atom.instruction.video)
@@ -32,6 +34,9 @@ export default async function createHtmlQuizAtom(atom, targetDir, prefix) {
     // process different semantic types of QuizAtom
     if (semanticType === 'ProgrammingQuestion' || semanticType === 'IFrameQuestion') {
       promiseQuizQuestion = createHtmlQuizProgrammingQuestion(atom);
+      if (global.optRenderUserQuizAnswer) {
+        promiseQuizUserAnswer = createHtmlProgrammingQuestionUserAnswer(atom.user_state);
+      }
     } else if (semanticType === 'ImageFormQuestion') {
       promiseQuizQuestion = createHtmlQuizImageFormQuestion(atom, targetDir, prefix);
     } else {
@@ -40,6 +45,7 @@ export default async function createHtmlQuizAtom(atom, targetDir, prefix) {
     }
 
     const htmlQuiz = await promiseQuizQuestion;
+    const htmlQuizUserAnswer = await promiseQuizUserAnswer;
 
     // all other promises
     const youtubeIdAnswer = (atom.answer && atom.answer.video)
@@ -71,6 +77,7 @@ export default async function createHtmlQuizAtom(atom, targetDir, prefix) {
       hasSolution,
       hasInstruction,
       htmlQuiz,
+      htmlQuizUserAnswer,
     };
     const template = Handlebars.compile(html);
     return template(dataTemplate);

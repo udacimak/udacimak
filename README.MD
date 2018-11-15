@@ -249,10 +249,13 @@ provided to do this:
 udacimak render PATH_TO_DOWNLOADED_COURSE_JSON_DIRECTORY --targetdir OPTIONAL_TARGET_DIRECTORY
 ```
 
-__Optional parameter:__
-- `-v`, `--verbose`: Log additional debug information for Youtube download (logs will be produced by
-[`youtube-dl`](https://rg3.github.io/youtube-dl/))
+__Parameters:__
 
+```
+-t, --targetdir <targetdir>  (Optional) Target directory to save rendered course contents
+-v, --verbose                (Optional) Force youtube-dl to log debugging information
+--userquizanswer             (Optional) Force rendering user's Programming Question code answer
+```
 
 ![Render Example GIF][example-render]
 
@@ -331,9 +334,13 @@ you can use `renderdir` to render all of them:
 udacimak renderdir PATH_TO_DIRECTORY
 ```
 
-__Optional parameter:__
-- `-v`, `--verbose`: Log additional debug information for Youtube download (logs will be produced by
-[`youtube-dl`](https://rg3.github.io/youtube-dl/))
+__Parameter:__
+
+```
+-t, --targetdir <targetdir>  (Optional) Target directory to save rendered course contents
+-v, --verbose                (Optional) Force youtube-dl to log debugging information
+--userquizanswer             (Optional) Force rendering user's Programming Question code answer
+```
 
 ### Log Files
 Please note that the CLI will produce log files in the working directory of

@@ -1,20 +1,26 @@
 <div>
   {{#if hasInstruction}}
-    <div>
-      <h4>Question:</h4>
+  <div>
+    <h4>Question:</h4>
 
-      {{#if videoQuestion}}
-        {{{videoQuestion}}}
-      {{/if}}
+    {{#if videoQuestion}}
+    {{{videoQuestion}}}
+    {{/if}}
 
-      {{#if instruction}}
-      <p>{{{instruction}}}</p>
-      {{/if}}
-    </div>
+    {{#if instruction}}
+    <p>{{{instruction}}}</p>
+    {{/if}}
+  </div>
   {{/if}}
 
   <h4>Start Quiz:</h4>
   {{{htmlQuiz}}}
+
+  {{#if htmlQuizUserAnswer}}
+  <h4>User's Answer:</h4>
+  <p><em>(<strong>Note</strong>: The answer done by the user is not guaranteed to be correct)</em></p>
+  {{{htmlQuizUserAnswer}}}
+  {{/if}}
 
   {{#if hasSolution}}
   <div>
@@ -22,7 +28,7 @@
       <summary><strong>Solution:</strong></summary>
       <div>
         {{#if videoAnswer}}
-          {{{videoAnswer}}}
+        {{{videoAnswer}}}
         {{/if}}
 
         {{#if answerText}}
