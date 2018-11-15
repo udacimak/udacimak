@@ -9,7 +9,7 @@
     "prebuild": "rimraf lib && npm run lint",
     "build": "babel src --out-dir lib --copy-files",
     "watch": "nodemon --watch src --exec \"rimraf lib && babel src --out-dir lib --copy-files\"",
-    "test": "jest src",
+    "test": "",
     "release": "np",
     "version": "npm run build"
   },
