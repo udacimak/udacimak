@@ -5,7 +5,8 @@
     "lib",
     "img/",
     "node_modules/",
-    "src/**/*.test.js"
+    "src/**/*.test.js",
+    "**/*.log"
   ],
   "verbose": true,
   "execMap": {
