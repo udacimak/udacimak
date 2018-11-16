@@ -16,22 +16,25 @@ import { loadTemplate } from '../templates';
  */
 export default async function createHtmlImageAtom(atom, outputPath) {
   let { caption } = atom;
+  const { url } = atom;
+
   // create directory for image assets
   const pathImg = makeDir(outputPath, 'img');
 
   // if link doesn't contain image extension, create a custom file name
   let filename;
-  if (!path.extname(atom.url)) {
+  if (!path.extname(url)) {
     filename = `${atom.id}.gif`;
   }
 
   // download image first and save it
-  const promiseDownload = downloadImage(atom.url, pathImg, filename);
+  const promiseDownload = downloadImage(url, pathImg, filename);
   const promiseLoadTemplate = loadTemplate('atom.image');
 
   const [filenameImg, html] = await Promise.all([promiseDownload, promiseLoadTemplate]);
   const alt = caption;
   caption = markdownToHtml(caption);
+
   const dataTemplate = {
     file: `img/${filenameImg}`,
     alt,

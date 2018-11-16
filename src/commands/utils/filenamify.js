@@ -13,5 +13,5 @@ export default function filenamify(filename, option) {
     };
   }
 
-  return _filenamify(filename, option);
+  return _filenamify(filename, option).replace(/[%|&]/gi, '');
 }

@@ -6,6 +6,7 @@ import progress from 'request-progress';
 import request from 'request';
 import {
   addHttp,
+  filenamify,
   logger,
 } from '.';
 
@@ -18,10 +19,6 @@ import {
  * @param {function} filename optional file name parameter
  */
 export default function downloadImage(uri, outputDir, filename = undefined) {
-  // return new Promise((resolve) => {
-  //   resolve('');
-  // });
-
   const errorCheck = `Please double-check the url from the JSON data to see if the link is really broken.
 If it is, it could be a broken link that Udacity hasn't fixed and you can ignore this error message.
 If the link was temporary broken and is up again when you check, please re-run the render to make sure the media file will be downloaded.
@@ -36,7 +33,11 @@ If the link was temporary broken and is up again when you check, please re-run t
     // add https protocol to url if missing
     uri = addHttp(uri);
 
-    if (!filename) filename = path.basename(uri);
+    if (!filename) {
+      filename = path.basename(uri);
+    }
+    filename = filenamify(filename);
+
     const savePath = path.join(outputDir, filename);
     const tempPath = path.join(outputDir, `.${filename}`);
 
