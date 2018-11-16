@@ -65,6 +65,9 @@ If the link was temporary broken and is up again when you check, please re-run t
       headers,
       // avoid socket hang up error
       forever: true,
+      // avoid ERR_TLS_CERT_ALTNAME_INVALID error
+      // refer to https://github.com/request/request/issues/1777#issuecomment-152323328
+      rejectUnauthorized: false,
     };
     progress(request(requestOptions))
       .on('progress', (state) => {
