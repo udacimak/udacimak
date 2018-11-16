@@ -13,7 +13,10 @@ export default function markdownToHtml(markdown) {
   // because Github flavored markdown will convert the link to <a> tag,
   // which makes the <img> tag's src value invalid
   // eg. <img src="<a href="https://example">https://example</a>" />
-  markdown = markdown.replace(/<img src="https:/gm, '<img src="');
+  markdown = markdown
+    .replace(/<img src="https:/gmi, '<img src="')
+    // hack to fix syntax highlight code block syntax
+    .replace(/```[ ]+(cpp|python|javascript|ruby|shell|html|css)/gmi, '```');
 
   // extension to modify mathquill tags
   showdown.extension('modifyMathquill', () => [
