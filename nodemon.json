@@ -4,7 +4,8 @@
     ".git",
     "lib",
     "img/",
-    "node_modules/"
+    "node_modules/",
+    "src/**/*.test.js"
   ],
   "verbose": true,
   "execMap": {
