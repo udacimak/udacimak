@@ -55,8 +55,10 @@ __Resources:__
 
 ## Installation
 
-1. Make sure you have `node` and `npm` installed. Install via `nvm` is highly recommended.
-1. Run:
+1. Make sure you have `node` and `npm` installed.
+  _Install via [`nvm`](https://github.com/creationix/nvm) is highly recommended._
+1. Install [`git`](https://git-scm.com/)
+1. To install Udacimak, run:
 
   ```shell
   npm install -g udacimak
