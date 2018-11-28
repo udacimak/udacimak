@@ -38,6 +38,12 @@ that you can run `udacimak` command:
 
 Now you can start coding!
 
+### Commit
+Please [commit with clear commit messages](https://github.com/trein/dev-best-practices/wiki/Git-Commit-Best-Practices).
+Udacimak doesn't have a change log file for each version release. The commits
+are the way to read changes in a version, so clear and concise commit
+messages are important.
+
 ### Coding Style and Tests
 Make sure you run:
 - `npm run link` for Javascript style check
