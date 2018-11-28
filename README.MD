@@ -50,6 +50,9 @@ We hope you enjoy this downloader.
 
 __Stay Udacious__!
 
+If you find this CLI helpful, please support the developers by starring this
+repository.
+
 __Resources:__
 - [How long will I have access to Nanodegree program content after I graduate? (Udacity Support)](https://udacity.zendesk.com/hc/en-us/articles/360015665011-How-long-will-I-have-access-to-Nanodegree-program-content-after-I-graduate-)
 
@@ -228,6 +231,14 @@ process since you'll need to study the JSON structure built by Udacity
 to process them. That is why Udacimak provide `render` functionality to
 render all the course contents into _static web pages_.
 
+#### Important downloaded directory note
+You should not mofidy the structure of the downloaded directory:
+- Do not create new directory inside the downloaded directory.
+- Do not render into the downloaded directory.
+- Do not rename any `.json` files.
+- Not critical, but avoid renaming directory names inside the downloaded
+directory.
+
 #### Note regarding workspaces
 Udacity has a number of types of workspaces for projects and
 quizzes/exercises, including Jupyter Notebook workspaces, IDE workspaces.
@@ -285,6 +296,24 @@ Once it is done, you can enjoy the lessons on your computer:
 ![HTML Lesson Example 01][example-html-lesson-01]
 
 ![HTML Lesson Example 02][example-html-lesson-02]
+
+#### Important render directory note
+Do not render into any target locations that are sub-diretories of a
+downloaded directory. If you try to do so, the renderer will throw error.
+In other words, separate the directories for downloaded and render directories,
+do not render into target directories inside downloaded directories.
+
+For example, this is an example of folder structure that will work:
+
+```shell
+├── Udacity Nanodegrees
+│   ├── # ✔ This directory can be target directory for render command
+│   ├── _json/
+│   │   ├── # ✔ This directory contains downloaded JSON data using download command
+│   │   ├── # ❌ Any render target that points into _json/ will fail!!!
+│   ├── _renders/
+│   │   ├── # ✔ Alternatively, this can also be target directory for render command
+```
 
 #### Re-rendering a Course
 If you cancel the command or the CLI is cut off for some reason (eg. the CLI
