@@ -19,6 +19,7 @@
 
 - [Description](#description)
 - [Installation](#installation)
+- [Change Log](#change-log)
 - [How to use](#how-to-use)
 - [Note to Windows OS Users](#note-to-windows-os-users)
 - [Development Experience](#development-experience)
@@ -73,6 +74,38 @@ To update to the latest version, run the same `install` command:
 
 ```
 npm install -g udacimak
+```
+
+## Change Log
+We do not generate change log files for this project.
+
+But if desired, you can check changes in a new release by looking at the
+[Git commit messages](https://github.com/udacimak/udacimak/commits/master).
+The commit messages prior to a version number commit inform the changes
+that has been made to that version release.
+
+For example, from the commit messages below, we know what changes have been
+made in version `1.1.1`, `1.1.2` and `1.1.3`
+
+```shell
+# version 1.1.3 example
+afb3ade (tag: v1.1.3) 1.1.3
+c0f7b4f Add user agent for requests
+ad93fb3 Update README
+fdb9b96 Add user agent for requests
+129a9cd Add test setup
+
+# version 1.1.2 example
+597e727 (tag: v1.1.2) 1.1.2
+1dc07e6 Update README
+b9c4f2a Add case handle for wrong url in addHttp
+
+# version 1.1.1 example
+01f7308 (tag: v1.1.1) 1.1.1
+03ab9ad Add handle case for wrong url in addHttp
+19c4ae0 Add handle case for wrong url in addHttp
+da55eef Update README
+6346a68 Fix bug makeDir in CheckboxQuizAtom
 ```
 
 ### Use Udacimak via [Docker](https://www.docker.com/) container
