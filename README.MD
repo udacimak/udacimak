@@ -310,7 +310,7 @@ For example, this is an example of folder structure that will work:
 │   ├── # ✔ This directory can be target directory for render command
 │   ├── _json/
 │   │   ├── # ✔ This directory contains downloaded JSON data using download command
-│   │   ├── # ❌ Any render target that points into _json/ will fail!!!
+│   │   ├── # ❌ Any render target that points into directories inside _json/ will fail!!!
 │   ├── _renders/
 │   │   ├── # ✔ Alternatively, this can also be target directory for render command
 ```
