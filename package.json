@@ -61,7 +61,7 @@
     "jest": "^23.6.0",
     "mock-fs": "^4.7.0",
     "nock": "^10.0.2",
-    "nodemon": "^1.18.4",
+    "nodemon": "^1.18.7",
     "np": "^3.0.4",
     "regenerator-runtime": "^0.12.1"
   },
