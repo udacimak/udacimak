@@ -44,4 +44,6 @@ RUN npm i -g udacimak
 # confirm install
 RUN udacimak --help
 
+WORKDIR /downloads
+
 ENTRYPOINT [ "udacimak" ]
