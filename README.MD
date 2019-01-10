@@ -265,7 +265,7 @@ to process them. That is why Udacimak provide `render` functionality to
 render all the course contents into _static web pages_.
 
 #### Important downloaded directory note
-You should not mofidy the structure of the downloaded directory:
+You should not modify the structure of the downloaded directory:
 - Do not create new directory inside the downloaded directory.
 - Do not render into the downloaded directory.
 - Do not rename any `.json` files.
