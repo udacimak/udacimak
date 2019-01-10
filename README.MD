@@ -133,6 +133,14 @@ changing `entrypoint` to `/bin/bash`:
 docker container run --rm -it -v "$(pwd)/:/downloads" --entrypoint /bin/bash udacimak/udacimak
 ```
 
+Remember to set the `--targetdir` option to the shared volume (eg. `"downloads"`
+in the examples above) so that downloaded or rendered contents are saved
+directly into the host machine, eg:
+
+```shell
+docker container run -it -v "$(pwd)/:/downloads" udacimak/udacimak render "downloads/_json/Front-End Web Developer Nanodegree nd001 v7.0.0" --targetdir "downloads"
+```
+
 ## How to use
 
 Udacimak allows you to keep Udacity content locally in 2 main steps:
