@@ -28,12 +28,14 @@ import { createHtmlText } from './utils';
 /**
  * Write lesson concept content to file
  * @param {object} concept contain lesson's concept to convert to html
+ * @param {object} next concept
  * @param {string} htmlSidebar sidebar html content
  * @param {string} targetDir output directory path
  * @param {number} index the numbering of the concept for producing file prefix
  * @param {function} doneLesson callback function of lesson loop
  */
-export default async function writeHtmlConcept(concept, htmlSidebar, targetDir, index) {
+export default async function writeHtmlConcept(concept, nextConcept, htmlSidebar,
+  targetDir, index) {
   let contentMain = '';
   const conceptTitle = concept.title || '';
   // prefix for file names
@@ -102,6 +104,13 @@ export default async function writeHtmlConcept(concept, htmlSidebar, targetDir, 
       pathToAssets,
       title,
     };
+    if (nextConcept) {
+      const nextIndex = index + 1;
+      const nextPrefix = nextIndex < 10 ? `0${nextIndex}` : nextIndex;
+      const nextConceptTitle = nextConcept.title || '';
+      const nextFile = filenamify(nextConceptTitle);
+      templateDataIndex.nextConceptFile = `${nextPrefix}. ${nextFile}.html`;
+    }
     let file = filenamify(conceptTitle);
     file = path.join(targetDir, `${prefix}. ${file}.html`);
 
