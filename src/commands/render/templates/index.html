@@ -49,25 +49,26 @@
           <div class="col-12">
             {{{contentMain}}}
           </div>
+
+          <div class="col-12">
+            <p class="text-right">
+              {{#if nextConceptFile}}
+              <a href="{{nextConceptFile}}" class="btn btn-outline-primary mt-4" role="button">Next Concept</a>
+              {{/if}}
+            </p>
+          </div>
         </div>
       </main>
 
       <footer class="footer">
         <div class="container">
           <div class="row">
-            <div class="col-9">
+            <div class="col-12">
               <p class="text-center">
                 {{#if pkgInfo}}
                 <a href="{{pkgInfo.homepage}}" target="_blank">{{pkgInfo.name}} v{{pkgInfo.version}}</a>
                 {{/if}}
               </p>
-            </div>
-            <div class="col-3">
-              <p class="text-center">
-                {{#if nextConceptFile}}
-                <a href="{{nextConceptFile}}">Next</a>
-                {{/if}}
-              </p>              
             </div>
           </div>
         </div>
@@ -123,21 +124,21 @@
         $('.collapse.in').toggleClass('in');
         $('a[aria-expanded=true]').attr('aria-expanded', 'false');
       });
-      
+
       // scroll to first video on page loading
       if ($('video').length) {
         $('html,body').animate({ scrollTop: $('div.plyr').prev().offset().top});
       }
-      
+
       // auto play first video: this may not work with chrome/safari due to autoplay policy
       if (players && players.length > 0) {
         players[0].play();
       }
-      
+
       // scroll sidebar to current concept
       const currentInSideBar = $( "ul.sidebar-list.components li a:contains('{{title}}')" )
       currentInSideBar.css( "text-decoration", "underline" );
-      $("#sidebar").mCustomScrollbar('scrollTo', currentInSideBar);      
+      $("#sidebar").mCustomScrollbar('scrollTo', currentInSideBar);
     });
   </script>
 </body>
