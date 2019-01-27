@@ -64,7 +64,8 @@ export default async function writeHtmlLesson(jsonPath, targetDir) {
 
     for (let i = 0, len = concepts.length; i < len; i += 1) {
       const conceptIndex = i + 1;
-      await writeHtmlConcept(concepts[i], htmlSidebar, targetDir, conceptIndex);
+      const nextConcept = (i === len - 1) ? null : concepts[i + 1];
+      await writeHtmlConcept(concepts[i], nextConcept, htmlSidebar, targetDir, conceptIndex);
     }
 
     let promiseWriteHtmlRubric;
