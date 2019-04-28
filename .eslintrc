@@ -3,6 +3,7 @@
     "extends": "airbnb/base",
     "rules": {
       "func-names": 0,
+      "import/no-cycle": 0,
       "import/prefer-default-export": "off",
       "linebreak-style": 0,
       "no-await-in-loop": 0,
