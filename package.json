@@ -87,6 +87,6 @@
     "showdown": "^1.8.6",
     "user-settings": "^0.2.0",
     "winston": "^3.1.0",
-    "youtube-dl": "^1.13.1"
+    "youtube-dl": "^2.0.0"
   }
 }
