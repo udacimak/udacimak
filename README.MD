@@ -18,12 +18,7 @@
 ## Table of Contents
 
 - [Description](#description)
-- [Installation](#installation)
-- [Change Log](#change-log)
-- [How to use](#how-to-use)
-- [Note to Windows OS Users](#note-to-windows-os-users)
-- [Development Experience](#development-experience)
-- [Breaking Changes from Udacity API](#breaking-changes-from-udacity-api)
+- [Instructions](#instructions)
 - [Reporting Issues](#reporting-issues)
 - [User Privacy](user-privacy)
 - [Disclaimer](#disclaimer)
