@@ -20,7 +20,7 @@ import {
  * @param {string} title title of atom
  * @param {string} format youtube-dl quality setting (eg. best)
  */
-export default function downloadYoutube(videoId, outputPath, prefix, title, format = 'best') {
+export default function downloadYoutube(videoId, outputPath, prefix, title, format = 'bestvideo') {
   return new Promise((resolve, reject) => {
     if (!videoId) {
       resolve(null);
