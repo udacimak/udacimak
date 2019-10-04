@@ -88,21 +88,21 @@ export default function downloadYoutube(videoId, outputPath, prefix, title, form
         progressBar.stop();
         logger.info(`Downloaded video ${filenameYoutube}`);
 
-        let subtitles;
-        try {
-          subtitles = await downloadYoutubeSubtitles(videoId, filenameBase, outputPath);
+        let subtitles = [];
 
-          resolve({
-            src: filenameYoutube,
-            subtitles,
-          });
-        } catch (error) {
-          logger.warn(error);
-          resolve({
-            src: filenameYoutube,
-            subtitles: [],
-          });
-        }
+        console.log('======>', global.downloadYoutubeSubtitles);
+        if (global.downloadYoutubeSubtitles) {
+          try {
+            subtitles = await downloadYoutubeSubtitles(videoId, filenameBase, outputPath);
+          } catch (error) {
+            logger.warn(error);
+          }
+        } //.if downloadYoutubeSubtitles
+
+        resolve({
+          src: filenameYoutube,
+          subtitles,
+        });
       }); //.video.on end
     }); //.video.on info
 

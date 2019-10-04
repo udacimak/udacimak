@@ -59,10 +59,13 @@ program
   .description('Render downloaded json course content into HTML by downloading all videos, creating text content, etc.')
   .arguments('<path>')
   .option('-t, --targetdir <targetdir>', '(Optional) Target directory to save rendered course contents')
+  .option('-s, --subtitles', 'Download Youtube video subtitles')
   .option('-v, --verbose', '(Optional) Force youtube-dl to log debugging information')
   .option('--userquizanswer', '(Optional) Force rendering user\'s Programming Question code answer')
   .action(async (path, options) => {
     await preCli();
+
+    global.downloadYoutubeSubtitles = !!options.subtitles;
 
     const targetdir = options.targetdir || process.cwd();
     global.ytVerbose = options.verbose;
@@ -84,10 +87,13 @@ program
   .description('Render a whole directory of downloaded json course contents')
   .arguments('<path>')
   .option('-t, --targetdir <targetdir>', '(Optional) Target directory to save rendered course contents')
+  .option('-s, --subtitles', 'Download Youtube video subtitles')
   .option('-v, --verbose', '(Optional) Force youtube-dl to log debugging information')
   .option('--userquizanswer', '(Optional) Force rendering user\'s Programming Question code answer')
   .action(async (path, options) => {
     await preCli();
+
+    global.downloadYoutubeSubtitles = !!options.subtitles;
 
     const targetdir = options.targetdir || process.cwd();
     global.ytVerbose = options.verbose;
