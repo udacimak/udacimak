@@ -90,7 +90,6 @@ export default function downloadYoutube(videoId, outputPath, prefix, title, form
 
         let subtitles = [];
 
-        console.log('======>', global.downloadYoutubeSubtitles);
         if (global.downloadYoutubeSubtitles) {
           try {
             subtitles = await downloadYoutubeSubtitles(videoId, filenameBase, outputPath);
