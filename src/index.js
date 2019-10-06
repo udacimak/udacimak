@@ -100,7 +100,7 @@ program
   .arguments('<path>')
   .option('-t, --targetdir <targetdir>', '(Optional) Target directory to save rendered course contents')
   .option('-d, --delay-youtube <number>', '(Optional) Add delay in seconds between Youtube downloads')
-  .option('-s, --subtitles', 'Download Youtube video subtitles')
+  .option('-s, --subtitles', '(Optional) Download Youtube video subtitles')
   .option('-v, --verbose', '(Optional) Force youtube-dl to log debugging information')
   .option('--userquizanswer', '(Optional) Force rendering user\'s Programming Question code answer')
   .action(async (path, options) => {
