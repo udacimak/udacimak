@@ -19,6 +19,13 @@ import {
 import { preCli } from './cli';
 
 
+const validateInt = (value) => {
+  if (!parseInt(value)) { // eslint-disable-line
+    console.error('--delay-youtube (-d) argument must be an integer');
+    process.exit(1);
+  }
+};
+
 program
   .version(`v${getPkgInfo().version}`, '-v, --version')
   .usage('<command> <args> [options]');
@@ -59,17 +66,22 @@ program
   .description('Render downloaded json course content into HTML by downloading all videos, creating text content, etc.')
   .arguments('<path>')
   .option('-t, --targetdir <targetdir>', '(Optional) Target directory to save rendered course contents')
-  .option('-s, --subtitles', 'Download Youtube video subtitles')
+  .option('-d, --delay-youtube <number>', '(Optional) Add delay in seconds between Youtube downloads')
+  .option('-s, --subtitles', '(Optional) Download Youtube video subtitles')
   .option('-v, --verbose', '(Optional) Force youtube-dl to log debugging information')
   .option('--userquizanswer', '(Optional) Force rendering user\'s Programming Question code answer')
   .action(async (path, options) => {
+    options.delayYoutube && validateInt(options.delayYoutube);
+
     await preCli();
 
     global.downloadYoutubeSubtitles = !!options.subtitles;
 
     const targetdir = options.targetdir || process.cwd();
+    global.delayYoutube = options.delayYoutube || 0;
     global.ytVerbose = options.verbose;
     global.optRenderUserQuizAnswer = options.userquizanswer;
+
     render(path, targetdir);
   })
   .on('--help', () => {
@@ -87,15 +99,19 @@ program
   .description('Render a whole directory of downloaded json course contents')
   .arguments('<path>')
   .option('-t, --targetdir <targetdir>', '(Optional) Target directory to save rendered course contents')
+  .option('-d, --delay-youtube <number>', '(Optional) Add delay in seconds between Youtube downloads')
   .option('-s, --subtitles', 'Download Youtube video subtitles')
   .option('-v, --verbose', '(Optional) Force youtube-dl to log debugging information')
   .option('--userquizanswer', '(Optional) Force rendering user\'s Programming Question code answer')
   .action(async (path, options) => {
+    options.delayYoutube && validateInt(options.delayYoutube);
+
     await preCli();
 
     global.downloadYoutubeSubtitles = !!options.subtitles;
 
     const targetdir = options.targetdir || process.cwd();
+    global.delayYoutube = options.delayYoutube || 0;
     global.ytVerbose = options.verbose;
     global.optRenderUserQuizAnswer = options.userquizanswer;
     renderdir(path, targetdir);

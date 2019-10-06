@@ -21,7 +21,7 @@ import {
  * @param {string} format youtube-dl quality setting (eg. best)
  */
 export default function downloadYoutube(videoId, outputPath, prefix, title, format = 'best') {
-  return new Promise((resolve, reject) => {
+  return new Promise(async (resolve, reject) => {
     if (!videoId) {
       resolve(null);
       return;
@@ -32,6 +32,8 @@ export default function downloadYoutube(videoId, outputPath, prefix, title, form
     const urlYoutube = `https://www.youtube.com/watch?v=${videoId}`;
     const savePath = path.join(outputPath, filenameYoutube); `${outputPath}/${filenameYoutube}`;
     const tempPath = path.join(outputPath, `.${filenameYoutube}`);
+    let timeGap;
+    let timeout = 0;
 
     // avoid re-downloading videos if it already exists
     if (fs.existsSync(savePath)) {
@@ -47,6 +49,29 @@ export default function downloadYoutube(videoId, outputPath, prefix, title, form
     // start youtube download
     const argsYoutube = [`--format=${format}`];
     global.ytVerbose && argsYoutube.push('--verbose');
+
+    // calculate amount of time to wait before starting this next Youtube download
+    if (global.previousYoutubeTimestamp) {
+      // time difference between last Youtube download and this one
+      timeGap = Date.now() - global.previousYoutubeTimestamp;
+      const delayYoutube = global.delayYoutube * 1000;
+
+      if (timeGap > 0 && timeGap <= delayYoutube) {
+        timeout = delayYoutube - timeGap;
+      } else {
+        timeout = 0;
+      }
+    }
+
+    // delay to avoid Youtube from detecting youtube-dl usage
+    await new Promise((resolveWait) => {
+      const timeoutSeconds = parseFloat(timeout / 1000).toFixed(1);
+      const spinnerDelayYoutube = ora(`Delaying Youtube download for further ${timeoutSeconds} seconds`).start();
+      setTimeout(() => {
+        spinnerDelayYoutube.stop();
+        resolveWait();
+      }, timeout);
+    });
 
     const spinnerInfo = ora(`Getting Youtube video id ${videoId} information`).start();
     const video = youtubedl(urlYoutube, argsYoutube);
@@ -98,6 +123,7 @@ export default function downloadYoutube(videoId, outputPath, prefix, title, form
           }
         } //.if downloadYoutubeSubtitles
 
+        global.previousYoutubeTimestamp = Date.now();
         resolve({
           src: filenameYoutube,
           subtitles,
