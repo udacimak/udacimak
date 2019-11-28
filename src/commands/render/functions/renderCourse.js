@@ -81,14 +81,14 @@ export default async function renderCourse(path, targetDir) {
     const treePart = sourceDirTree.children[i];
     if (courseType === 'COURSE') {
       // this is a course, so create Lessons now
-      if (treePart.type === 'directory') {
+      if (treePart.type === 'directory' && !treePart.path.includes("/assets") && !treePart.path.includes("\assets")) {
         const pathSourceJSON = treePart.path;
         const pathLesson = makeDir(dirNanodegree, treePart.name);
         await writeHtmlLesson(pathSourceJSON, pathLesson);
       }
     } else if (courseType === 'NANODEGREE') {
       // this is a nanodegree
-      if (treePart.type === 'directory') {
+      if (treePart.type === 'directory' && !treePart.path.includes("/assets") && !treePart.path.includes("\assets")) {
         // retrieve part number
         const prefixPart = treePart.name.match(/Part [\d]+/i);
 
