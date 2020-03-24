@@ -20,7 +20,7 @@ import {
  * @param {string} title title of atom
  * @param {string} format youtube-dl quality setting (eg. best)
  */
-export default function downloadYoutube(videoId, outputPath, prefix, title, format = 'best') {
+export default function downloadYoutube(videoId, outputPath, prefix, title, format = '22/18/17') {
   return new Promise(async (resolve, reject) => {
     if (!videoId) {
       resolve(null);
@@ -47,7 +47,7 @@ export default function downloadYoutube(videoId, outputPath, prefix, title, form
     }
 
     // start youtube download
-    const argsYoutube = [`--format=${format}`];
+    const argsYoutube = [`-f=${format}`];
     global.ytVerbose && argsYoutube.push('--verbose');
 
     // calculate amount of time to wait before starting this next Youtube download
