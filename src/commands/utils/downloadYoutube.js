@@ -1,8 +1,6 @@
-import _cliProgress from 'cli-progress';
 import fs from 'fs-extra';
 import ora from 'ora';
 import path from 'path';
-import progress from 'progress-stream';
 import youtubedl from 'youtube-dl';
 import {
   downloadYoutubeSubtitles,
@@ -20,7 +18,7 @@ import {
  * @param {string} title title of atom
  * @param {string} format youtube-dl quality setting (eg. best)
  */
-export default function downloadYoutube(videoId, outputPath, prefix, title, format = '22/18/17') {
+export default function downloadYoutube(videoId, outputPath, prefix, title, format = 'bestvideo+bestaudio') {
   return new Promise(async (resolve, reject) => {
     if (!videoId) {
       resolve(null);
@@ -73,90 +71,62 @@ export default function downloadYoutube(videoId, outputPath, prefix, title, form
       }, timeout);
     });
 
-    const spinnerInfo = ora(`Getting Youtube video id ${videoId} information`).start();
-    const video = youtubedl(urlYoutube, argsYoutube);
+    const spinnerInfo = ora(`Getting Youtube video id ${videoId} information\n`).start();
 
-    video.on('info', (info) => {
-      spinnerInfo.succeed();
-      // get video name
-      const fileSize = info.size;
-      // create a new progress bar instance
-      const progressBar = new _cliProgress.Bar({}, _cliProgress.Presets.shades_classic);
-      progressBar.start(fileSize, 0);
+    // Write video to temporary file first. If download finishes, rename it
+    // to proper file name later. This is to avoid the issue when the terminal
+    // stop unexpectedly, when restart, the unfinished video will be
+    // redownloaded
+    youtubedl.exec(urlYoutube, ['-f', format, '-o', tempPath, '--exec', `mv {} "${savePath}"`], {}, async (err, output) => {
+      if (err) {
+        spinnerInfo.fail();
+        const { message } = err;
 
-
-      const progressStream = progress({
-        length: fileSize,
-        time: 20,
-      });
-      progressStream.on('progress', (progressData) => {
-        progressBar.update(progressData.transferred);
-      });
-
-      // Write video to temporary file first. If download finishes, rename it
-      // to proper file name later. This is to avoid the issue when the terminal
-      // stop unexpectedly, when restart, the unfinished video will be
-      // redownloaded
-      video
-        .pipe(progressStream)
-        .pipe(fs.createWriteStream(tempPath));
-
-      video.on('end', async () => {
-        // rename temp file to final file name
-        try {
-          await fs.rename(tempPath, savePath);
-        } catch (errorRename) {
-          reject(errorRename);
+        if (!message) {
+          reject(err);
+          return;
         }
 
-        progressBar.update(fileSize);
-        progressBar.stop();
-        logger.info(`Downloaded video ${filenameYoutube}`);
-
-        let subtitles = [];
-
-        if (global.downloadYoutubeSubtitles) {
-          try {
-            subtitles = await downloadYoutubeSubtitles(videoId, filenameBase, outputPath);
-          } catch (error) {
-            logger.warn(error);
-          }
-        } //.if downloadYoutubeSubtitles
-
-        global.previousYoutubeTimestamp = Date.now();
-        resolve({
-          src: filenameYoutube,
-          subtitles,
-        });
-      }); //.video.on end
-    }); //.video.on info
-
-    video.on('error', (error) => {
-      spinnerInfo.fail();
-      const { message } = error;
-
-      if (!message) {
-        reject(error);
-        return;
+        // handle video unavailable error. See node-youtube-dl source code for
+        // error message strings to check
+        if (message.includes('video is unavailable')) {
+          logger.error(`Youtube video with id ${videoId} is unavailable. It may have been deleted. The CLI will ignore this error and skip this download.`);
+          resolve(null);
+        } else if (message.includes('video has been removed by the user')) {
+          logger.error(`Youtube video with id ${videoId} has been removed by the user. The CLI will ignore this error and skip this download.`);
+          resolve(null);
+        } else if (message.includes('sign in to view this video')) {
+          logger.error(`Youtube video with id ${videoId} is private and require user to sign in to access it. The CLI will ignore this error and skip this download.`);
+          resolve(null);
+        } else if (message.includes('video is no longer available')) {
+          logger.error(`Youtube video with id ${videoId} is no longer available. The CLI will ignore this error and skip this download.`);
+          resolve(null);
+        } else {
+          reject(err);
+        }
       }
 
-      // handle video unavailable error. See node-youtube-dl source code for
-      // error message strings to check
-      if (message.includes('video is unavailable')) {
-        logger.error(`Youtube video with id ${videoId} is unavailable. It may have been deleted. The CLI will ignore this error and skip this download.`);
-        resolve(null);
-      } else if (message.includes('video has been removed by the user')) {
-        logger.error(`Youtube video with id ${videoId} has been removed by the user. The CLI will ignore this error and skip this download.`);
-        resolve(null);
-      } else if (message.includes('sign in to view this video')) {
-        logger.error(`Youtube video with id ${videoId} is private and require user to sign in to access it. The CLI will ignore this error and skip this download.`);
-        resolve(null);
-      } else if (message.includes('video is no longer available')) {
-        logger.error(`Youtube video with id ${videoId} is no longer available. The CLI will ignore this error and skip this download.`);
-        resolve(null);
-      } else {
-        reject(error);
-      }
+      spinnerInfo.succeed();
+      output.forEach((o) => {
+        logger.info(o);
+      });
+      logger.info(`Downloaded video ${filenameYoutube}`);
+
+      let subtitles = [];
+
+      if (global.downloadYoutubeSubtitles) {
+        try {
+          subtitles = await downloadYoutubeSubtitles(videoId, filenameBase, outputPath);
+        } catch (error) {
+          logger.warn(error);
+        }
+      } //.if downloadYoutubeSubtitles
+
+      global.previousYoutubeTimestamp = Date.now();
+      resolve({
+        src: filenameYoutube,
+        subtitles,
+      });
     });
   }); //.return Promise
 }
