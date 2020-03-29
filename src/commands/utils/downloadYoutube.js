@@ -77,7 +77,7 @@ export default function downloadYoutube(videoId, outputPath, prefix, title, form
       '-o',
       tempPath,
       '--exec',
-      `mv {} "${savePath}"`
+      `mv {} "${savePath}"`,
     ];
     global.ytVerbose && argsYoutube.push('--verbose');
 
