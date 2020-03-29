@@ -45,8 +45,6 @@ export default function downloadYoutube(videoId, outputPath, prefix, title, form
     }
 
     // start youtube download
-    const argsYoutube = [`-f=${format}`];
-    global.ytVerbose && argsYoutube.push('--verbose');
 
     // calculate amount of time to wait before starting this next Youtube download
     if (global.previousYoutubeTimestamp) {
@@ -73,11 +71,21 @@ export default function downloadYoutube(videoId, outputPath, prefix, title, form
 
     const spinnerInfo = ora(`Getting Youtube video id ${videoId} information\n`).start();
 
+    const argsYoutube = [
+      '-f',
+      format,
+      '-o',
+      tempPath,
+      '--exec',
+      `mv {} "${savePath}"`
+    ];
+    global.ytVerbose && argsYoutube.push('--verbose');
+
     // Write video to temporary file first. If download finishes, rename it
     // to proper file name later. This is to avoid the issue when the terminal
     // stop unexpectedly, when restart, the unfinished video will be
     // redownloaded
-    youtubedl.exec(urlYoutube, ['-f', format, '-o', tempPath, '--exec', `mv {} "${savePath}"`], {}, async (err, output) => {
+    youtubedl.exec(urlYoutube, argsYoutube, {}, async (err, output) => {
       if (err) {
         spinnerInfo.fail();
         const { message } = err;
