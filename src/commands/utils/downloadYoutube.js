@@ -20,7 +20,7 @@ import {
  * @param {string} title title of atom
  * @param {string} format youtube-dl quality setting (eg. best)
  */
-export default function downloadYoutube(videoId, outputPath, prefix, title, format = 'best[height=1080]/best[height=720]') {
+export default function downloadYoutube(videoId, outputPath, prefix, title, format = 'best[height=1080]/best[height=720]/best[height=480]/best[height=360]') {
   return new Promise(async (resolve, reject) => {
     if (!videoId) {
       resolve(null);
