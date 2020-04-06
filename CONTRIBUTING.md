@@ -29,6 +29,10 @@ Example:
   ```shell
   npm install
   ```
+- Run script build
+  ```shell
+  npm run-script build
+  ```
 - Create [symlink](https://docs.npmjs.com/cli/link) for the package folder so
 that you can run `udacimak` command:
   ```shell
