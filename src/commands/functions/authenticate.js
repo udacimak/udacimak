@@ -3,7 +3,7 @@ import {
 } from '.';
 
 const request = require('request');
-const prompt = require('prompt');
+const inquirer = require('inquirer');
 
 const options = {
   url: 'https://user-api.udacity.com/signin',
@@ -26,30 +26,23 @@ const options = {
   },
 };
 
-const schema = {
-  properties: {
-    email: {
-      required: true,
-    },
-    password: {
-      hidden: true,
-      required: true,
-    },
+const questions = [
+  {
+    type: 'input',
+    name: 'email',
+    message: 'Email:',
   },
-};
-
-function onErr(err) {
-  console.log(err);
-  return 1;
-}
+  {
+    type: 'password',
+    name: 'password',
+    message: 'Password:',
+  },
+];
 
 export default async function authenticate() {
-  prompt.start();
-
-  prompt.get(schema, (err, result) => {
-    if (err) { return onErr(err); }
-    options.json.email = result.email;
-    options.json.password = result.password;
+  inquirer.prompt(questions).then((answers) => {
+    options.json.email = answers.email;
+    options.json.password = answers.password;
     request.post(options, (error, response, body) => {
       if (error) {
         console.error(error);
