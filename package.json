@@ -1,6 +1,6 @@
 {
   "name": "udacimak",
-  "version": "1.5.0",
+  "version": "1.6.0",
   "description": "Udacity Nanodegree/course downloader and renderer",
   "main": "index.js",
   "scripts": {
@@ -88,6 +88,6 @@
     "showdown": "^1.8.6",
     "user-settings": "^0.2.0",
     "winston": "^3.1.0",
-    "youtube-dl": "^2.0.0"
+    "youtube-dl": "^3.0.2"
   }
 }
