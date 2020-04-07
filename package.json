@@ -11,7 +11,7 @@
     "watch": "nodemon --watch src --exec \"rimraf lib && babel src --out-dir lib --copy-files\"",
     "test": "echo \"No tests\" ",
     "release": "np",
-    "version": "npm run build"q
+    "version": "npm run build"
   },
   "repository": {
     "type": "git",
