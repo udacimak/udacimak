@@ -18,29 +18,53 @@ Example:
   ```
 
 ### Set Up
+
 - Uninstall `udacimak` if you have installed it globally:
+
   ```
   npm uninstall -g udacimak
   ```
+
 - Install Node and npm. Installing via nvm is highly recommended:
   - https://github.com/creationix/nvm
   - https://github.com/coreybutler/nvm-windows
+
 - Install required dependencies:
+
   ```shell
   npm install
   ```
-- Run script build
-  ```shell
-  npm run-script build
-  ```
+
 - Create [symlink](https://docs.npmjs.com/cli/link) for the package folder so
 that you can run `udacimak` command:
+
   ```shell
   npm link
   ```
+
   Run `udacimak --help` and make sure that it works
 
 Now you can start coding!
+
+#### Note
+
+If this error occur:
+
+```shell
+npm ERR! code ENOENT
+npm ERR! syscall chmod
+npm ERR! path C:\Users\User\AppData\Roaming\npm\node_modules\udacimak\lib\index.js
+npm ERR! errno -4058
+npm ERR! enoent ENOENT: no such file or directory, chmod 'C:\Users\User\AppData\Roaming\npm\node_modules\udacimak\lib\index.js'
+npm ERR! enoent This is related to npm not being able to find a file.
+npm ERR! enoent
+```
+
+Run script build to fix the issue:
+
+```shell
+npm run-script build
+```
 
 ### Commit
 Please [commit with clear commit messages](https://github.com/trein/dev-best-practices/wiki/Git-Commit-Best-Practices).
