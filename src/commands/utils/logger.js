@@ -4,9 +4,6 @@ const {
   colorize, combine, timestamp, label, printf,
 } = format;
 
-
-const MAX_SIZE = 10485760; // 10mb
-
 /**
  * Customer winston logger format
  */
