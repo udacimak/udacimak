@@ -30,17 +30,6 @@ const logger = createLogger({
   exitOnError: true,
   transports: [
     new transports.Console(),
-    new transports.File({
-      filename: 'udacimak.error.log',
-      level: 'error',
-      maxsize: MAX_SIZE,
-      maxFiles: 1,
-    }),
-    new transports.File({
-      filename: 'udacimak.info.log',
-      maxsize: MAX_SIZE,
-      maxFiles: 1,
-    }),
   ],
   exceptionHandlers: [
     new transports.Console(),
