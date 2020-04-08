@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 import fs from 'fs-extra';
+import _path from 'path';
 import {
   writeHtmlCourseSummary,
   writeHtmlLesson,
@@ -21,30 +22,36 @@ const dirTree = require('directory-tree');
 /**
  * Render a whole course/Nanodegree by creating HTML files, downloading resources
  * (videos, images)
- * @param {string} path path to source JSON files of a course/nanodegree
+ * @param {string} sourceDir path to source JSON files of a course/nanodegree
  * @param {string} targetDir target directory to save the contents
  */
 export default async function renderCourse(path, targetDir) {
   if (path === targetDir) {
-    throw new Error('Target directory must not be the same with source directory. Please change the target directory.');
+    logger.error('Target directory must not be the same with source directory. Please change the target directory.');
+    return;
   }
 
   try {
     await fs.access(targetDir, fs.constants.F_OK);
   } catch (error) {
-    throw new Error(`Target directory doesn't exist. Please create the directory "${targetDir}"`);
+    logger.error(`Target directory doesn't exist. Please create the directory "${targetDir}"`);
+    return;
   }
 
   let courseType;
   const sourceDirTree = dirTree(path);
   if (!sourceDirTree) {
-    throw new Error('Path to downloaded Udacity course/Nanodegree doesn\'t exist.');
+    logger.error('Path to downloaded Udacity course/Nanodegree doesn\'t exist.');
+    return;
   }
 
   const nanodegreeName = sourceDirTree.name;
 
-  if (filenamify(path) === filenamify(`${targetDir}/${nanodegreeName}`)) {
-    throw new Error('Please choose another target directory to avoid rendering contents into the same folder that contains downloaded JSON data from Udacity.');
+  const isTargetSameAsSource = fs.existsSync(_path.join(process.cwd(), path, 'data.json'));
+
+  if (isTargetSameAsSource || (filenamify(path) === filenamify(`${targetDir}/${nanodegreeName}`))) {
+    logger.error('Please choose another target directory to avoid rendering contents into the same folder that contains downloaded JSON data from Udacity.');
+    return;
   }
 
   // flag to determine if this folder contains downloaded course JSON from Udacity
