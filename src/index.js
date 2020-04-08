@@ -10,6 +10,7 @@ import {
   render,
   renderdir,
   setToken,
+  login,
 } from './commands';
 import {
   logger,
@@ -129,6 +130,14 @@ program
   .on('--help', () => {
     console.log('');
     console.log('NOTE: Log in to Udacity website and find _jwt key in your browser\'s cookies to get the token');
+  });
+
+program
+  .command('login')
+  .description('Login to audacity and save the token locally')
+  .action(async () => {
+    await preCli();
+    login();
   });
 
 program
