@@ -20,7 +20,7 @@ import {
  * @param {string} title title of atom
  * @param {string} format youtube-dl quality setting (eg. best)
  */
-export default function downloadYoutube(videoId, outputPath, prefix, title, format = 'best[height=1080]/best[height=720]/best[height=480]/best[height=360]') {
+export default function downloadYoutube(videoId, outputPath, prefix, title, format = '22') {
   return new Promise(async (resolve, reject) => {
     if (!videoId) {
       resolve(null);
@@ -47,7 +47,7 @@ export default function downloadYoutube(videoId, outputPath, prefix, title, form
     }
 
     // start youtube download
-    const argsYoutube = [`-f=${format}`];
+    const argsYoutube = format ? [`--format=${format}`] : [];
     global.ytVerbose && argsYoutube.push('--verbose');
 
     // calculate amount of time to wait before starting this next Youtube download
@@ -131,7 +131,7 @@ export default function downloadYoutube(videoId, outputPath, prefix, title, form
       }); //.video.on end
     }); //.video.on info
 
-    video.on('error', (error) => {
+    video.on('error', async (error) => {
       spinnerInfo.fail();
       const { message } = error;
 
@@ -155,7 +155,20 @@ export default function downloadYoutube(videoId, outputPath, prefix, title, form
         logger.error(`Youtube video with id ${videoId} is no longer available. The CLI will ignore this error and skip this download.`);
         resolve(null);
       } else {
-        reject(error);
+        // sometimes downloading at 22 quality (1280x720) fails for some video for unknown reason
+        // in that case, retry with lower quality
+        if (format === 18) {
+          reject(error);
+          return;
+        }
+
+        try {
+          logger.warn('Failed to download Youtube video at best quality, retrying with low quality format');
+          const retry = await downloadYoutube(videoId, outputPath, prefix, title, format = '18');
+          resolve(retry);
+        } catch (errorRetry) {
+          reject(errorRetry);
+        }
       }
     });
   }); //.return Promise
