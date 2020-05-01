@@ -4,7 +4,6 @@ import validUrl from 'valid-url';
 import path from 'path';
 import {
   downloadImage,
-  logger,
   makeDir,
   markdownToHtml,
 } from '../../../utils';
