@@ -77,6 +77,7 @@ export default function downloadYoutube(videoId, outputPath, prefix, title) {
             logger.error(`Youtube video with id ${videoId} is no longer available. The CLI will ignore this error and skip this download.`);
             resolve(null);
           } else {
+            logger.error(`Youtube video with id ${videoId} could not be downloaded available. The CLI will ignore this error and skip this download. Please check this error message:\n\n${JSON.stringify(message)}`);
             resolve(null);
           }
         }
