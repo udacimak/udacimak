@@ -1,7 +1,10 @@
+/* eslint-disable camelcase */
 import Handlebars from 'handlebars';
+import validUrl from 'valid-url';
 import path from 'path';
 import {
   downloadImage,
+  logger,
   makeDir,
   markdownToHtml,
 } from '../../../utils';
@@ -16,7 +19,15 @@ import { loadTemplate } from '../templates';
  */
 export default async function createHtmlImageAtom(atom, outputPath) {
   let { caption } = atom;
-  const { url } = atom;
+  const { url, non_google_url } = atom;
+  let imageUrl = null;
+  const isUrlvalid = validUrl.isUri(url);
+  const isNonGoogleUrlValid = validUrl.isUri(non_google_url);
+  if (isUrlvalid) {
+    imageUrl = url;
+  } else if (isNonGoogleUrlValid) {
+    imageUrl = non_google_url;
+  }
 
   // create directory for image assets
   const pathImg = makeDir(outputPath, 'img');
@@ -28,15 +39,26 @@ export default async function createHtmlImageAtom(atom, outputPath) {
   }
 
   // download image first and save it
-  const promiseDownload = downloadImage(url, pathImg, filename);
+  const promiseDownload = imageUrl !== null ? downloadImage(imageUrl, pathImg, filename) : null;
   const promiseLoadTemplate = loadTemplate('atom.image');
 
   const [filenameImg, html] = await Promise.all([promiseDownload, promiseLoadTemplate]);
   const alt = caption;
   caption = markdownToHtml(caption);
 
+  let file = '';
+  if (filenameImg === null) {
+    if (isUrlvalid) {
+      file = url;
+    } else if (isNonGoogleUrlValid) {
+      file = non_google_url;
+    }
+  } else {
+    file = `img/${filenameImg}`;
+  }
+
   const dataTemplate = {
-    file: `img/${filenameImg}`,
+    file,
     alt,
     caption,
   };

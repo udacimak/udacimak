@@ -86,6 +86,7 @@
     "serialize-error": "^3.0.0",
     "showdown": "^1.8.6",
     "user-settings": "^0.2.0",
+    "valid-url": "^1.0.9",
     "winston": "^3.1.0",
     "youtube-dl": "^3.0.2"
   }
