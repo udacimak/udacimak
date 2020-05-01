@@ -20,7 +20,7 @@ import {
  * @param {string} title title of atom
  * @param {string} format youtube-dl quality setting (eg. best)
  */
-export default function downloadYoutube(videoId, outputPath, prefix, title, format = '22') {
+export default function downloadYoutube(videoId, outputPath, prefix, title) {
   return new Promise(async (resolve, reject) => {
     if (!videoId) {
       resolve(null);
@@ -29,11 +29,7 @@ export default function downloadYoutube(videoId, outputPath, prefix, title, form
 
     const filenameBase = `${prefix}. ${filenamify(title || '')}-${videoId}`;
     const filenameYoutube = `${filenameBase}.mp4`;
-    const urlYoutube = `https://www.youtube.com/watch?v=${videoId}`;
     const savePath = path.join(outputPath, filenameYoutube); `${outputPath}/${filenameYoutube}`;
-    const tempPath = path.join(outputPath, `.${filenameYoutube}`);
-    let timeGap;
-    let timeout = 0;
 
     // avoid re-downloading videos if it already exists
     if (fs.existsSync(savePath)) {
@@ -47,7 +43,59 @@ export default function downloadYoutube(videoId, outputPath, prefix, title, form
     }
 
     // start youtube download
-    const argsYoutube = format ? [`--format=${format}`] : [];
+    const ytVideoQualities = ['22', '18'];
+    for (let i = 0; i < ytVideoQualities.length; i += 1) {
+      try {
+        // eslint-disable-next-line no-use-before-define
+        const dlPromise = await downloadYoutubeHelper(videoId, outputPath, prefix, title,
+          ytVideoQualities[i]);
+        resolve(dlPromise);
+        break;
+      } catch (error) {
+        if (i < ytVideoQualities.length - 1) {
+          logger.error(`Failed to download youtube video with id ${videoId} with quality=${ytVideoQualities[i]}, retrying with quality=${ytVideoQualities[i + 1]}`);
+        } else {
+          const { message } = error;
+
+          if (!message) {
+            reject(error);
+            return;
+          }
+
+          // handle video unavailable error. See node-youtube-dl source code for
+          // error message strings to check
+          if (message.includes('video is unavailable')) {
+            logger.error(`Youtube video with id ${videoId} is unavailable. It may have been deleted. The CLI will ignore this error and skip this download.`);
+            resolve(null);
+          } else if (message.includes('video has been removed by the user')) {
+            logger.error(`Youtube video with id ${videoId} has been removed by the user. The CLI will ignore this error and skip this download.`);
+            resolve(null);
+          } else if (message.includes('sign in to view this video')) {
+            logger.error(`Youtube video with id ${videoId} is private and require user to sign in to access it. The CLI will ignore this error and skip this download.`);
+            resolve(null);
+          } else if (message.includes('video is no longer available')) {
+            logger.error(`Youtube video with id ${videoId} is no longer available. The CLI will ignore this error and skip this download.`);
+            resolve(null);
+          } else {
+            resolve(null);
+          }
+        }
+      }
+    }
+  }); //.return Promise
+}
+
+function downloadYoutubeHelper(videoId, outputPath, prefix, title, format) {
+  return new Promise(async (resolve, reject) => {
+    const filenameBase = `${prefix}. ${filenamify(title || '')}-${videoId}`;
+    const filenameYoutube = `${filenameBase}.mp4`;
+    const urlYoutube = `https://www.youtube.com/watch?v=${videoId}`;
+    const tempPath = path.join(outputPath, `.${filenameYoutube}`);
+    const savePath = path.join(outputPath, filenameYoutube); `${outputPath}/${filenameYoutube}`;
+    let timeGap;
+    let timeout = 0;
+
+    const argsYoutube = [`--format=${format}`];
     global.ytVerbose && argsYoutube.push('--verbose');
 
     // calculate amount of time to wait before starting this next Youtube download
@@ -73,7 +121,7 @@ export default function downloadYoutube(videoId, outputPath, prefix, title, form
       }, timeout);
     });
 
-    const spinnerInfo = ora(`Getting Youtube video id ${videoId} information`).start();
+    const spinnerInfo = ora(`Getting Youtube video (id=${videoId}) information with quality=${format}`).start();
     const video = youtubedl(urlYoutube, argsYoutube);
 
     video.on('info', (info) => {
@@ -111,7 +159,7 @@ export default function downloadYoutube(videoId, outputPath, prefix, title, form
 
         progressBar.update(fileSize);
         progressBar.stop();
-        logger.info(`Downloaded video ${filenameYoutube}`);
+        logger.info(`Downloaded video ${filenameYoutube} with quality=${format}`);
 
         let subtitles = [];
 
@@ -133,43 +181,7 @@ export default function downloadYoutube(videoId, outputPath, prefix, title, form
 
     video.on('error', async (error) => {
       spinnerInfo.fail();
-      const { message } = error;
-
-      if (!message) {
-        reject(error);
-        return;
-      }
-
-      // handle video unavailable error. See node-youtube-dl source code for
-      // error message strings to check
-      if (message.includes('video is unavailable')) {
-        logger.error(`Youtube video with id ${videoId} is unavailable. It may have been deleted. The CLI will ignore this error and skip this download.`);
-        resolve(null);
-      } else if (message.includes('video has been removed by the user')) {
-        logger.error(`Youtube video with id ${videoId} has been removed by the user. The CLI will ignore this error and skip this download.`);
-        resolve(null);
-      } else if (message.includes('sign in to view this video')) {
-        logger.error(`Youtube video with id ${videoId} is private and require user to sign in to access it. The CLI will ignore this error and skip this download.`);
-        resolve(null);
-      } else if (message.includes('video is no longer available')) {
-        logger.error(`Youtube video with id ${videoId} is no longer available. The CLI will ignore this error and skip this download.`);
-        resolve(null);
-      } else {
-        // sometimes downloading at 22 quality (1280x720) fails for some video for unknown reason
-        // in that case, retry with lower quality
-        if (format === 18) {
-          reject(error);
-          return;
-        }
-
-        try {
-          logger.warn('Failed to download Youtube video at best quality, retrying with low quality format');
-          const retry = await downloadYoutube(videoId, outputPath, prefix, title, format = '18');
-          resolve(retry);
-        } catch (errorRetry) {
-          reject(errorRetry);
-        }
-      }
+      reject(error);
     });
-  }); //.return Promise
+  });
 }
