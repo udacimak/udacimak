@@ -1,7 +1,7 @@
 <div>
   <p><strong>QUIZ QUESTION:</strong>: {{{prompt}}}</p>
   <p><strong>ANSWER CHOICES:</strong></p>
-  {{#each concepts}}
+  {{#each answers}}
   <button class="btn btn-primary">{{{this.text}}}</button>
   {{/each}}
 
@@ -17,7 +17,7 @@
       </th>
     </tr>
 
-    {{#each answers}}
+    {{#each concepts}}
     <tr>
       <td>{{{this.text}}}</td>
       <td></td>
@@ -43,10 +43,10 @@
       {{#each solutions}}
       <tr>
         <td>
-          {{{this.answerText}}}
+          {{{this.matchingConcept}}}
         </td>
         <td>
-            <button class="btn btn-primary">{{{this.matchingConcept}}}</button>
+            <button class="btn btn-primary">{{{this.answerText}}}</button>
         </td>
       </tr>
       {{/each}}
