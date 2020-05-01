@@ -43,7 +43,7 @@ export default function downloadYoutube(videoId, outputPath, prefix, title) {
     }
 
     // start youtube download
-    const ytVideoQualities = ['22', '18'];
+    const ytVideoQualities = ['22', '18', ''];
     for (let i = 0; i < ytVideoQualities.length; i += 1) {
       try {
         // eslint-disable-next-line no-use-before-define
@@ -53,7 +53,7 @@ export default function downloadYoutube(videoId, outputPath, prefix, title) {
         break;
       } catch (error) {
         if (i < ytVideoQualities.length - 1) {
-          logger.error(`Failed to download youtube video with id ${videoId} with quality=${ytVideoQualities[i]}, retrying with quality=${ytVideoQualities[i + 1]}`);
+          logger.error(`Failed to download youtube video with id ${videoId} with quality="${ytVideoQualities[i]}", retrying with quality="${ytVideoQualities[i + 1]}"`);
         } else {
           const { message } = error;
 
@@ -95,7 +95,7 @@ function downloadYoutubeHelper(videoId, outputPath, prefix, title, format) {
     let timeGap;
     let timeout = 0;
 
-    const argsYoutube = [`--format=${format}`];
+    const argsYoutube = format ? [`--format=${format}`] : [];
     global.ytVerbose && argsYoutube.push('--verbose');
 
     // calculate amount of time to wait before starting this next Youtube download
@@ -121,7 +121,7 @@ function downloadYoutubeHelper(videoId, outputPath, prefix, title, format) {
       }, timeout);
     });
 
-    const spinnerInfo = ora(`Getting Youtube video (id=${videoId}) information with quality=${format}`).start();
+    const spinnerInfo = ora(`Getting Youtube video (id=${videoId}) information with quality="${format}"`).start();
     const video = youtubedl(urlYoutube, argsYoutube);
 
     video.on('info', (info) => {
@@ -159,7 +159,7 @@ function downloadYoutubeHelper(videoId, outputPath, prefix, title, format) {
 
         progressBar.update(fileSize);
         progressBar.stop();
-        logger.info(`Downloaded video ${filenameYoutube} with quality=${format}`);
+        logger.info(`Downloaded video ${filenameYoutube} with quality="${format}"`);
 
         let subtitles = [];
 
