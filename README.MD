@@ -35,10 +35,7 @@ Udacimak downloads all videos, images, text contents and present them as local
 web pages in a similar manner to Udacity classroom website.
 
 Udacimak was inspired after Udacity announced in October 2018 that students who
-graduate will no longer have life-time access to the course content. Instead,
-all access will be removed 12 months after graduation date. There are also cases
-where access to content will be removed immediately after graduation (eg. if
-you're an Enterprise or Scholarship student, etc.)
+graduate will no longer have life-time access to the course content.
 
 If you want to keep the contents to yourself, Udacimak is built for you;
 or if you would like to have a local copy to quickly revise the lessons while
@@ -83,7 +80,6 @@ However, note that you should not provide
 your Udacity authentication token to anyone - it's a secret token of your
 own account.
 
-
 ## User Privacy
 
 Since you will have to provide the secret Udacity authentication token for the
@@ -102,7 +98,6 @@ The token is saved in the CLI config, located at:
 However, these details are only used internally in the app to serve its
 functionalities. None of your personal details, as well as the secret
 authentication token, will be sent to anybody else.
-
 
 ## Disclaimer
 
