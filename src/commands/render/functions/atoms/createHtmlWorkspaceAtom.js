@@ -27,7 +27,9 @@ export default async function createHtmlWorkspaceAtom(atom) {
     const { conf } = configuration.blueprint;
     if (conf) {
       // Jupyter workspace usually has defaultPath
-      if (conf.defaultPath) ({ defaultPath } = conf.defaultPath);
+      if (conf.defaultPath) {
+        ({ defaultPath } = conf);
+      }
       // Coding workspace usually has openFiles
       if (conf.openFiles && conf.openFiles.length) {
         ({ openFiles } = conf.openFiles);
