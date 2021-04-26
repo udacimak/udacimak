@@ -88,6 +88,6 @@
     "user-settings": "^0.2.0",
     "valid-url": "^1.0.9",
     "winston": "^3.1.0",
-    "youtube-dl": "^3.0.2"
+    "youtube-dl-exec": "^1.2.1"
   }
 }
