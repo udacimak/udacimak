@@ -12,7 +12,7 @@ const options = {
     Accept: 'application/json',
     'Accept-Language': 'en-US,en;q=0.5',
     'Accept-Encoding': 'gzip, deflate',
-    Referer: 'https://auth.udacity.com/sign-in?next=https%3A%2F%2Fclassroom.udacity.com%2Fauthenticated',
+    Referer: 'https://auth.udacity.com/sign-in?next=https%3A%2F%2Flearn.udacity.com%2Fauthenticated',
     'Content-Type': 'application/json;charset=UTF-8',
     'X-Udacity-Ads-Are-Blocked': 'unknown',
     Origin: 'https://auth.udacity.com',
@@ -22,7 +22,7 @@ const options = {
     email: '',
     password: '',
     otp: '',
-    next: 'https://classroom.udacity.com/authenticated',
+    next: 'https://learn.udacity.com/authenticated',
   },
 };
 

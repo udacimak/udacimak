@@ -55,8 +55,8 @@ If the link was temporary broken and is up again when you check, please re-run t
 
     // start the progress bar with a total value of 200 and start value of 0
     const headers = {
-      Origin: 'https://classroom.udacity.com',
-      Referer: 'https://classroom.udacity.com/me',
+      Origin: 'https://learn.udacity.com',
+      Referer: 'https://learn.udacity.com/me',
       // https://github.com/request/request/issues/2047#issuecomment-272473278
       // avoid socket hang up error
       Connection: 'keep-alive',
