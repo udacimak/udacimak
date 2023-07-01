@@ -20,9 +20,9 @@ export default function fetchApiUdacityGraphql(url, queryGraphql, udacityAuthTok
     Accept: 'application/json',
     Authorization: `Bearer ${udacityAuthToken}`,
     'Content-Type': 'application/json; charset=UTF-8',
-    Host: 'classroom-content.udacity.com',
-    Origin: 'https://classroom.udacity.com',
-    Referer: 'https://classroom.udacity.com/me',
+    Host: 'learn.udacity.com',
+    Origin: 'https://learn.udacity.com',
+    Referer: 'https://learn.udacity.com/me',
     // https://github.com/request/request/issues/2047#issuecomment-272473278
     // avoid socket hang up error
     Connection: 'keep-alive',

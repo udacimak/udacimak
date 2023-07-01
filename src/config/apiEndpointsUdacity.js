@@ -1,1 +1,1 @@
-export const API_ENDPOINTS_UDACITY_GRAPHQL = 'https://classroom-content.udacity.com/api/v1/graphql';
+export const API_ENDPOINTS_UDACITY_GRAPHQL = 'https://learn.udacity.com/api/classroom-content/v1/graphql';
