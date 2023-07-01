@@ -111,3 +111,5 @@ law infringement caused by the users of this CLI.
 
 __Resources:__
 - [Udacity Terms of Use](https://www.udacity.com/legal/terms-of-use)
+- https://github.com/udacimak/udacimak/pull/152/commits/b72c72bb7d306fdf80edad16624942c51e35f130
+- https://github.com/udacimak/udacimak/pull/187/commits/664cdf76341ed3748034086084c7c4f03ad23c20
