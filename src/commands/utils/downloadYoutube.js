@@ -1,48 +1,78 @@
-import youtubedl from 'youtube-dl-exec'; // Import youtube-dl-exec
+import youtubedl from 'youtube-dl-exec';
 import fs from 'fs';
 import path from 'path';
 import ora from 'ora';
+import {
+  filenamify,
+  downloadYoutubeSubtitles,
+  findVideoLocalSubtitles,
+  logger,
+} from '.';
 
 /**
- * Download youtube video and save locally
- * @param {string} videoId Youtube video id to construct download url
- * @param {string} outputPath directory to save the file
- * @param {string} prefix file prefix
- * @param {string} title title of atom
+ * Downloads a YouTube video and saves it locally.
+ * @param {string} videoId - YouTube video ID to construct download URL.
+ * @param {string} outputPath - Directory to save the file.
+ * @param {string} prefix - File prefix.
+ * @param {string} title - Title of the video.
+ * @returns {Promise<Object>} - Promise resolving an object with `src` and `subtitles` properties.
  */
 export default async function downloadYoutube(videoId, outputPath, prefix, title) {
+  // Check if video ID is provided
   if (!videoId) {
-    console.log('Video ID is required.');
-    return;
+    logger.error('Video ID is required.');
+    return null;
   }
 
-  const filenameBase = `${prefix}. ${title || ''}-${videoId}`;
+  const filenameBase = `${prefix}. ${filenamify(title || '')}-${videoId}`;
   const filenameYoutube = `${filenameBase}.mp4`;
   const savePath = path.join(outputPath, filenameYoutube);
 
-  // Avoid re-downloading videos if it already exists
+  // Check if video file already exists
   if (fs.existsSync(savePath)) {
-    console.log(`Video already exists. Skip downloading ${savePath}`);
-    return;
+    logger.info(`Video already exists. Skip downloading ${savePath}`);
+    const subtitles = findVideoLocalSubtitles(filenameBase, outputPath);
+    return {
+      src: filenameYoutube,
+      subtitles,
+    };
   }
 
-  // Start youtube download
   const ytVideoQualities = ['22', '18', ''];
-  for (let i = 0; i < ytVideoQualities.length; i += 1) {
-    const spinner = ora(`Downloading video with quality=${ytVideoQualities[i]}`).start();
+
+  // Attempt to download the video with different qualities
+  for (const quality of ytVideoQualities) {
+    const spinner = ora(`Downloading video with quality=${quality}`).start();
     try {
       // Use youtube-dl-exec to download the video
       await youtubedl(`https://www.youtube.com/watch?v=${videoId}`, {
-        format: ytVideoQualities[i],
+        format: quality,
         output: savePath,
       });
-      spinner.succeed(`Downloaded video with quality=${ytVideoQualities[i]}`);
+      spinner.succeed(`Downloaded video with quality=${quality}`);
       break;
     } catch (error) {
-      spinner.fail(`Failed to download video with quality=${ytVideoQualities[i]}`);
-      if (i === ytVideoQualities.length - 1) {
-        console.error(`Failed to download video with id ${videoId}. Error: ${error}`);
+      spinner.fail(`Failed to download video with quality=${quality}`);
+      // If all qualities fail, throw an error
+      if (quality === ytVideoQualities[ytVideoQualities.length - 1]) {
+        throw new Error(`Failed to download video with ID ${videoId}. Error: ${error}`);
       }
     }
   }
+
+  let subtitles = [];
+
+  // Download subtitles if enabled
+  if (global.downloadYoutubeSubtitles) {
+    try {
+      subtitles = await downloadYoutubeSubtitles(videoId, filenameBase, outputPath);
+    } catch (error) {
+      logger.warn(error);
+    }
+  }
+
+  return {
+    src: filenameYoutube,
+    subtitles,
+  };
 }
