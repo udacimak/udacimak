@@ -3,6 +3,13 @@ import fs from 'fs';
 import path from 'path';
 import ora from 'ora';
 
+/**
+ * Download youtube video and save locally
+ * @param {string} videoId Youtube video id to construct download url
+ * @param {string} outputPath directory to save the file
+ * @param {string} prefix file prefix
+ * @param {string} title title of atom
+ */
 export default async function downloadYoutube(videoId, outputPath, prefix, title) {
   if (!videoId) {
     console.log('Video ID is required.');
