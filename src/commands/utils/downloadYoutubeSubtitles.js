@@ -1,7 +1,7 @@
 import fs from 'fs-extra';
 import ora from 'ora';
 import path from 'path';
-import youtubedl from 'youtube-dl';
+import youtubedl from 'youtube-dl-exec';
 import {
   getFileExt,
   logger,
