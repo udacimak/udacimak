@@ -1,86 +1,78 @@
 import fs from 'fs-extra';
 import ora from 'ora';
 import path from 'path';
-import youtubedl from 'youtube-dl-exec';
-import {
-  getFileExt,
-  logger,
-} from '.';
-
+import { exec } from 'youtube-dl-exec';
+import { getFileExt, logger } from '.';
 
 /**
- * Download Youtube subtitles and rename them to be the same as Youtube video
- * file name
- * @param {string} videoId Youtube Video Id
- * @param {string} filenameYoutube Youtube filename (without extension)
- * @param {string} targetDir target directory
+ * Downloads YouTube subtitles and renames them to match the YouTube video file name.
+ * @param {string} videoId - YouTube Video Id.
+ * @param {string} filenameYoutube - YouTube filename (without extension).
+ * @param {string} targetDir - Target directory.
+ * @returns {Promise<Array>} - A promise that resolves to an array of subtitle information.
+ * @throws {Error} - If any error occurs during the subtitle download or renaming process.
  */
 export default function downloadYoutubeSubtitles(videoId, filenameYoutube, targetDir) {
   if (!videoId || !videoId.trim()) {
-    return null;
+    throw new Error('Invalid videoId');
   }
 
   const spinnerSubtitles = ora(`Download subtitles for ${filenameYoutube}`).start();
   const urlYoutube = `https://www.youtube.com/watch?v=${videoId}`;
   const options = {
-    // Write automatic subtitle file (youtube only)
-    auto: false,
-    // Downloads all the available subtitles.
-    all: true,
-    // Languages of subtitles to download, separated by commas.
-    lang: 'en',
-    // The directory to save the downloaded files in.
-    cwd: targetDir,
+    'all-subs': true,
+    listSubs: true,
+    output: targetDir,
   };
 
   return new Promise((resolve, reject) => {
-    youtubedl.getSubs(urlYoutube, options, async (errorGetSubs, files) => {
-      if (errorGetSubs) {
+    exec(urlYoutube, options)
+      .then(async (output) => {
+        const files = output.map(({ ext }) => ext);
+
+        try {
+          const subtitles = [];
+
+          // Loop through the subtitle files
+          for (let i = 0, len = files.length; i < len; i += 1) {
+            const ext = getFileExt(files[i]);
+
+            if (ext) {
+              const filenameSubtitle = path.join(targetDir, `${filenameYoutube}${ext}`);
+
+              if (!fs.existsSync(filenameSubtitle)) {
+                try {
+                  // Download the subtitle file
+                  await exec(urlYoutube, {
+                    writeAutoSub: true,
+                    subFormat: files[i],
+                    output: path.join(targetDir, `${filenameYoutube}.${ext}`),
+                  });
+                } catch (errorDownload) {
+                  spinnerSubtitles.warn();
+                  logger.warn(`Failed to download subtitle ${files[i]} with error:\n${errorDownload}\n`);
+                }
+
+                const srclang = ext.split('.')[1];
+                subtitles.push({
+                  src: `${filenameYoutube}${ext}`,
+                  srclang,
+                  default: srclang.toLowerCase() === 'en' || srclang.toLowerCase() === 'en-us',
+                });
+              }
+            }
+          }
+
+          spinnerSubtitles.succeed();
+          resolve(subtitles);
+        } catch (errorLoopRename) {
+          spinnerSubtitles.warn();
+          reject(new Error(`Failed to rename subtitle files for video ${filenameYoutube} with error:\n${errorLoopRename}\n`));
+        }
+      })
+      .catch((errorGetSubs) => {
         spinnerSubtitles.fail();
         reject(new Error(`Failed to download subtitles for ${filenameYoutube} with error:\n${errorGetSubs}\n`));
-      }
-
-      try {
-        // loop and rename subtitle files according to video file name
-        // so that video players can show subtitle
-        const subtitles = [];
-        for (let i = 0, len = files.length; i < len; i += 1) {
-          const file = files[i];
-
-          // extract file extension including language code
-          // eg. Average Friends - Intro to Statistics-b6mTOiKw3vQ.ar.vtt -> .ar.vtt
-          const ext = getFileExt(file);
-
-          // couldn't find file extension, skip renaming for safety
-          if (ext) {
-            // construct subtitle file name
-            const filenameSubtitle = path.join(targetDir, `${filenameYoutube}${ext}`);
-
-            // avoid overwriting video file
-            if (!fs.existsSync(filenameSubtitle)) {
-              try {
-                await fs.rename(path.join(targetDir, file), filenameSubtitle);
-              } catch (errorRename) {
-                spinnerSubtitles.warn();
-                logger.warn(`Failed to rename subtitles for ${file} with error:\n${errorRename}\n`);
-              }
-
-              const srclang = ext.split('.')[1];
-              subtitles.push({
-                src: `${filenameYoutube}${ext}`,
-                srclang,
-                default: (srclang.toLowerCase() === 'en' || srclang.toLowerCase() === 'en-us'),
-              });
-            } //.if fs.exist
-          } //.if ext
-        } //.for files
-
-        spinnerSubtitles.succeed();
-        resolve(subtitles);
-      } catch (errorLoopRename) {
-        spinnerSubtitles.warn();
-        reject(new Error(`Failed to rename renaming subtitle files for video ${filenameYoutube} with error:\n${errorLoopRename}\n`));
-      } //.trycatch
-    }); //.getSubs
+      });
   });
 }
