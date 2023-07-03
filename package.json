@@ -1,6 +1,6 @@
 {
   "name": "udacimak",
-  "version": "1.6.6",
+  "version": "1.6.7",
   "description": "Udacity Nanodegree/course downloader and renderer",
   "main": "index.js",
   "scripts": {
@@ -82,12 +82,13 @@
     "progress-stream": "^2.0.0",
     "request": "^2.88.0",
     "request-progress": "^3.0.0",
+    "resolve": "^1.22.2",
     "rimraf": "^2.6.2",
     "serialize-error": "^3.0.0",
     "showdown": "^1.8.6",
     "user-settings": "^0.2.0",
     "valid-url": "^1.0.9",
     "winston": "^3.1.0",
-    "youtube-dl": "^3.0.2"
+    "youtube-dl-exec": "^2.4.6"
   }
 }
