@@ -4,6 +4,7 @@ import path from 'path';
 import { exec } from 'youtube-dl-exec';
 import { getFileExt, splitStringByLastHyphen, logger } from '.';
 
+
 /**
  * Downloads YouTube subtitles and renames them to match the YouTube video file name.
  * @param {string} videoId - YouTube Video Id.
@@ -13,22 +14,23 @@ import { getFileExt, splitStringByLastHyphen, logger } from '.';
  * @throws {Error} - If any error occurs during the subtitle download or renaming process.
  */
 export default function downloadYoutubeSubtitles(videoId, filenameYoutube, targetDir) {
-  if (!videoId || !videoId.trim()) {
-    throw new Error('Invalid videoId');
-  }
-
-  const spinnerSubtitles = ora(`Download subtitles for ${filenameYoutube}`).start();
-  const urlYoutube = `https://www.youtube.com/watch?v=${videoId}`;
-  const options = {
-    'skip-download': true,
-    'all-subs': true,
-    'write-subs': true,
-    'sub-lang': 'en.*',
-    'sub-format': 'vtt',
-    paths: targetDir,
-  };
-
   return new Promise((resolve, reject) => {
+    if (!videoId) {
+      resolve(null);
+      return;
+    }
+
+    const spinnerSubtitles = ora(`Download subtitles for ${filenameYoutube}`).start();
+    const urlYoutube = `https://www.youtube.com/watch?v=${videoId}`;
+    const options = {
+      'skip-download': true,
+      'all-subs': true,
+      'write-subs': true,
+      'sub-lang': 'en.*',
+      'sub-format': 'vtt',
+      paths: targetDir,
+    };
+
     exec(urlYoutube, options)
       .then(async (output) => {
         // replicating old youtube-dl behavior

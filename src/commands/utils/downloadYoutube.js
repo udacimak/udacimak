@@ -15,12 +15,11 @@ import {
  * @param {string} outputPath - Directory to save the file.
  * @param {string} prefix - File prefix.
  * @param {string} title - Title of the video.
- * @returns {Promise<Object>} - Promise resolving an object with `src` and `subtitles` properties.
+ * @returns {Object} - an object with `src` and `subtitles` properties.
  */
 export default async function downloadYoutube(videoId, outputPath, prefix, title) {
   // Check if video ID is provided
   if (!videoId) {
-    logger.error('Video ID is required.');
     return null;
   }
 
