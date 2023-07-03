@@ -2,7 +2,7 @@ import fs from 'fs-extra';
 import ora from 'ora';
 import path from 'path';
 import { exec } from 'youtube-dl-exec';
-import { getFileExt, logger } from '.';
+import { getFileExt, splitStringByLastHyphen, logger } from '.';
 
 /**
  * Downloads YouTube subtitles and renames them to match the YouTube video file name.
@@ -67,8 +67,8 @@ export default function downloadYoutubeSubtitles(videoId, filenameYoutube, targe
                   logger.warn(`Failed to rename subtitles for ${file} with error:\n${errorRename}\n`);
                 }
 
-                const srclang = ext.split('.')[1];
-                console.log(srclang.toLowerCase().includes('en'))
+                const detectedlang = ext.split('.')[1];
+                const srclang = splitStringByLastHyphen(detectedlang)[0];
                 subtitles.push({
                   src: `${filenameYoutube}${ext}`,
                   srclang,
@@ -77,7 +77,6 @@ export default function downloadYoutubeSubtitles(videoId, filenameYoutube, targe
               } //.if fs.exist
             } //.if ext
           } //.for files
-
           spinnerSubtitles.succeed();
           resolve(subtitles);
         } catch (errorLoopRename) {
