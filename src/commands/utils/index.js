@@ -16,3 +16,4 @@ export { default as notifyLatestVersion } from './notifyLatestVersion';
 export { default as makeDir } from './makeDir';
 export { default as markdownToHtml } from './markdownToHtml';
 export { default as readFileSync } from './readFileSync';
+export { default as splitStringByLastHyphen } from './splitStringByLastHyphen';
